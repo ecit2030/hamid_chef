@@ -685,7 +685,6 @@
     "suggested_times": "أوقات مقترحة",
     "booking_conflicts_detected": "تم اكتشاف تعارض في الحجوزات",
     "conflict_description": "الحجز المطلوب يتعارض مع حجوزات موجودة أو لا يحترم الفاصل الزمني المطلوب.",
-    "conflicting_bookings": "الحجوزات المتعارضة",
     "time_overlap": "تداخل زمني",
     "gap_violation": "فجوة :hours ساعة (مطلوب :required ساعة)",
     "gap_violation_detail": "الفجوة الحالية: :current ساعة (مطلوب: :required ساعة)",

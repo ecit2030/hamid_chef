@@ -8,9 +8,17 @@ Route::get('/', function () {
 });
 
 
-Route::middleware(['auth'])
+Route::middleware(['auth', 'verified'])
     ->group(function () {
-
+        // User Dashboard - show a simple welcome page or redirect to admin if user is admin
+        Route::get('/dashboard', function () {
+            // If user is admin, redirect to admin dashboard
+            if (auth()->user() && auth()->guard('admin')->check()) {
+                return redirect()->route('admin.dashboard');
+            }
+            // For regular users, show a simple message or redirect to profile
+            return redirect()->route('profile.edit');
+        })->name('dashboard');
 });
 
 // Admin Routes
