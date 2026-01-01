@@ -6,6 +6,7 @@ use App\Models\Booking;
 use App\Models\Chef;
 use App\Models\ChefService;
 use App\Models\ChefWorkingHour;
+use App\Models\ChefVacation;
 use App\Models\User;
 use App\Services\ChefAvailabilityService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -346,6 +347,124 @@ class ChefAvailabilityApiTest extends TestCase
         $response = $this->getJson("/api/chefs/99999/availability-calendar");
 
         $response->assertStatus(404);
+    }
+
+    /** @test */
+    public function it_returns_vacation_days_in_calendar()
+    {
+        $vacationDate = $this->getNextWorkingDay();
+        
+        // Create a vacation for the chef
+        ChefVacation::create([
+            'chef_id' => $this->chef->id,
+            'date' => $vacationDate,
+            'note' => 'إجازة شخصية',
+            'is_active' => true
+        ]);
+
+        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar?date={$vacationDate}");
+
+        $response->assertStatus(200);
+        
+        $data = $response->json('data');
+        
+        // Check vacation_days array exists
+        $this->assertArrayHasKey('vacation_days', $data['calendar']);
+        
+        // Find the vacation day
+        $vacationDays = collect($data['calendar']['vacation_days']);
+        $vacationDay = $vacationDays->firstWhere('date', $vacationDate);
+        
+        $this->assertNotNull($vacationDay);
+        $this->assertEquals('إجازة شخصية', $vacationDay['note']);
+    }
+
+    /** @test */
+    public function it_marks_vacation_day_in_day_details()
+    {
+        $vacationDate = $this->getNextWorkingDay();
+        
+        // Create a vacation for the chef
+        ChefVacation::create([
+            'chef_id' => $this->chef->id,
+            'date' => $vacationDate,
+            'note' => 'عطلة رسمية',
+            'is_active' => true
+        ]);
+
+        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar?date={$vacationDate}");
+
+        $response->assertStatus(200);
+        
+        $dayDetails = $response->json('data.day_details');
+        
+        $this->assertFalse($dayDetails['is_working_day']);
+        $this->assertFalse($dayDetails['is_off_day']);
+        $this->assertTrue($dayDetails['is_vacation_day']);
+        $this->assertEquals('عطلة رسمية', $dayDetails['vacation_note']);
+        $this->assertEmpty($dayDetails['working_hours']);
+        $this->assertEmpty($dayDetails['bookings']);
+        $this->assertEmpty($dayDetails['available_slots']);
+    }
+
+    /** @test */
+    public function it_excludes_vacation_days_from_available_days()
+    {
+        $vacationDate = $this->getNextWorkingDay();
+        
+        // Create a vacation for the chef
+        ChefVacation::create([
+            'chef_id' => $this->chef->id,
+            'date' => $vacationDate,
+            'note' => 'إجازة',
+            'is_active' => true
+        ]);
+
+        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar?date={$vacationDate}");
+
+        $response->assertStatus(200);
+        
+        $data = $response->json('data');
+        
+        // Vacation day should NOT be in available_days
+        $availableDays = collect($data['calendar']['available_days']);
+        $foundInAvailable = $availableDays->firstWhere('date', $vacationDate);
+        $this->assertNull($foundInAvailable);
+        
+        // Vacation day should be in vacation_days
+        $vacationDays = collect($data['calendar']['vacation_days']);
+        $foundInVacation = $vacationDays->firstWhere('date', $vacationDate);
+        $this->assertNotNull($foundInVacation);
+    }
+
+    /** @test */
+    public function it_ignores_inactive_vacations()
+    {
+        $vacationDate = $this->getNextWorkingDay();
+        
+        // Create an inactive vacation
+        ChefVacation::create([
+            'chef_id' => $this->chef->id,
+            'date' => $vacationDate,
+            'note' => 'إجازة ملغاة',
+            'is_active' => false
+        ]);
+
+        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar?date={$vacationDate}");
+
+        $response->assertStatus(200);
+        
+        $data = $response->json('data');
+        
+        // Inactive vacation should NOT appear in vacation_days
+        $vacationDays = collect($data['calendar']['vacation_days']);
+        $foundInVacation = $vacationDays->firstWhere('date', $vacationDate);
+        $this->assertNull($foundInVacation);
+        
+        // Day should be in available_days (since vacation is inactive)
+        $availableDays = collect($data['calendar']['available_days']);
+        $foundInAvailable = $availableDays->firstWhere('date', $vacationDate);
+        $this->assertNotNull($foundInAvailable);
     }
 
     /**

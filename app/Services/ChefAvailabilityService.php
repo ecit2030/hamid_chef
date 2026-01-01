@@ -6,8 +6,10 @@ use App\Models\Chef;
 use App\Models\Booking;
 use App\Models\ChefWorkingHour;
 use App\Models\ChefService;
+use App\Models\ChefVacation;
 use App\Repositories\BookingRepository;
 use App\Repositories\ChefWorkingHourRepository;
+use App\Repositories\ChefVacationRepository;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Collection;
@@ -16,14 +18,17 @@ class ChefAvailabilityService
 {
     protected BookingRepository $bookingRepository;
     protected ChefWorkingHourRepository $workingHourRepository;
+    protected ChefVacationRepository $vacationRepository;
     protected int $defaultRestHours;
 
     public function __construct(
         BookingRepository $bookingRepository,
-        ChefWorkingHourRepository $workingHourRepository
+        ChefWorkingHourRepository $workingHourRepository,
+        ChefVacationRepository $vacationRepository
     ) {
         $this->bookingRepository = $bookingRepository;
         $this->workingHourRepository = $workingHourRepository;
+        $this->vacationRepository = $vacationRepository;
         $this->defaultRestHours = config('booking.minimum_gap_hours', 2);
     }
 
@@ -57,11 +62,14 @@ class ChefAvailabilityService
         // Get all bookings in the date range (with service for rest_hours)
         $bookings = $this->getBookingsInRange($chefId, $startDate, $endDate);
 
+        // Get vacations in the date range
+        $vacations = $this->getVacationsInRange($chefId, $startDate, $endDate);
+
         // Build calendar data
-        $calendar = $this->buildCalendar($startDate, $endDate, $workingHours, $bookings);
+        $calendar = $this->buildCalendar($startDate, $endDate, $workingHours, $bookings, $vacations);
 
         // Get detailed day info for the target date
-        $dayDetails = $this->getDayDetails($chefId, $targetDate, $workingHours, $bookings);
+        $dayDetails = $this->getDayDetails($chefId, $targetDate, $workingHours, $bookings, $vacations);
 
         return [
             'chef_id' => $chefId,
@@ -164,22 +172,63 @@ class ChefAvailabilityService
     }
 
     /**
+     * Get vacations in a date range
+     */
+    protected function getVacationsInRange(int $chefId, Carbon $startDate, Carbon $endDate): Collection
+    {
+        return $this->vacationRepository
+            ->forChef($chefId)
+            ->where('is_active', true)
+            ->whereBetween('date', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
+            ->get();
+    }
+
+    /**
+     * Get vacation dates as array for quick lookup
+     */
+    protected function getVacationDatesArray(Collection $vacations): array
+    {
+        return $vacations->pluck('date')->map(function($date) {
+            return Carbon::parse($date)->format('Y-m-d');
+        })->toArray();
+    }
+
+    /**
      * Build calendar with availability status for each day
      */
-    protected function buildCalendar(Carbon $startDate, Carbon $endDate, array $workingHours, Collection $bookings): array
+    protected function buildCalendar(Carbon $startDate, Carbon $endDate, array $workingHours, Collection $bookings, Collection $vacations): array
     {
         $calendar = [
             'available_days' => [],
             'off_days' => [],
+            'vacation_days' => [],
             'partially_booked_days' => [],
             'fully_booked_days' => [],
         ];
+
+        // Get vacation dates for quick lookup
+        $vacationDates = $this->getVacationDatesArray($vacations);
 
         $period = CarbonPeriod::create($startDate, $endDate);
 
         foreach ($period as $day) {
             $dayOfWeek = $day->dayOfWeek; // 0 = Sunday, 6 = Saturday
             $dateStr = $day->format('Y-m-d');
+
+            // Check if this day is a vacation day
+            if (in_array($dateStr, $vacationDates)) {
+                $vacation = $vacations->first(function($v) use ($dateStr) {
+                    return Carbon::parse($v->date)->format('Y-m-d') === $dateStr;
+                });
+                
+                $calendar['vacation_days'][] = [
+                    'date' => $dateStr,
+                    'day_name' => $day->translatedFormat('l'),
+                    'day_name_ar' => $this->getArabicDayName($dayOfWeek),
+                    'note' => $vacation->note ?? null,
+                ];
+                continue;
+            }
 
             // Check if chef works on this day
             if (!isset($workingHours[$dayOfWeek]) || empty($workingHours[$dayOfWeek])) {
@@ -231,10 +280,33 @@ class ChefAvailabilityService
     /**
      * Get detailed information for a specific day
      */
-    protected function getDayDetails(int $chefId, Carbon $date, array $workingHours, Collection $allBookings): array
+    protected function getDayDetails(int $chefId, Carbon $date, array $workingHours, Collection $allBookings, Collection $vacations): array
     {
         $dayOfWeek = $date->dayOfWeek;
         $dateStr = $date->format('Y-m-d');
+
+        // Get vacation dates for quick lookup
+        $vacationDates = $this->getVacationDatesArray($vacations);
+
+        // Check if this day is a vacation day
+        if (in_array($dateStr, $vacationDates)) {
+            $vacation = $vacations->first(function($v) use ($dateStr) {
+                return Carbon::parse($v->date)->format('Y-m-d') === $dateStr;
+            });
+            
+            return [
+                'date' => $dateStr,
+                'day_name' => $date->translatedFormat('l'),
+                'day_name_ar' => $this->getArabicDayName($dayOfWeek),
+                'is_working_day' => false,
+                'is_off_day' => false,
+                'is_vacation_day' => true,
+                'vacation_note' => $vacation->note ?? null,
+                'working_hours' => [],
+                'bookings' => [],
+                'available_slots' => [],
+            ];
+        }
 
         // Check if it's an off day
         if (!isset($workingHours[$dayOfWeek]) || empty($workingHours[$dayOfWeek])) {
@@ -244,6 +316,7 @@ class ChefAvailabilityService
                 'day_name_ar' => $this->getArabicDayName($dayOfWeek),
                 'is_working_day' => false,
                 'is_off_day' => true,
+                'is_vacation_day' => false,
                 'working_hours' => [],
                 'bookings' => [],
                 'available_slots' => [],
@@ -297,6 +370,7 @@ class ChefAvailabilityService
             'day_name_ar' => $this->getArabicDayName($dayOfWeek),
             'is_working_day' => true,
             'is_off_day' => false,
+            'is_vacation_day' => false,
             'working_hours' => array_map(function($wh) {
                 return [
                     'start_time' => $wh['start_time'],

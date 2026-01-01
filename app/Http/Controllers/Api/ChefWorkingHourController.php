@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpsertChefWorkingHoursRequest;
 use App\Http\Requests\StoreChefWorkingHourRequest;
 use App\Http\Requests\UpdateChefWorkingHourRequest;
+use App\Http\Requests\GetChefOffHoursRequest;
 use App\Http\Traits\ExceptionHandler;
 use App\Http\Traits\SuccessResponse;
 use App\Services\ChefWorkingHourService;
@@ -27,6 +28,15 @@ class ChefWorkingHourController extends Controller
     {
         $items = $service->getForCurrentChef();
         $data = $items->map(fn($m) => ChefWorkingHourDTO::fromModel($m)->toArray());
+        return $this->successResponse($data, __('messages.list_success'), 200);
+    }
+
+    /**
+     * Get off-hours (non-working hours) for the current chef
+     */
+    public function offHours(GetChefOffHoursRequest $request, ChefWorkingHourService $service)
+    {
+        $data = $service->getOffHoursForCurrentChef($request->validated());
         return $this->successResponse($data, __('messages.list_success'), 200);
     }
 

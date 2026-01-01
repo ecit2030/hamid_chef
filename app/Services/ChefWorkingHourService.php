@@ -128,4 +128,114 @@ class ChefWorkingHourService
         $this->repo->findForChefById($id, $chefId); // ensures ownership
         return $this->repo->delete($id);
     }
+
+    /**
+     * Get off-hours (non-working hours) for the current chef
+     * Returns the time slots when the chef is NOT working
+     */
+    public function getOffHoursForCurrentChef(array $params = []): array
+    {
+        $chefId = $this->currentChefId();
+        $dayOfWeek = $params['day_of_week'] ?? null;
+
+        $result = [];
+        $daysToProcess = $dayOfWeek !== null ? [(int) $dayOfWeek] : range(0, 6);
+
+        foreach ($daysToProcess as $day) {
+            $intervals = $this->repo->getDayIntervals($chefId, $day);
+            $offHours = $this->calculateOffHours($intervals);
+            
+            $result[] = [
+                'day_of_week' => $day,
+                'day_name' => $this->getDayName($day),
+                'off_hours' => $offHours,
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Calculate off-hours from working intervals
+     * Returns time slots when chef is NOT working (24-hour day minus working hours)
+     */
+    protected function calculateOffHours($workingIntervals): array
+    {
+        if ($workingIntervals->isEmpty()) {
+            // No working hours defined = entire day is off
+            return [
+                ['start_time' => '00:00', 'end_time' => '23:59']
+            ];
+        }
+
+        // Sort intervals by start time
+        $sorted = $workingIntervals->sortBy('start_time')->values();
+        
+        $offHours = [];
+        $dayStart = 0; // 00:00 in minutes
+        $dayEnd = 24 * 60 - 1; // 23:59 in minutes
+
+        $currentTime = $dayStart;
+
+        foreach ($sorted as $interval) {
+            $workStart = $this->timeToMinutes($interval->start_time);
+            $workEnd = $this->timeToMinutes($interval->end_time);
+
+            // If there's a gap before this working interval
+            if ($currentTime < $workStart) {
+                $offHours[] = [
+                    'start_time' => $this->minutesToTime($currentTime),
+                    'end_time' => $this->minutesToTime($workStart - 1),
+                ];
+            }
+
+            $currentTime = max($currentTime, $workEnd);
+        }
+
+        // If there's time remaining after the last working interval
+        if ($currentTime < $dayEnd) {
+            $offHours[] = [
+                'start_time' => $this->minutesToTime($currentTime),
+                'end_time' => $this->minutesToTime($dayEnd),
+            ];
+        }
+
+        return $offHours;
+    }
+
+    /**
+     * Convert time string (HH:MM) to minutes from midnight
+     */
+    protected function timeToMinutes(string $time): int
+    {
+        $parts = explode(':', $time);
+        return (int) $parts[0] * 60 + (int) $parts[1];
+    }
+
+    /**
+     * Convert minutes from midnight to time string (HH:MM)
+     */
+    protected function minutesToTime(int $minutes): string
+    {
+        $hours = intdiv($minutes, 60);
+        $mins = $minutes % 60;
+        return sprintf('%02d:%02d', $hours, $mins);
+    }
+
+    /**
+     * Get day name in Arabic
+     */
+    protected function getDayName(int $dayOfWeek): string
+    {
+        $days = [
+            0 => 'الأحد',
+            1 => 'الإثنين',
+            2 => 'الثلاثاء',
+            3 => 'الأربعاء',
+            4 => 'الخميس',
+            5 => 'الجمعة',
+            6 => 'السبت',
+        ];
+        return $days[$dayOfWeek] ?? '';
+    }
 }

@@ -138,12 +138,28 @@ Route::group(['prefix' => 'chef', 'middleware' => ['auth:sanctum', 'user_role:ch
     // Chef Working Hours (manage own schedule)
     Route::get('working-hours', [App\Http\Controllers\Api\ChefWorkingHourController::class, 'index'])
         ->name('api.chef.working-hours.index');
+    Route::get('working-hours/off-hours', [App\Http\Controllers\Api\ChefWorkingHourController::class, 'offHours'])
+        ->name('api.chef.working-hours.off-hours');
     Route::post('working-hours', [App\Http\Controllers\Api\ChefWorkingHourController::class, 'store'])
         ->name('api.chef.working-hours.store');
     Route::put('working-hours/{id}', [App\Http\Controllers\Api\ChefWorkingHourController::class, 'update'])
         ->name('api.chef.working-hours.update');
     Route::delete('working-hours/{id}', [App\Http\Controllers\Api\ChefWorkingHourController::class, 'destroy'])
         ->name('api.chef.working-hours.destroy');
+
+    // Chef Vacations (manage own vacations)
+    Route::get('vacations', [App\Http\Controllers\Api\ChefVacationController::class, 'index'])
+        ->name('api.chef.vacations.index');
+    Route::get('vacations/monthly', [App\Http\Controllers\Api\ChefVacationController::class, 'monthly'])
+        ->name('api.chef.vacations.monthly');
+    Route::get('vacations/{id}', [App\Http\Controllers\Api\ChefVacationController::class, 'show'])
+        ->name('api.chef.vacations.show');
+    Route::post('vacations', [App\Http\Controllers\Api\ChefVacationController::class, 'store'])
+        ->name('api.chef.vacations.store');
+    Route::put('vacations/{id}', [App\Http\Controllers\Api\ChefVacationController::class, 'update'])
+        ->name('api.chef.vacations.update');
+    Route::delete('vacations/{id}', [App\Http\Controllers\Api\ChefVacationController::class, 'destroy'])
+        ->name('api.chef.vacations.destroy');
 });
 
 Route::post('/login', [App\Http\Controllers\Api\AuthController::class, 'login']);
