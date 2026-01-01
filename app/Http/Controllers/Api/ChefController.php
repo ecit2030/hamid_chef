@@ -286,26 +286,35 @@ class ChefController extends Controller
     /**
      * Get chef availability calendar and day details
      * 
+     * POST /api/chefs/{chefId}/availability-calendar
+     * 
+     * Body:
+     * - date: Target date (optional, defaults to today)
+     * - chef_service_id: Filter by specific service (optional)
+     * 
      * Returns:
+     * - Service details (if chef_service_id provided)
      * - Available days (working days with no bookings)
      * - Off days (days the chef doesn't work)
      * - Partially booked days
      * - Fully booked days
      * - Day details for a specific date (working hours, bookings, available slots)
-     * - Service information including rest hours required
      */
     public function availability(Request $request, ChefAvailabilityService $availabilityService, $chefId)
     {
         $request->validate([
             'date' => 'nullable|date',
+            'chef_service_id' => 'nullable|integer|exists:chef_services,id',
         ]);
 
         try {
-            $date = $request->get('date');
+            $date = $request->input('date');
+            $chefServiceId = $request->input('chef_service_id');
 
             $availability = $availabilityService->getChefAvailability(
                 (int) $chefId,
-                $date
+                $date,
+                $chefServiceId
             );
 
             return $this->successResponse(

@@ -41,13 +41,27 @@ class ChefAvailabilityService
      * 
      * @param int $chefId
      * @param string|null $date Target date for calendar (defaults to today)
+     * @param int|null $chefServiceId Filter by specific service
      * @return array
      */
-    public function getChefAvailability(int $chefId, ?string $date = null): array
+    public function getChefAvailability(int $chefId, ?string $date = null, ?int $chefServiceId = null): array
     {
         $chef = Chef::with(['services' => function($q) {
             $q->where('is_active', true);
         }])->findOrFail($chefId);
+
+        // If chef_service_id is provided, get that specific service
+        $selectedService = null;
+        if ($chefServiceId) {
+            $selectedService = ChefService::where('chef_id', $chefId)
+                ->where('id', $chefServiceId)
+                ->where('is_active', true)
+                ->first();
+                
+            if (!$selectedService) {
+                throw new \Exception('الخدمة المطلوبة غير موجودة أو غير نشطة');
+            }
+        }
 
         // التاريخ المرسل أو اليوم كـ default
         $targetDate = $date ? Carbon::parse($date) : Carbon::today();
@@ -60,7 +74,7 @@ class ChefAvailabilityService
         $workingHours = $this->getWorkingHoursMap($chefId);
 
         // Get all bookings in the date range (with service for rest_hours)
-        $bookings = $this->getBookingsInRange($chefId, $startDate, $endDate);
+        $bookings = $this->getBookingsInRange($chefId, $startDate, $endDate, $chefServiceId);
 
         // Get vacations in the date range
         $vacations = $this->getVacationsInRange($chefId, $startDate, $endDate);
@@ -71,16 +85,30 @@ class ChefAvailabilityService
         // Get detailed day info for the target date
         $dayDetails = $this->getDayDetails($chefId, $targetDate, $workingHours, $bookings, $vacations);
 
-        return [
+        $response = [
             'chef_id' => $chefId,
             'chef_name' => $chef->name,
-            'default_rest_hours' => $this->defaultRestHours,
-            'calendar_start_date' => $startDate->format('Y-m-d'),
-            'calendar_end_date' => $endDate->format('Y-m-d'),
-            'calendar' => $calendar,
-            'selected_date' => $targetDate->format('Y-m-d'),
-            'day_details' => $dayDetails,
-            'services' => $chef->services->map(function($service) {
+        ];
+
+        // If specific service is requested, add its details right after chef info
+        if ($selectedService) {
+            $response['service_id'] = $selectedService->id;
+            $response['service_name'] = $selectedService->name;
+            $response['min_hours'] = $selectedService->min_hours;
+            $response['rest_hours_required'] = $selectedService->rest_hours_required ?? $this->defaultRestHours;
+        }
+
+        // Add the rest of the response
+        $response['default_rest_hours'] = $this->defaultRestHours;
+        $response['calendar_start_date'] = $startDate->format('Y-m-d');
+        $response['calendar_end_date'] = $endDate->format('Y-m-d');
+        $response['calendar'] = $calendar;
+        $response['selected_date'] = $targetDate->format('Y-m-d');
+        $response['day_details'] = $dayDetails;
+
+        // If no specific service, include all services at the end
+        if (!$selectedService) {
+            $response['services'] = $chef->services->map(function($service) {
                 return [
                     'id' => $service->id,
                     'name' => $service->name,
@@ -90,8 +118,10 @@ class ChefAvailabilityService
                     'package_price' => $service->package_price,
                     'rest_hours_required' => $service->rest_hours_required ?? $this->defaultRestHours,
                 ];
-            }),
-        ];
+            });
+        }
+
+        return $response;
     }
 
     /**
@@ -158,14 +188,26 @@ class ChefAvailabilityService
 
     /**
      * Get bookings in a date range
+     * 
+     * @param int $chefId
+     * @param Carbon $startDate
+     * @param Carbon $endDate
+     * @param int|null $chefServiceId Filter by specific service
+     * @return Collection
      */
-    protected function getBookingsInRange(int $chefId, Carbon $startDate, Carbon $endDate): Collection
+    protected function getBookingsInRange(int $chefId, Carbon $startDate, Carbon $endDate, ?int $chefServiceId = null): Collection
     {
-        return Booking::where('chef_id', $chefId)
+        $query = Booking::where('chef_id', $chefId)
             ->where('is_active', true)
             ->whereNotIn('booking_status', ['cancelled_by_customer', 'cancelled_by_chef', 'rejected'])
-            ->whereBetween('date', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
-            ->with(['service:id,name,service_type,min_hours,rest_hours_required'])
+            ->whereBetween('date', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')]);
+        
+        // Filter by service if provided
+        if ($chefServiceId) {
+            $query->where('chef_service_id', $chefServiceId);
+        }
+        
+        return $query->with(['service:id,name,service_type,min_hours,rest_hours_required'])
             ->orderBy('date')
             ->orderBy('start_time')
             ->get();

@@ -3,18 +3,22 @@
 ## Endpoint
 
 ```
-GET /api/chefs/{chefId}/availability-calendar
+POST /api/chefs/{chefId}/availability-calendar
 ```
+
+**Authentication Required**: Yes (`auth:sanctum`)
 
 ## Description
 
 هذا الـ API يرجع بيانات شاملة عن توفر الطاهي تشمل:
 - **الأيام المتاحة**: أيام العمل بدون حجوزات
 - **أيام الإجازة**: الأيام التي لا يعمل فيها الطاهي
+- **أيام الإجازات**: أيام الإجازات المحددة من قبل الطاهي
 - **الأيام المحجوزة جزئياً**: أيام بها حجوزات ولكن يوجد وقت متاح
 - **الأيام المحجوزة بالكامل**: أيام ممتلئة بالحجوزات
 - **تفاصيل يوم محدد**: ساعات الدوام، الحجوزات، الفترات المتاحة
 - **ساعات الراحة لكل خدمة**: كل خدمة لها ساعات راحة مطلوبة خاصة بها
+- **تصفية حسب الخدمة**: يمكن تصفية التقويم لعرض حجوزات خدمة محددة فقط
 
 ## Calendar Date Range Logic
 
@@ -32,12 +36,44 @@ GET /api/chefs/{chefId}/availability-calendar
 
 ## Parameters
 
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `chefId` | integer | Yes | معرف الطاهي |
+
+### Request Body (JSON)
+
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `chefId` | integer | Yes | - | معرف الطاهي |
 | `date` | string (Y-m-d) | No | today | التاريخ المطلوب (التقويم يبدأ من هذا التاريخ أو قبله لضمان 10 أيام) |
+| `chef_service_id` | integer | No | null | معرف الخدمة لتصفية الحجوزات والتقويم حسب خدمة محددة |
+
+### Request Body Examples
+
+**Basic Request (All Services)**
+```json
+{
+  "date": "2026-01-15"
+}
+```
+
+**Filter by Specific Service**
+```json
+{
+  "date": "2026-01-15",
+  "chef_service_id": 5
+}
+```
+
+**Default (Today, All Services)**
+```json
+{}
+```
 
 ## Response Structure
+
+### When No Service Filter (chef_service_id not provided)
 
 ```json
 {
@@ -52,6 +88,7 @@ GET /api/chefs/{chefId}/availability-calendar
     "calendar": {
       "available_days": [...],
       "off_days": [...],
+      "vacation_days": [...],
       "partially_booked_days": [...],
       "fully_booked_days": [...]
     },
@@ -61,6 +98,41 @@ GET /api/chefs/{chefId}/availability-calendar
   }
 }
 ```
+
+### When Service Filter Applied (chef_service_id provided)
+
+```json
+{
+  "success": true,
+  "message": "تم جلب بيانات التوفر بنجاح",
+  "data": {
+    "chef_id": 1,
+    "chef_name": "اسم الطاهي",
+    "service_id": 5,
+    "service_name": "طبخ منزلي",
+    "min_hours": 2,
+    "rest_hours_required": 2,
+    "default_rest_hours": 2,
+    "calendar_start_date": "2026-01-22",
+    "calendar_end_date": "2026-01-31",
+    "calendar": {
+      "available_days": [...],
+      "off_days": [...],
+      "vacation_days": [...],
+      "partially_booked_days": [...],
+      "fully_booked_days": [...]
+    },
+    "selected_date": "2026-01-25",
+    "day_details": {...}
+  }
+}
+```
+
+**Note**: When `chef_service_id` is provided:
+- Service details (`service_id`, `service_name`, `min_hours`, `rest_hours_required`) appear directly after chef info
+- Only bookings for the specified service are included in the calendar and day details
+- The `services` array is not included (since you're filtering by one service)
+- The calendar shows availability specific to that service
 
 ## Services Object
 
@@ -229,13 +301,32 @@ total_blocked_hours = 5 (2 + 3)
 
 ```bash
 # Get availability for chef 1, starting from January 25, 2026 (will show Jan 22-31)
-curl -X GET "https://monchef.codebrains.net/api/chefs/1/availability-calendar?date=2026-01-25"
+curl -X POST "https://monchef.codebrains.net/api/chefs/1/availability-calendar" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{"date": "2026-01-25"}'
 
 # Get availability starting from today (default)
-curl -X GET "https://monchef.codebrains.net/api/chefs/1/availability-calendar"
+curl -X POST "https://monchef.codebrains.net/api/chefs/1/availability-calendar" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{}'
 
 # Get availability for specific date in middle of month
-curl -X GET "https://monchef.codebrains.net/api/chefs/1/availability-calendar?date=2026-01-15"
+curl -X POST "https://monchef.codebrains.net/api/chefs/1/availability-calendar" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{"date": "2026-01-15"}'
+
+# Get availability filtered by specific service
+curl -X POST "https://monchef.codebrains.net/api/chefs/1/availability-calendar" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{"date": "2026-01-15", "chef_service_id": 5}'
 ```
 
 ## Error Responses
@@ -248,13 +339,29 @@ curl -X GET "https://monchef.codebrains.net/api/chefs/1/availability-calendar?da
 }
 ```
 
+### Service Not Found or Inactive (400)
+```json
+{
+  "success": false,
+  "message": "الخدمة المطلوبة غير موجودة أو غير نشطة"
+}
+```
+
+### Unauthorized (401)
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
 ### Validation Error (422)
 ```json
 {
   "success": false,
   "message": "The given data was invalid.",
   "errors": {
-    "date": ["The date must be a valid date."]
+    "date": ["The date must be a valid date."],
+    "chef_service_id": ["The chef service id must be an integer."]
   }
 }
 ```

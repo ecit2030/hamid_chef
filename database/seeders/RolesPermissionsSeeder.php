@@ -12,7 +12,6 @@ class RolesPermissionsSeeder extends Seeder
 {
     protected function json(array $value): string
     {
-        // JSON بدون ترميز Unicode أو الشرطات المائلة
         return json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 
@@ -21,19 +20,17 @@ class RolesPermissionsSeeder extends Seeder
         app(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
 
         DB::transaction(function () {
-            $guard          = config('acl.guard', 'web');
-
-            // الموارد الموافِقة للتعديلات الأخيرة فقط
-            $resources      = config('acl.resources', []);
+            $guard = config('acl.guard', 'admin');
+            $resources = config('acl.resources', []);
             $resourceLabels = config('acl.resource_labels', []);
-            $actionLabels   = config('acl.action_labels', [
+            $actionLabels = config('acl.action_labels', [
                 'view'   => ['en' => 'View',   'ar' => 'عرض'],
                 'create' => ['en' => 'Create', 'ar' => 'إنشاء'],
                 'update' => ['en' => 'Update', 'ar' => 'تعديل'],
                 'delete' => ['en' => 'Delete', 'ar' => 'حذف'],
             ]);
 
-            // 1) توليد الأذونات المفردة resource.action فقط
+            // Create permissions
             foreach ($resources as $resource => $actions) {
                 $resourceEn = $resourceLabels[$resource]['en']
                     ?? (string) Str::of($resource)->replace('-', ' ')->headline();
@@ -53,16 +50,7 @@ class RolesPermissionsSeeder extends Seeder
                 }
             }
 
-            // مُساعد لتجميع أسماء الأذونات
-            $permNames = function (array $resList, array $actionsWanted) use ($resources) {
-                return collect($resList)->flatMap(function ($res) use ($resources, $actionsWanted) {
-                    $allowed = $resources[$res] ?? [];
-                    return collect($actionsWanted)
-                        ->filter(fn ($a) => in_array($a, $allowed, true))
-                        ->map(fn ($a) => "{$res}.{$a}");
-                })->values();
-            };
-
+            // Helper to collect permission names
             $allActionPerms = collect($resources)
                 ->flatMap(fn ($acts, $res) => collect($acts)->map(fn ($a) => "{$res}.{$a}"))
                 ->values();
@@ -73,66 +61,85 @@ class RolesPermissionsSeeder extends Seeder
                 ->map(fn ($res) => "{$res}.view")
                 ->values();
 
-            $allNonDeletePerms = $allActionPerms
-                ->reject(fn ($name) => Str::endsWith($name, '.delete'))
-                ->values();
-
-            // مجموعات منطقية للموارد الحالية
-            $geoResources   = ['areas', 'districts', 'governorates'];
-            $adminEntities  = ['users', 'roles', 'permissions'];
-
-            // 2) الأدوار الافتراضية (6 أدوار) — منح أذونات صريحة فقط
-
-            // (أ) Super Admin: كل شيء
-            $super = Role::updateOrCreate(
-                ['name' => 'super-admin', 'guard_name' => $guard],
-                ['display_name' => ['en' => 'Super Admin', 'ar' => 'مدير النظام']]
+            // Create roles
+            
+            // Super Admin: All permissions
+            $superAdmin = Role::updateOrCreate(
+                ['name' => 'super_admin', 'guard_name' => $guard],
+                ['display_name' => $this->json(['en' => 'Super Admin', 'ar' => 'مدير النظام'])]
             );
-            $super->syncPermissions($allActionPerms->all());
+            $superAdmin->syncPermissions($allActionPerms->all());
 
-            // (ب) Admin: كل شيء ما عدا الحذف
+            // Admin: All except system settings and role management
             $admin = Role::updateOrCreate(
                 ['name' => 'admin', 'guard_name' => $guard],
-                ['display_name' => ['en' => 'Admin', 'ar' => 'مشرف']]
+                ['display_name' => $this->json(['en' => 'Admin', 'ar' => 'مشرف'])]
             );
-            $admin->syncPermissions($allNonDeletePerms->all());
-
-            // (ج) Manager: (view+create+update) للموارد الجغرافية، و(users/roles/permissions) مشاهدة فقط
-            $manager = Role::updateOrCreate(
-                ['name' => 'manager', 'guard_name' => $guard],
-                ['display_name' => ['en' => 'Manager', 'ar' => 'مدير']]
-            );
-            $managerPerms = collect()
-                ->merge($permNames($geoResources, ['view', 'create', 'update']))
-                ->merge($permNames($adminEntities, ['view']))
-                ->unique()
+            $adminPerms = $allActionPerms
+                ->reject(fn ($name) => Str::startsWith($name, ['system-settings.', 'roles.create', 'roles.delete']))
                 ->values();
-            $manager->syncPermissions($managerPerms->all());
+            $admin->syncPermissions($adminPerms->all());
 
-            // (د) Editor: (view+update) للموارد الجغرافية
-            $editor = Role::updateOrCreate(
-                ['name' => 'editor', 'guard_name' => $guard],
-                ['display_name' => ['en' => 'Editor', 'ar' => 'محرر']]
+            // Support: Bookings, users view, dashboard
+            $support = Role::updateOrCreate(
+                ['name' => 'support', 'guard_name' => $guard],
+                ['display_name' => $this->json(['en' => 'Support', 'ar' => 'دعم فني'])]
             );
-            $editorPerms = $permNames($geoResources, ['view', 'update']);
-            $editor->syncPermissions($editorPerms->all());
+            $supportPerms = $allActionPerms
+                ->filter(fn ($name) => Str::startsWith($name, [
+                    'bookings.', 'booking-transactions.', 'users.view', 
+                    'chefs.view', 'chef-services.view', 'dashboard.'
+                ]))
+                ->values();
+            $support->syncPermissions($supportPerms->all());
 
-            // (هـ) Data Entry: (view+create) للموارد الجغرافية
-            $dataEntry = Role::updateOrCreate(
-                ['name' => 'data-entry', 'guard_name' => $guard],
-                ['display_name' => ['en' => 'Data Entry', 'ar' => 'مدخل بيانات']]
+            // Chef Manager: All chef-related permissions
+            $chefManager = Role::updateOrCreate(
+                ['name' => 'chef_manager', 'guard_name' => $guard],
+                ['display_name' => $this->json(['en' => 'Chef Manager', 'ar' => 'مدير الطهاة'])]
             );
-            $dataEntryPerms = $permNames($geoResources, ['view', 'create']);
-            $dataEntry->syncPermissions($dataEntryPerms->all());
+            $chefManagerPerms = $allActionPerms
+                ->filter(fn ($name) => Str::startsWith($name, [
+                    'chefs.', 'chef-', 'categories.', 'tags.', 'dashboard.'
+                ]))
+                ->values();
+            $chefManager->syncPermissions($chefManagerPerms->all());
 
-            // (و) Viewer: مشاهدة فقط لكل الموارد التي تدعم "view"
+            // Content Manager: Landing pages, categories, tags
+            $contentManager = Role::updateOrCreate(
+                ['name' => 'content_manager', 'guard_name' => $guard],
+                ['display_name' => $this->json(['en' => 'Content Manager', 'ar' => 'مدير المحتوى'])]
+            );
+            $contentManagerPerms = $allActionPerms
+                ->filter(fn ($name) => Str::startsWith($name, [
+                    'landing-page-sections.', 'categories.', 'tags.', 'dashboard.'
+                ]))
+                ->values();
+            $contentManager->syncPermissions($contentManagerPerms->all());
+
+            // Financial Manager: Wallets, transactions, withdrawals
+            $financialManager = Role::updateOrCreate(
+                ['name' => 'financial_manager', 'guard_name' => $guard],
+                ['display_name' => $this->json(['en' => 'Financial Manager', 'ar' => 'مدير مالي'])]
+            );
+            $financialManagerPerms = $allActionPerms
+                ->filter(fn ($name) => Str::startsWith($name, [
+                    'chef-wallets.', 'chef-wallet-transactions.', 'chef-withdrawal-requests.',
+                    'withdrawal-methods.', 'booking-transactions.', 'financial-reports.', 'dashboard.'
+                ]))
+                ->values();
+            $financialManager->syncPermissions($financialManagerPerms->all());
+
+            // Viewer: View only
             $viewer = Role::updateOrCreate(
                 ['name' => 'viewer', 'guard_name' => $guard],
-                ['display_name' => ['en' => 'Viewer', 'ar' => 'مشاهد']]
+                ['display_name' => $this->json(['en' => 'Viewer', 'ar' => 'مشاهد'])]
             );
             $viewer->syncPermissions($allViewPerms->all());
         });
 
         app(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+        
+        $this->command->info('✅ تم إضافة الأدوار والصلاحيات بنجاح');
     }
 }

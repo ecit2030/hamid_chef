@@ -21,10 +21,17 @@ class ChefAvailabilityApiTest extends TestCase
     protected Chef $chef;
     protected ChefService $service;
     protected ChefService $serviceWithHighRestHours;
+    protected User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
+        
+        // Create user for authentication
+        $this->user = User::factory()->create([
+            'user_type' => 'customer',
+            'is_active' => true
+        ]);
         
         // Create chef
         $this->chef = Chef::factory()->create([
@@ -79,7 +86,8 @@ class ChefAvailabilityApiTest extends TestCase
     /** @test */
     public function it_returns_chef_availability_calendar()
     {
-        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar");
+        $response = $this->actingAs($this->user, 'sanctum')
+            ->postJson("/api/chefs/{$this->chef->id}/availability-calendar", []);
 
         $response->assertStatus(200)
             ->assertJson([
@@ -98,6 +106,7 @@ class ChefAvailabilityApiTest extends TestCase
                     'calendar' => [
                         'available_days',
                         'off_days',
+                        'vacation_days',
                         'partially_booked_days',
                         'fully_booked_days'
                     ],
@@ -109,13 +118,24 @@ class ChefAvailabilityApiTest extends TestCase
     }
 
     /** @test */
+    public function it_requires_authentication()
+    {
+        $response = $this->postJson("/api/chefs/{$this->chef->id}/availability-calendar", []);
+
+        $response->assertStatus(401);
+    }
+
+    /** @test */
     public function it_returns_calendar_until_end_of_month()
     {
         // Test with a date in the middle of the month
         $testDate = Carbon::create(2026, 1, 15);
         Carbon::setTestNow($testDate);
         
-        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar?date=2026-01-15");
+        $response = $this->actingAs($this->user, 'sanctum')
+            ->postJson("/api/chefs/{$this->chef->id}/availability-calendar", [
+                'date' => '2026-01-15'
+            ]);
 
         $response->assertStatus(200);
         
@@ -131,7 +151,10 @@ class ChefAvailabilityApiTest extends TestCase
     public function it_ensures_minimum_10_days_when_near_end_of_month()
     {
         // Test with date near end of month (Jan 25 - only 7 days left)
-        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar?date=2026-01-25");
+        $response = $this->actingAs($this->user, 'sanctum')
+            ->postJson("/api/chefs/{$this->chef->id}/availability-calendar", [
+                'date' => '2026-01-25'
+            ]);
 
         $response->assertStatus(200);
         
@@ -154,7 +177,10 @@ class ChefAvailabilityApiTest extends TestCase
     public function it_handles_last_day_of_month()
     {
         // Test with Jan 30 (only 2 days left: 30 and 31)
-        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar?date=2026-01-30");
+        $response = $this->actingAs($this->user, 'sanctum')
+            ->postJson("/api/chefs/{$this->chef->id}/availability-calendar", [
+                'date' => '2026-01-30'
+            ]);
 
         $response->assertStatus(200);
         
@@ -170,7 +196,8 @@ class ChefAvailabilityApiTest extends TestCase
     /** @test */
     public function it_defaults_to_today_when_no_date_provided()
     {
-        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar");
+        $response = $this->actingAs($this->user, 'sanctum')
+            ->postJson("/api/chefs/{$this->chef->id}/availability-calendar", []);
 
         $response->assertStatus(200);
         
@@ -189,7 +216,8 @@ class ChefAvailabilityApiTest extends TestCase
     public function it_returns_off_days_correctly()
     {
         // Friday (5) and Saturday (6) are off days
-        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar");
+        $response = $this->actingAs($this->user, 'sanctum')
+            ->postJson("/api/chefs/{$this->chef->id}/availability-calendar", []);
 
         $response->assertStatus(200);
         
@@ -210,7 +238,8 @@ class ChefAvailabilityApiTest extends TestCase
     /** @test */
     public function it_returns_services_with_rest_hours()
     {
-        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar");
+        $response = $this->actingAs($this->user, 'sanctum')
+            ->postJson("/api/chefs/{$this->chef->id}/availability-calendar", []);
 
         $response->assertStatus(200);
         
@@ -230,7 +259,8 @@ class ChefAvailabilityApiTest extends TestCase
     /** @test */
     public function it_returns_day_details_with_working_hours()
     {
-        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar");
+        $response = $this->actingAs($this->user, 'sanctum')
+            ->postJson("/api/chefs/{$this->chef->id}/availability-calendar", []);
 
         $response->assertStatus(200);
         
@@ -260,7 +290,10 @@ class ChefAvailabilityApiTest extends TestCase
             'is_active' => true
         ]);
 
-        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar?date={$bookingDate}");
+        $response = $this->actingAs($this->user, 'sanctum')
+            ->postJson("/api/chefs/{$this->chef->id}/availability-calendar", [
+                'date' => $bookingDate
+            ]);
 
         $response->assertStatus(200);
         
@@ -294,7 +327,10 @@ class ChefAvailabilityApiTest extends TestCase
             'is_active' => true
         ]);
 
-        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar?date={$bookingDate}");
+        $response = $this->actingAs($this->user, 'sanctum')
+            ->postJson("/api/chefs/{$this->chef->id}/availability-calendar", [
+                'date' => $bookingDate
+            ]);
 
         $response->assertStatus(200);
         
@@ -329,7 +365,10 @@ class ChefAvailabilityApiTest extends TestCase
             'is_active' => true
         ]);
 
-        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar?date={$bookingDate}");
+        $response = $this->actingAs($this->user, 'sanctum')
+            ->postJson("/api/chefs/{$this->chef->id}/availability-calendar", [
+                'date' => $bookingDate
+            ]);
 
         $response->assertStatus(200);
         
@@ -344,7 +383,8 @@ class ChefAvailabilityApiTest extends TestCase
     /** @test */
     public function it_returns_404_for_non_existent_chef()
     {
-        $response = $this->getJson("/api/chefs/99999/availability-calendar");
+        $response = $this->actingAs($this->user, 'sanctum')
+            ->postJson("/api/chefs/99999/availability-calendar", []);
 
         $response->assertStatus(404);
     }
@@ -465,6 +505,31 @@ class ChefAvailabilityApiTest extends TestCase
         $availableDays = collect($data['calendar']['available_days']);
         $foundInAvailable = $availableDays->firstWhere('date', $vacationDate);
         $this->assertNotNull($foundInAvailable);
+    }
+
+    /** @test */
+    public function it_returns_service_details_at_top_level_when_filtering_by_service()
+    {
+        $bookingDate = $this->getNextWorkingDay();
+        
+        $response = $this->actingAs($this->user, 'sanctum')
+            ->postJson("/api/chefs/{$this->chef->id}/availability-calendar", [
+                'date' => $bookingDate,
+                'chef_service_id' => $this->serviceWithHighRestHours->id
+            ]);
+
+        $response->assertStatus(200);
+        
+        $data = $response->json('data');
+        
+        // Service details should be at top level
+        $this->assertEquals($this->serviceWithHighRestHours->id, $data['service_id']);
+        $this->assertEquals($this->serviceWithHighRestHours->name, $data['service_name']);
+        $this->assertEquals($this->serviceWithHighRestHours->min_hours, $data['min_hours']);
+        $this->assertEquals(4, $data['rest_hours_required']);
+        
+        // Services array should NOT exist when filtering by service
+        $this->assertArrayNotHasKey('services', $data);
     }
 
     /**
