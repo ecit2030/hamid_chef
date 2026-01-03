@@ -1,68 +1,76 @@
 <template>
-  <section class="relative py-20 lg:py-28 bg-gray-50 dark:bg-gray-800">
+  <section class="py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Section Header -->
-      <div class="text-center mb-16">
-        <!-- Small Label -->
-        <div class="inline-flex items-center gap-2 mb-4">
-          <span class="text-sm font-semibold text-primary/80 uppercase tracking-wider">
-            {{ currentLang === 'ar' ? 'كيف يعمل' : 'How It Works' }}
-          </span>
-          <svg class="w-5 h-5 text-secondary" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-          </svg>
+      <div class="text-center mb-12">
+        <div class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full mb-6 shadow-xl">
+          <span class="text-xl">📋</span>
+          <span class="font-bold">{{ currentLang === 'ar' ? 'كيف نعمل' : 'How It Works' }}</span>
         </div>
-        <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-primary dark:text-white mb-4">
+        
+        <h2 class="text-4xl lg:text-5xl font-black text-primary mb-4">
           {{ currentLang === 'ar' ? section?.title_ar : section?.title_en }}
         </h2>
-        <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+        <p class="text-lg text-gray-700 max-w-2xl mx-auto">
           {{ currentLang === 'ar' ? section?.description_ar : section?.description_en }}
         </p>
       </div>
 
       <!-- Steps -->
-      <div class="grid md:grid-cols-3 gap-8">
-        <div 
-          v-for="(step, index) in steps" 
-          :key="index"
-          class="relative text-center"
-        >
-          <!-- Step Number -->
-          <div class="relative mb-6 flex justify-center">
-            <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-lg">
-              {{ step.step || index + 1 }}
+      <div class="relative max-w-5xl mx-auto">
+        <!-- Connection Line -->
+        <div class="hidden lg:block absolute top-12 left-0 right-0 h-1 bg-secondary"></div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div 
+            v-for="(step, index) in steps" 
+            :key="index"
+            class="relative text-center group"
+          >
+            <!-- Step Number Circle -->
+            <div class="relative mx-auto mb-5">
+              <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform relative z-10">
+                <span class="text-2xl font-black text-white">{{ index + 1 }}</span>
+              </div>
             </div>
-            <!-- Connector Line (except last) -->
-            <div 
-              v-if="index < steps.length - 1"
-              class="hidden md:block absolute top-1/2 left-full w-full h-0.5 bg-secondary -translate-y-1/2 z-0"
-            ></div>
+
+            <!-- Card -->
+            <div class="bg-white rounded-2xl p-5 shadow-lg border-2 border-secondary hover:border-primary transition-colors">
+              <!-- Icon -->
+              <div class="w-12 h-12 mx-auto mb-3 bg-secondary rounded-xl flex items-center justify-center">
+                <img 
+                  v-if="step.icon" 
+                  :src="`/storage/${step.icon}`" 
+                  :alt="currentLang === 'ar' ? step.title_ar : step.title_en"
+                  class="w-6 h-6 object-contain"
+                />
+                <svg v-else class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              
+              <!-- Title -->
+              <h3 class="text-lg font-black text-primary mb-2">
+                {{ currentLang === 'ar' ? step.title_ar : step.title_en }}
+              </h3>
+              
+              <!-- Description -->
+              <p class="text-gray-600 text-sm">
+                {{ currentLang === 'ar' ? step.description_ar : step.description_en }}
+              </p>
+            </div>
           </div>
-
-          <!-- Image if available -->
-          <div v-if="step.image" class="mb-6">
-            <img 
-              :src="`/storage/${step.image}`" 
-              :alt="currentLang === 'ar' ? step.title_ar : step.title_en"
-              class="w-full h-48 object-cover rounded-lg"
-            />
-          </div>
-
-          <!-- Icon -->
-          <div v-else class="w-20 h-20 mx-auto mb-6 bg-secondary/50 rounded-full flex items-center justify-center">
-            <component :is="getIcon(step.icon)" :size="40" class="text-primary" />
-          </div>
-
-          <!-- Title -->
-          <h3 class="text-xl font-bold text-primary dark:text-white mb-3">
-            {{ currentLang === 'ar' ? step.title_ar : step.title_en }}
-          </h3>
-
-          <!-- Description -->
-          <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
-            {{ currentLang === 'ar' ? step.description_ar : step.description_en }}
-          </p>
         </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="text-center mt-10">
+        <a href="#contact" class="inline-flex items-center gap-3 px-8 py-4 bg-primary text-white font-bold rounded-xl hover:bg-primary-700 transition-all hover:scale-105 shadow-xl">
+          {{ currentLang === 'ar' ? 'ابدأ الآن' : 'Get Started' }}
+          <svg class="w-5 h-5" :class="currentLang === 'ar' ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </a>
       </div>
     </div>
   </section>
@@ -70,24 +78,11 @@
 
 <script setup>
 import { computed } from 'vue'
-import * as LucideIcons from 'lucide-vue-next'
-
-const { Zap } = LucideIcons
 
 const props = defineProps({
-  section: {
-    type: Object,
-    required: true
-  },
-  currentLang: {
-    type: String,
-    default: 'ar'
-  }
+  section: { type: Object, required: true },
+  currentLang: { type: String, default: 'ar' }
 })
 
 const steps = computed(() => props.section?.additional_data?.steps || [])
-
-const getIcon = (iconName) => {
-  return LucideIcons[iconName] || LucideIcons.Circle
-}
 </script>

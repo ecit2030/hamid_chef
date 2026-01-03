@@ -29,7 +29,7 @@ class UpdateUserRequest extends FormRequest
             'email' => 'sometimes|required|email|unique:users,email,' . $userId,
             'avatar' => 'nullable|image|max:2048',
             // phone must be exactly 10 digits and start with 05 (e.g. 05XXXXXXXX)
-            'phone_number' => ['nullable', 'regex:/^05[0-9]{8}$/'],
+            'phone_number' => ['nullable', 'regex:/^05[0-9]{8}$/', 'unique:users,phone_number,' . $userId],
             'whatsapp_number' => ['nullable', 'regex:/^05[0-9]{8}$/'],
             'address' => 'nullable|string|max:255',
             'password' => 'nullable|string|min:8',

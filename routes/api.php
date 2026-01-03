@@ -28,6 +28,10 @@ Route::get('chef-service-equipment/{id}', [App\Http\Controllers\Api\ChefServiceC
 // Public route for categories index
 Route::get('categories', [App\Http\Controllers\Api\CategoryController::class, 'index']);
 Route::get('categories/{id}', [App\Http\Controllers\Api\CategoryController::class, 'show']);
+
+// Public route for landing page sections
+Route::get('landing-page-sections', [App\Http\Controllers\Api\LandingPageSectionController::class, 'index']);
+Route::get('landing-page-sections/{sectionKey}', [App\Http\Controllers\Api\LandingPageSectionController::class, 'show']);
 // Public: tags index
 Route::get('tags', [App\Http\Controllers\Api\TagController::class, 'index']);
 

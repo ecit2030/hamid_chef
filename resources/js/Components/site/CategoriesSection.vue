@@ -1,28 +1,61 @@
 <template>
-  <section class="relative py-20 lg:py-28 bg-white dark:bg-gray-900">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+  <section class="relative py-24 overflow-hidden">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <!-- Section Header -->
-      <div class="text-center mb-16">
-        <!-- Small Label -->
-        <div class="inline-flex items-center gap-2 mb-4">
-          <span class="text-sm font-semibold text-primary/80 uppercase tracking-wider">
-            {{ currentLang === 'ar' ? 'الفئات' : 'Categories' }}
-          </span>
-          <svg class="w-5 h-5 text-secondary" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-          </svg>
+      <div class="text-center mb-12">
+        <div class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full mb-6 shadow-xl">
+          <span class="text-xl">🍽️</span>
+          <span class="font-bold">{{ currentLang === 'ar' ? 'تصنيفات الطعام' : 'Food Categories' }}</span>
         </div>
-        <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-primary dark:text-white mb-4">
+        
+        <h2 class="text-4xl lg:text-5xl font-black text-primary mb-4">
           {{ currentLang === 'ar' ? section?.title_ar : section?.title_en }}
         </h2>
-        <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+        <p class="text-lg text-gray-700 max-w-2xl mx-auto">
           {{ currentLang === 'ar' ? section?.description_ar : section?.description_en }}
         </p>
       </div>
 
-      <!-- Note -->
-      <div class="text-center text-gray-600 dark:text-gray-400">
-        <p>{{ currentLang === 'ar' ? note?.ar : note?.en }}</p>
+      <!-- Categories Grid -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <a 
+          v-for="(category, index) in categories" 
+          :key="index"
+          :href="category.link || '#'"
+          class="group"
+        >
+          <div class="relative bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-secondary hover:border-primary overflow-hidden">
+            <!-- Icon -->
+            <div class="relative w-16 h-16 mx-auto mb-4 bg-primary rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+              <img 
+                v-if="category.icon" 
+                :src="`/storage/${category.icon}`" 
+                :alt="currentLang === 'ar' ? category.name_ar : category.name_en"
+                class="w-8 h-8 object-contain brightness-0 invert"
+              />
+              <svg v-else class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+            </div>
+            
+            <!-- Name -->
+            <h3 class="relative text-lg font-black text-primary mb-2 group-hover:text-primary-700 transition-colors">
+              {{ currentLang === 'ar' ? category.name_ar : category.name_en }}
+            </h3>
+            
+            <!-- Description -->
+            <p v-if="category.description_ar || category.description_en" class="relative text-gray-600 text-sm">
+              {{ currentLang === 'ar' ? category.description_ar : category.description_en }}
+            </p>
+
+            <!-- Arrow -->
+            <div class="relative mt-3 flex items-center justify-center text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+              <svg class="w-5 h-5" :class="currentLang === 'ar' ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </div>
+          </div>
+        </a>
       </div>
     </div>
   </section>
@@ -32,22 +65,9 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-  section: {
-    type: Object,
-    required: true
-  },
-  currentLang: {
-    type: String,
-    default: 'ar'
-  }
+  section: { type: Object, required: true },
+  currentLang: { type: String, default: 'ar' }
 })
 
-const note = computed(() => {
-  const data = props.section?.additional_data
-  if (!data) return null
-  return {
-    ar: data.note_ar,
-    en: data.note_en
-  }
-})
+const categories = computed(() => props.section?.additional_data?.categories || [])
 </script>

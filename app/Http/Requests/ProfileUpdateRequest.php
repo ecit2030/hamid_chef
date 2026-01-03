@@ -26,7 +26,12 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
-            'phone_number' => ['nullable', 'string', 'max:255'],
+            'phone_number' => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique(User::class, 'phone_number')->ignore($this->user()->id),
+            ],
             'whatsapp_number' => ['nullable', 'string', 'max:255'],
             'bio' => ['nullable', 'string', 'max:500'],
             'address' => ['nullable', 'string', 'max:500'],

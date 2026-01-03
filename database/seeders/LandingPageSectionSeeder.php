@@ -483,6 +483,29 @@ class LandingPageSectionSeeder extends Seeder
                     ],
                 ],
             ],
+
+            // CTA Section
+            [
+                'section_key' => 'cta',
+                'title_ar' => 'هل أنت مستعد لتجربة طهي استثنائية؟',
+                'title_en' => 'Ready for an Exceptional Cooking Experience?',
+                'description_ar' => 'انضم إلى آلاف العملاء الراضين واحجز طاهيك المفضل اليوم. سواء كنت تبحث عن طاهي لمناسبة خاصة أو ترغب في الانضمام كطاهي محترف، نحن هنا لمساعدتك.',
+                'description_en' => 'Join thousands of satisfied customers and book your favorite chef today. Whether you\'re looking for a chef for a special occasion or want to join as a professional chef, we\'re here to help.',
+                'display_order' => 16,
+                'is_active' => true,
+                'additional_data' => [
+                    'primary_button' => [
+                        'text_ar' => 'سجل كعميل',
+                        'text_en' => 'Register as Customer',
+                        'url' => '/register'
+                    ],
+                    'secondary_button' => [
+                        'text_ar' => 'انضم كطاهي',
+                        'text_en' => 'Join as Chef',
+                        'url' => '/chef/register'
+                    ],
+                ],
+            ],
         ];
 
         foreach ($sections as $section) {

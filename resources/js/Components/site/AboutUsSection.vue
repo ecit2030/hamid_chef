@@ -1,67 +1,77 @@
 <template>
-  <section class="relative py-20 lg:py-28 bg-white dark:bg-gray-900">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+  <section class="relative py-24 overflow-hidden">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="grid lg:grid-cols-2 gap-12 items-center">
-        <!-- Image -->
-        <div class="relative order-2 lg:order-1">
-          <div v-if="section?.image" class="relative">
+        <!-- Image Side -->
+        <div class="relative" :class="currentLang === 'ar' ? 'order-2' : 'order-1'">
+          <!-- Main Image -->
+          <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-secondary">
             <img 
+              v-if="section?.image" 
               :src="`/storage/${section.image}`" 
-              alt="About Us" 
-              class="w-full h-auto rounded-lg shadow-2xl"
+              :alt="currentLang === 'ar' ? section?.title_ar : section?.title_en"
+              class="w-full h-auto object-cover"
             />
+            <div v-else class="w-full aspect-[4/3] bg-primary flex items-center justify-center">
+              <span class="text-9xl">👨‍🍳</span>
+            </div>
           </div>
-          <div v-else class="w-full h-96 bg-secondary/20 rounded-lg flex items-center justify-center">
-            <svg class="w-64 h-64 text-primary/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
+          
+          <!-- Floating Card -->
+          <div class="absolute -bottom-6 -right-6 bg-primary rounded-2xl p-5 shadow-2xl">
+            <div class="text-4xl font-black text-secondary">15+</div>
+            <div class="text-white font-bold text-sm">{{ currentLang === 'ar' ? 'سنوات خبرة' : 'Years Experience' }}</div>
+          </div>
+
+          <!-- Decorative Circle -->
+          <div class="absolute -top-6 -left-6 w-20 h-20 bg-secondary rounded-full flex items-center justify-center shadow-xl border-4 border-primary">
+            <span class="text-3xl">🍳</span>
           </div>
         </div>
 
-        <!-- Content -->
-        <div class="order-1 lg:order-2">
-          <!-- Small Label -->
-          <div class="inline-flex items-center gap-2 mb-4">
-            <span class="text-sm font-semibold text-primary/80 uppercase tracking-wider">
-              {{ currentLang === 'ar' ? 'تعرف علينا أكثر' : 'Learn More About Us' }}
-            </span>
-            <svg class="w-5 h-5 text-secondary" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-            </svg>
+        <!-- Content Side -->
+        <div class="space-y-6" :class="currentLang === 'ar' ? 'order-1 text-right' : 'order-2 text-left'">
+          <!-- Badge -->
+          <div class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full shadow-xl">
+            <span class="text-xl">👋</span>
+            <span class="font-bold">{{ currentLang === 'ar' ? 'تعرف علينا' : 'About Us' }}</span>
           </div>
 
           <!-- Title -->
-          <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-primary dark:text-white mb-4">
+          <h2 class="text-4xl lg:text-5xl font-black text-primary leading-tight">
             {{ currentLang === 'ar' ? section?.title_ar : section?.title_en }}
           </h2>
-
+          
           <!-- Description -->
-          <p class="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+          <p class="text-lg text-gray-700 leading-relaxed">
             {{ currentLang === 'ar' ? section?.description_ar : section?.description_en }}
           </p>
 
-          <!-- Story -->
-          <div v-if="story" class="mb-8">
-            <p class="text-base text-gray-700 dark:text-gray-400 leading-relaxed">
-              {{ currentLang === 'ar' ? story.ar : story.en }}
-            </p>
-          </div>
-
-          <!-- Values -->
-          <div v-if="values?.length" class="grid grid-cols-2 gap-4">
+          <!-- Features List -->
+          <div v-if="features.length" class="space-y-3 pt-4">
             <div 
-              v-for="(value, index) in values" 
+              v-for="(feature, index) in features" 
               :key="index"
-              class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+              class="flex items-center gap-4 bg-white rounded-xl p-4 shadow-md border-2 border-secondary hover:border-primary transition-colors"
             >
-              <h3 class="text-lg font-bold text-primary dark:text-white mb-2">
-                {{ currentLang === 'ar' ? value.title_ar : value.title_en }}
-              </h3>
-              <p class="text-sm text-gray-600 dark:text-gray-400">
-                {{ currentLang === 'ar' ? value.description_ar : value.description_en }}
-              </p>
+              <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <span class="text-gray-800 font-bold">
+                {{ currentLang === 'ar' ? feature.text_ar : feature.text_en }}
+              </span>
             </div>
           </div>
+
+          <!-- CTA Button -->
+          <a href="#contact" class="inline-flex items-center gap-3 px-8 py-4 bg-primary text-white font-bold text-lg rounded-xl hover:bg-primary-700 transition-all hover:scale-105 shadow-xl">
+            {{ currentLang === 'ar' ? 'تواصل معنا' : 'Contact Us' }}
+            <svg class="w-5 h-5" :class="currentLang === 'ar' ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </a>
         </div>
       </div>
     </div>
@@ -72,24 +82,9 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-  section: {
-    type: Object,
-    required: true
-  },
-  currentLang: {
-    type: String,
-    default: 'ar'
-  }
+  section: { type: Object, required: true },
+  currentLang: { type: String, default: 'ar' }
 })
 
-const story = computed(() => {
-  const data = props.section?.additional_data
-  if (!data) return null
-  return {
-    ar: data.story_ar,
-    en: data.story_en
-  }
-})
-
-const values = computed(() => props.section?.additional_data?.values || [])
+const features = computed(() => props.section?.additional_data?.features || [])
 </script>

@@ -1,48 +1,51 @@
 <template>
-  <section class="relative py-20 lg:py-28 bg-white dark:bg-gray-900">
+  <section id="features" class="py-24">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Section Header -->
       <div class="text-center mb-16">
-        <!-- Small Label -->
-        <div class="inline-flex items-center gap-2 mb-4">
-          <span class="text-sm font-semibold text-primary/80 uppercase tracking-wider">
-            {{ currentLang === 'ar' ? 'ما نقدمه' : 'What We Offer' }}
-          </span>
-          <svg class="w-5 h-5 text-secondary" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-          </svg>
+        <div class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full mb-6 shadow-xl">
+          <span class="text-xl">🍽️</span>
+          <span class="font-bold">{{ currentLang === 'ar' ? 'خدماتنا المميزة' : 'Our Services' }}</span>
         </div>
-        <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold text-primary dark:text-white mb-4">
+        
+        <h2 class="text-4xl lg:text-5xl font-black text-primary mb-4">
           {{ currentLang === 'ar' ? section?.title_ar : section?.title_en }}
         </h2>
-        <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+        <p class="text-lg text-gray-700 max-w-2xl mx-auto">
           {{ currentLang === 'ar' ? section?.description_ar : section?.description_en }}
         </p>
       </div>
 
       <!-- Features Grid -->
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div 
           v-for="(feature, index) in features" 
           :key="index"
-          class="text-center group"
+          class="group"
         >
-          <!-- Icon Container -->
-          <div class="relative mb-6 flex justify-center">
-            <div class="w-24 h-24 rounded-full bg-secondary/50 border-4 border-secondary flex items-center justify-center group-hover:bg-secondary group-hover:border-primary transition-all duration-300">
-              <img v-if="feature.icon" :src="`/storage/${feature.icon}`" alt="Icon" class="w-12 h-12 object-contain" />
+          <div class="h-full bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-secondary hover:border-primary">
+            <!-- Icon -->
+            <div class="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mb-5 shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-all">
+              <img 
+                v-if="feature.icon" 
+                :src="`/storage/${feature.icon}`" 
+                :alt="currentLang === 'ar' ? feature.title_ar : feature.title_en"
+                class="w-8 h-8 object-contain brightness-0 invert"
+              />
+              <svg v-else class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
             </div>
+            
+            <!-- Content -->
+            <h3 class="text-xl font-black text-primary mb-3">
+              {{ currentLang === 'ar' ? feature.title_ar : feature.title_en }}
+            </h3>
+            
+            <p class="text-gray-600 text-sm leading-relaxed">
+              {{ currentLang === 'ar' ? feature.description_ar : feature.description_en }}
+            </p>
           </div>
-
-          <!-- Title -->
-          <h3 class="text-lg font-bold text-primary dark:text-white mb-3">
-            {{ currentLang === 'ar' ? feature.title_ar : feature.title_en }}
-          </h3>
-
-          <!-- Description -->
-          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-            {{ currentLang === 'ar' ? feature.description_ar : feature.description_en }}
-          </p>
         </div>
       </div>
     </div>
@@ -51,17 +54,10 @@
 
 <script setup>
 import { computed } from 'vue'
-import { Sparkles } from 'lucide-vue-next'
 
 const props = defineProps({
-  section: {
-    type: Object,
-    required: true
-  },
-  currentLang: {
-    type: String,
-    default: 'ar'
-  }
+  section: { type: Object, required: true },
+  currentLang: { type: String, default: 'ar' }
 })
 
 const features = computed(() => props.section?.additional_data?.features || [])
