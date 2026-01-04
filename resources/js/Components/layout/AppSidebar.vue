@@ -219,6 +219,7 @@ import {
   TaskIcon,
   CalenderIcon,
   PageIcon,
+  ChartIcon,
 } from "../../icons"
 import { useSidebar } from "@/composables/useSidebar"
 import { usePermissions } from "@/composables/usePermissions"
@@ -276,13 +277,8 @@ const menuGroups = computed(() =>
         {
           icon: GridIcon,
           name: t('menu.dashboard'),
-          subItems: [
-            {
-              name: t('menu.dashboard'),
-              path: '/',
-              permission: 'dashboard.view',
-            },
-          ],
+          path: route('admin.dashboard'),
+          permission: 'dashboard.view',
         },
         {
           icon: BuildingIcon,
@@ -328,6 +324,42 @@ const menuGroups = computed(() =>
           name: t('menu.bookings'),
           path: route('admin.bookings.index'),
           permission: 'bookings.view',
+        },
+        {
+          icon: ChartIcon,
+          name: t('menu.reports'),
+          subItems: [
+            {
+              name: t('reports.bookings_report'),
+              path: route('admin.reports.bookings'),
+              permission: 'reports.view',
+            },
+            {
+              name: t('reports.customers_report'),
+              path: route('admin.reports.customers'),
+              permission: 'reports.view',
+            },
+            {
+              name: t('reports.chefs_report'),
+              path: route('admin.reports.chefs'),
+              permission: 'reports.view',
+            },
+            {
+              name: t('reports.services_report'),
+              path: route('admin.reports.services'),
+              permission: 'reports.view',
+            },
+            {
+              name: t('reports.earnings_report'),
+              path: route('admin.reports.earnings'),
+              permission: 'reports.view',
+            },
+            {
+              name: t('reports.transactions_report'),
+              path: route('admin.reports.transactions'),
+              permission: 'reports.view',
+            },
+          ],
         },
         {
           icon: TaskIcon,

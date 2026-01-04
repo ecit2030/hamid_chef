@@ -44,6 +44,10 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
+        'chef' => [
+            'driver' => 'session',
+            'provider' => 'chefs',
+        ],
     ],
 
     /*
@@ -71,6 +75,10 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_ADMIN_MODEL', App\Models\Admin::class),
+        ],
+        'chefs' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_CHEF_MODEL', App\Models\User::class),
         ],
 
         // 'users' => [
@@ -108,6 +116,12 @@ return [
         'admins' => [
             'provider' => 'admins',
             'table' => env('AUTH_ADMIN_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'chefs' => [
+            'provider' => 'chefs',
+            'table' => env('AUTH_CHEF_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,
         ],

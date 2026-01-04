@@ -35,15 +35,65 @@
     font-display: swap;
 }
 
+/* Cairo Font for Admin Panel - Primary Arabic Font */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap');
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Ahlan', 'Arial', sans-serif;
-    --font-arabic: 'Air Strip Arabic', 'Arial', sans-serif;
+    --font-sans: 'Cairo', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+    --font-arabic: 'Cairo', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
     --font-english: 'Ahlan', 'Arial', sans-serif;
+    --font-cairo: 'Cairo', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+}
+
+/* Global Font Application */
+body {
+    font-family: 'Cairo', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+}
+
+/* Force Western Arabic numerals (0-9) instead of Eastern Arabic numerals (٠-٩) */
+body,
+.font-cairo,
+[dir="rtl"],
+[dir="rtl"] * {
+    font-feature-settings: "lnum" 1;
+    -webkit-font-feature-settings: "lnum" 1;
+    -moz-font-feature-settings: "lnum" 1;
+    font-variant-numeric: lining-nums;
+}
+
+/* RTL-specific text rendering improvements */
+[dir="rtl"] {
+    text-align: right;
+    direction: rtl;
+}
+
+[dir="rtl"] * {
+    text-align: inherit;
+    direction: inherit;
+}
+
+/* Prevent text breaking issues in RTL */
+[dir="rtl"] {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+/* Improve Arabic text rendering quality */
+[dir="rtl"] {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Ensure proper line height for Arabic text */
+[dir="rtl"] {
+    line-height: 1.6;
 }
 
 /* Logical positioning utilities for RTL/LTR agnostic off-canvas */

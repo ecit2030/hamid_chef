@@ -39,9 +39,14 @@ class ChefAvailabilityService
      * - From the provided date (or today) until end of month
      * - If remaining days in month < 10, go back to ensure at least 10 days
      * 
+     * Important: 
+     * - Bookings are fetched based on chef_id (ALL bookings for the chef)
+     * - chef_service_id is used ONLY to get service details (name, rest_hours, min_hours)
+     * - Availability calculation considers ALL chef bookings, not just one service
+     * 
      * @param int $chefId
      * @param string|null $date Target date for calendar (defaults to today)
-     * @param int|null $chefServiceId Filter by specific service
+     * @param int|null $chefServiceId Used only for service details, not for filtering bookings
      * @return array
      */
     public function getChefAvailability(int $chefId, ?string $date = null, ?int $chefServiceId = null): array
@@ -50,7 +55,8 @@ class ChefAvailabilityService
             $q->where('is_active', true);
         }])->findOrFail($chefId);
 
-        // If chef_service_id is provided, get that specific service
+        // If chef_service_id is provided, get that specific service for its details
+        // (name, min_hours, rest_hours) - NOT for filtering bookings
         $selectedService = null;
         if ($chefServiceId) {
             $selectedService = ChefService::where('chef_id', $chefId)
@@ -73,7 +79,9 @@ class ChefAvailabilityService
         // Get working hours for the chef
         $workingHours = $this->getWorkingHoursMap($chefId);
 
-        // Get all bookings in the date range (with service for rest_hours)
+        // Get ALL bookings for the chef in the date range (not filtered by service)
+        // The chef's availability depends on all their bookings
+        // Service details are loaded for each booking (name, rest_hours, etc.)
         $bookings = $this->getBookingsInRange($chefId, $startDate, $endDate, $chefServiceId);
 
         // Get vacations in the date range
@@ -91,6 +99,7 @@ class ChefAvailabilityService
         ];
 
         // If specific service is requested, add its details right after chef info
+        // These details are used for: service name, min_hours, rest_hours
         if ($selectedService) {
             $response['service_id'] = $selectedService->id;
             $response['service_name'] = $selectedService->name;
@@ -189,23 +198,26 @@ class ChefAvailabilityService
     /**
      * Get bookings in a date range
      * 
+     * Note: Bookings are fetched based on chef_id only (not filtered by service_id)
+     * The service_id is used only to get service details (name, rest_hours, min_hours)
+     * 
      * @param int $chefId
      * @param Carbon $startDate
      * @param Carbon $endDate
-     * @param int|null $chefServiceId Filter by specific service
+     * @param int|null $chefServiceId Used only for service details, not for filtering bookings
      * @return Collection
      */
     protected function getBookingsInRange(int $chefId, Carbon $startDate, Carbon $endDate, ?int $chefServiceId = null): Collection
     {
+        // Fetch ALL bookings for the chef (not filtered by service_id)
+        // The chef's availability depends on all their bookings, not just one service
         $query = Booking::where('chef_id', $chefId)
             ->where('is_active', true)
             ->whereNotIn('booking_status', ['cancelled_by_customer', 'cancelled_by_chef', 'rejected'])
             ->whereBetween('date', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')]);
         
-        // Filter by service if provided
-        if ($chefServiceId) {
-            $query->where('chef_service_id', $chefServiceId);
-        }
+        // Note: We do NOT filter by chef_service_id here
+        // All bookings for the chef affect their availability
         
         return $query->with(['service:id,name,service_type,min_hours,rest_hours_required'])
             ->orderBy('date')

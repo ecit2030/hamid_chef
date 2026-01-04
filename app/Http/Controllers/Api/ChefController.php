@@ -290,15 +290,21 @@ class ChefController extends Controller
      * 
      * Body:
      * - date: Target date (optional, defaults to today)
-     * - chef_service_id: Filter by specific service (optional)
+     * - chef_service_id: Get service details only (optional)
+     * 
+     * Important:
+     * - Bookings are fetched based on chef_id (ALL chef bookings)
+     * - chef_service_id is used ONLY for service details (name, min_hours, rest_hours)
+     * - Availability calculation considers ALL chef bookings regardless of service
      * 
      * Returns:
-     * - Service details (if chef_service_id provided)
+     * - Service details (if chef_service_id provided) - name, min_hours, rest_hours
      * - Available days (working days with no bookings)
      * - Off days (days the chef doesn't work)
+     * - Vacation days
      * - Partially booked days
      * - Fully booked days
-     * - Day details for a specific date (working hours, bookings, available slots)
+     * - Day details for a specific date (working hours, ALL bookings, available slots)
      */
     public function availability(Request $request, ChefAvailabilityService $availabilityService, $chefId)
     {

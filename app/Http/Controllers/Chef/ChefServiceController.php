@@ -4,32 +4,29 @@ namespace App\Http\Controllers\Chef;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreChefServiceRequest;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Chef\StoreChefServiceRequest;
 use App\Http\Requests\UpdateChefServiceRequest;
 use App\Services\ChefServiceService;
 use App\DTOs\ChefServiceDTO;
 use App\Models\ChefService;
-use App\Models\Chef;
 use App\Models\Tag;
+use App\Models\Category;
 use Inertia\Inertia;
 
 class ChefServiceController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:web');
-    }
-
     public function index(Request $request, ChefServiceService $serviceService)
     {
         $this->authorize('viewAny', ChefService::class);
 
-        $user = $request->user();
+        $user = Auth::guard('chef')->user();
+        $chef = $user->chef;
         $perPage = $request->input('per_page', 9);
         
-        // Filter services by authenticated chef's ID
+        // Filter services by authenticated chef's ID only
         $services = $serviceService->query(['chef:id,name,logo', 'tags'])
-            ->where('chef_id', $user->chef->id)
+            ->where('chef_id', $chef->id)
             ->latest()
             ->paginate($perPage);
         
@@ -46,14 +43,12 @@ class ChefServiceController extends Controller
     {
         $this->authorize('create', ChefService::class);
 
-        $user = auth('web')->user();
-        // Show only the authenticated chef
-        $chefs = Chef::where('id', $user->chef->id)->get(['id', 'name']);
         $tags = Tag::where('is_active', true)->get(['id', 'name', 'slug']);
+        $categories = Category::where('is_active', true)->get(['id', 'name']);
 
         return Inertia::render('Chef/ChefService/Create', [
-            'chefs' => $chefs,
             'tags' => $tags,
+            'categories' => $categories,
         ]);
     }
 
@@ -61,20 +56,22 @@ class ChefServiceController extends Controller
     {
         $this->authorize('create', ChefService::class);
 
-        $user = $request->user();
+        $user = Auth::guard('chef')->user();
+        $chef = $user->chef;
+        
         $data = $request->validated();
-        // Force chef_id to authenticated chef
-        $data['chef_id'] = $user->chef->id;
+        // Force chef_id to authenticated chef - security measure
+        $data['chef_id'] = $chef->id;
         
         $serviceService->create($data);
-        return redirect()->route('chef-services.index');
+        return redirect()->route('chef.services.index');
     }
 
-    public function show(ChefService $chefService)
+    public function show(ChefService $service)
     {
-        $this->authorize('view', $chefService);
+        $this->authorize('view', $service);
 
-        $chefService->load([
+        $service->load([
             'chef',
             'tags', 
             'images' => function($query) {
@@ -89,17 +86,17 @@ class ChefServiceController extends Controller
                       ->orderBy('chef_service_ratings.created_at', 'desc');
             }
         ]);
-        $dto = ChefServiceDTO::fromModel($chefService)->toArray();
+        $dto = ChefServiceDTO::fromModel($service)->toArray();
         return Inertia::render('Chef/ChefService/Show', [
             'service' => $dto,
         ]);
     }
 
-    public function edit(ChefService $chefService)
+    public function edit(ChefService $service)
     {
-        $this->authorize('update', $chefService);
+        $this->authorize('update', $service);
 
-        $chefService->load([
+        $service->load([
             'tags', 
             'images' => function($query) {
                 $query->where('is_active', true)->orderBy('created_at');
@@ -108,51 +105,50 @@ class ChefServiceController extends Controller
                 $query->orderBy('is_included', 'desc')->orderBy('created_at', 'desc');
             }
         ]);
-        $user = auth('web')->user();
-        // Show only the authenticated chef
-        $chefs = Chef::where('id', $user->chef->id)->get(['id', 'name']);
+        
         $tags = Tag::where('is_active', true)->get(['id', 'name', 'slug']);
+        $categories = Category::where('is_active', true)->get(['id', 'name']);
 
-        $dto = ChefServiceDTO::fromModel($chefService)->toArray();
+        $dto = ChefServiceDTO::fromModel($service)->toArray();
         return Inertia::render('Chef/ChefService/Edit', [
             'service' => $dto,
-            'chefs' => $chefs,
             'tags' => $tags,
+            'categories' => $categories,
         ]);
     }
 
-    public function update(UpdateChefServiceRequest $request, ChefServiceService $serviceService, ChefService $chefService)
+    public function update(UpdateChefServiceRequest $request, ChefServiceService $serviceService, ChefService $service)
     {
-        $this->authorize('update', $chefService);
+        $this->authorize('update', $service);
 
         $data = $request->validated();
-        $serviceService->update($chefService->id, $data);
-        return redirect()->route('chef-services.index');
+        $serviceService->update($service->id, $data);
+        return redirect()->route('chef.services.index');
     }
 
-    public function destroy(ChefServiceService $serviceService, ChefService $chefService)
+    public function destroy(ChefServiceService $serviceService, ChefService $service)
     {
-        $this->authorize('delete', $chefService);
+        $this->authorize('delete', $service);
 
-        $serviceService->delete($chefService->id);
-        return redirect()->route('chef-services.index');
+        $serviceService->delete($service->id);
+        return redirect()->route('chef.services.index');
     }
 
     public function activate(ChefServiceService $serviceService, $id)
     {
-        $chefService = ChefService::findOrFail($id);
-        $this->authorize('activate', $chefService);
+        $service = ChefService::findOrFail($id);
+        $this->authorize('activate', $service);
 
         $serviceService->activate($id);
-        return back()->with('success', 'Chef Service activated successfully');
+        return back()->with('success', __('chef_service.activated'));
     }
 
     public function deactivate(ChefServiceService $serviceService, $id)
     {
-        $chefService = ChefService::findOrFail($id);
-        $this->authorize('deactivate', $chefService);
+        $service = ChefService::findOrFail($id);
+        $this->authorize('deactivate', $service);
 
         $serviceService->deactivate($id);
-        return back()->with('success', 'Chef Service deactivated successfully');
+        return back()->with('success', __('chef_service.deactivated'));
     }
 }

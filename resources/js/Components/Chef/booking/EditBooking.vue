@@ -419,7 +419,7 @@ const totalAmountDisplay = computed(() => {
 
 // Methods
 const formatPrice = (price) => {
-  return new Intl.NumberFormat('ar-SA', {
+  return new Intl.NumberFormat('en-SA', {
     style: 'currency',
     currency: 'SAR'
   }).format(price || 0)

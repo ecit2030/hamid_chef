@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "@inertiajs/vue3": "^2.1.5",
+        "chart.js": "^4.5.1",
         "dayjs": "^1.11.18",
         "flatpickr": "^4.6.13",
         "lucide-vue-next": "^0.562.0",

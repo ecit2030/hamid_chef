@@ -211,15 +211,15 @@ const currentPage = ref(props.services?.current_page ?? 1)
 const perPage = ref(props.services?.per_page ?? 10)
 
 function handleCreateClick() {
-  router.visit(route('chef-services.create'))
+  router.visit(route('chef.services.create'))
 }
 
 function handleViewClick(id) {
-  router.visit(route('chef-services.show', id))
+  router.visit(route('chef.services.show', id))
 }
 
 function handleEditClick(id) {
-  router.visit(route('chef-services.edit', id))
+  router.visit(route('chef.services.edit', id))
 }
 
 // delete modal
@@ -232,7 +232,7 @@ function handleDeleteClick(id) {
 function closeDeleteModal() { isDeleteModalOpen.value = false; serviceToDeleteId.value = null }
 function confirmDelete() {
   if (serviceToDeleteId.value) {
-    router.delete(route('chef-services.destroy', serviceToDeleteId.value), {
+    router.delete(route('chef.services.destroy', serviceToDeleteId.value), {
       onSuccess: () => { success(t('chef_services.serviceDeletedSuccessfully')); closeDeleteModal() },
       onError: () => { error(t('chef_services.serviceDeletionFailed')); closeDeleteModal() },
       preserveScroll: true,
@@ -243,7 +243,7 @@ function confirmDelete() {
 function toggleServiceStatus(service) {
   const wasActive = service.is_active
   service.is_active = !wasActive
-  const url = wasActive ? route('chef-services.deactivate', { id: service.id }) : route('chef-services.activate', { id: service.id })
+  const url = wasActive ? route('chef.services.deactivate', { id: service.id }) : route('chef.services.activate', { id: service.id })
   router.patch(url, {}, { preserveState: true, preserveScroll: true, onError: () => { service.is_active = wasActive } })
 }
 

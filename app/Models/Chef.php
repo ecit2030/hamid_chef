@@ -132,4 +132,14 @@ class Chef extends BaseModel
     {
         return $this->hasMany(ChefServiceRating::class);
     }
+
+    public function workingHours(): HasMany
+    {
+        return $this->hasMany(ChefWorkingHour::class);
+    }
+
+    public function vacations(): HasMany
+    {
+        return $this->hasMany(ChefVacation::class);
+    }
 }

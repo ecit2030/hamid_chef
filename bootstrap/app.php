@@ -6,12 +6,14 @@ use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\Role;
+use App\Http\Middleware\EnsureChefType;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: [
             __DIR__ . '/../routes/web.php',
-            __DIR__ . '/../routes/admin.php'
+            __DIR__ . '/../routes/admin.php',
+            __DIR__ . '/../routes/chef.php',
         ],
         api: __DIR__.'/../routes/api.php',
         commands: __DIR__.'/../routes/console.php',
@@ -30,6 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'guest' =>  \App\Http\Middleware\RedirectIfAuthenticated::class,
             'auth' =>  	\App\Http\Middleware\Authenticate::class,
             'user_role' => Role::class,
+            'ensure.chef.type' => EnsureChefType::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

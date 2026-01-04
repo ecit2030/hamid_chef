@@ -13,6 +13,7 @@ module.exports = {
 				sans: ['Ahlan', 'Arial', 'sans-serif'],
 				arabic: ['Air Strip Arabic', 'Arial', 'sans-serif'],
 				english: ['Ahlan', 'Arial', 'sans-serif'],
+				cairo: ['Cairo', 'Arial', 'sans-serif'],
 			},
 			colors: {
 				primary: {

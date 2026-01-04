@@ -65,6 +65,10 @@ class BookingSeeder extends Seeder
                 $totalAmount = $service->service_type === 'hourly'
                     ? $service->hourly_rate * $hoursCount
                     : $service->package_price;
+                
+                // Calculate commission (15% of total)
+                $commissionRate = 0.15;
+                $commissionAmount = $totalAmount * $commissionRate;
 
                 Booking::create([
                     'customer_id' => $customer->id,
@@ -78,6 +82,7 @@ class BookingSeeder extends Seeder
                     'service_type' => $service->service_type,
                     'unit_price' => $unitPrice,
                     'total_amount' => $totalAmount,
+                    'commission_amount' => $commissionAmount,
                     'booking_status' => $status,
                     'notes' => $notes[array_rand($notes)],
                     'is_active' => true,

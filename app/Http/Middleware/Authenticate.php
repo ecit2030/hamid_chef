@@ -117,11 +117,17 @@ class Authenticate implements AuthenticatesRequests
             if ($guard == 'admin') {
                 return route('admin.login');
             }
+            if ($guard == 'chef') {
+                return route('chef.login');
+            }
         }
 
         if (static::$redirectToCallback) {
             return call_user_func(static::$redirectToCallback, $request);
         }
+
+        // Default: redirect to landing page (no web login for customers)
+        return route('landing');
     }
 
     /**

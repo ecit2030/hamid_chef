@@ -14,15 +14,6 @@
             </div>
 
             <div>
-              <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">{{ t('chefs.chefInformation') }}</label>
-              <select v-model="form.chef_id" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
-                <option :value="null">{{ t('common.select') }}</option>
-                <option v-for="chef in chefs" :key="chef.id" :value="chef.id">{{ chef.name }}</option>
-              </select>
-              <p v-if="form.errors.chef_id" class="mt-1 text-sm text-error-500">{{ form.errors.chef_id }}</p>
-            </div>
-
-            <div>
               <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">{{ t('chef_services.serviceType') }}</label>
               <select v-model="form.service_type" class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
                 <option value="hourly">خدمة بالساعة</option>
@@ -170,7 +161,7 @@
     </div>
 
     <div class="flex flex-col gap-3 sm:flex-row sm:justify-end">
-      <Link :href="route('chef-services.index')" class="shadow-theme-xs inline-flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 text-sm font-medium text-gray-700 ring-1 ring-gray-300 transition hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]">{{ t('buttons.backToList') }}</Link>
+      <Link :href="route('chef.services.index')" class="shadow-theme-xs inline-flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 text-sm font-medium text-gray-700 ring-1 ring-gray-300 transition hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]">{{ t('buttons.backToList') }}</Link>
       <button @click="create" class="bg-brand-500 shadow-theme-xs hover:bg-brand-600 inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-white transition">{{ t('buttons.create') }}</button>
     </div>
   </div>
@@ -189,12 +180,10 @@ const { t } = useI18n()
 const { success, error } = useNotifications()
 
 const props = defineProps({ 
-  chefs: Array, 
   tags: Array 
 })
 
 const form = useForm({
-  chef_id: null,
   name: '',
   description: '',
   feature_image: null,
@@ -212,7 +201,7 @@ const form = useForm({
 })
 
 function create() {
-  form.post(route('chef-services.store'), {
+  form.post(route('chef.services.store'), {
     onSuccess: () => success(t('chef_services.serviceCreatedSuccessfully')),
     onError: () => error(t('chef_services.serviceCreationFailed')),
   })

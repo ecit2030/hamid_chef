@@ -181,4 +181,69 @@ class BookingRepository extends BaseRepository
             ->onDate($date)
             ->exists();
     }
+    
+    /**
+     * Get bookings for report with pagination.
+     */
+    public function getBookingsForReport(?Carbon $startDate, ?string $status, int $perPage = 15, ?Carbon $endDate = null)
+    {
+        return Booking::with(['customer:id,first_name,last_name,email,phone_number', 'chef.user:id,first_name,last_name', 'service:id,name'])
+            ->when($startDate, fn($q) => $q->where('created_at', '>=', $startDate))
+            ->when($endDate, fn($q) => $q->where('created_at', '<=', $endDate))
+            ->when($status, fn($q) => $q->where('booking_status', $status))
+            ->latest()
+            ->paginate($perPage);
+    }
+    
+    /**
+     * Get bookings statistics.
+     */
+    public function getBookingsStats(?Carbon $startDate, ?string $status, ?Carbon $endDate = null): array
+    {
+        $query = Booking::query()
+            ->when($startDate, fn($q) => $q->where('created_at', '>=', $startDate))
+            ->when($endDate, fn($q) => $q->where('created_at', '<=', $endDate))
+            ->when($status, fn($q) => $q->where('booking_status', $status));
+        
+        return [
+            'total' => (clone $query)->count(),
+            'completed' => (clone $query)->where('booking_status', 'completed')->count(),
+            'pending' => (clone $query)->where('booking_status', 'pending')->count(),
+            'accepted' => (clone $query)->where('booking_status', 'accepted')->count(),
+            'cancelled' => (clone $query)->whereIn('booking_status', ['cancelled_by_customer', 'cancelled_by_chef', 'cancelled_by_admin', 'rejected'])->count(),
+            'total_amount' => (clone $query)->where('booking_status', 'completed')->sum('total_amount'),
+            'total_hours' => (clone $query)->where('booking_status', 'completed')->sum('hours_count'),
+        ];
+    }
+    
+    /**
+     * Get bookings for export.
+     */
+    public function getBookingsForExport(?Carbon $startDate, ?string $status, ?Carbon $endDate = null): Collection
+    {
+        return Booking::with(['customer:id,first_name,last_name,email,phone_number', 'chef.user:id,first_name,last_name', 'service:id,name'])
+            ->when($startDate, fn($q) => $q->where('created_at', '>=', $startDate))
+            ->when($endDate, fn($q) => $q->where('created_at', '<=', $endDate))
+            ->when($status, fn($q) => $q->where('booking_status', $status))
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+    
+    /**
+     * Get daily earnings.
+     */
+    public function getDailyEarnings(?Carbon $startDate): Collection
+    {
+        return Booking::where('booking_status', 'completed')
+            ->when($startDate, fn($q) => $q->where('created_at', '>=', $startDate))
+            ->selectRaw('DATE(created_at) as date')
+            ->selectRaw('SUM(total_amount) as total')
+            ->selectRaw('SUM(commission_amount) as commission')
+            ->selectRaw('SUM(total_amount - commission_amount) as net')
+            ->selectRaw('COUNT(*) as bookings_count')
+            ->selectRaw('SUM(hours_count) as hours')
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->orderBy('date', 'desc')
+            ->get();
+    }
 }

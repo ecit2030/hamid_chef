@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\ChefController;
 use App\Http\Controllers\Admin\ChefServiceRatingController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Support\RoutePermissions;
 use Illuminate\Support\Facades\Route;
 
@@ -68,7 +69,7 @@ Route::middleware('auth:admin')
     ->group(function () {
 
         // Dashboard
-        Route::get('/dashboard', fn () => Inertia('Dashboard'))
+        Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard')
             ->middleware(RoutePermissions::can('dashboard.view'));
 
@@ -272,6 +273,38 @@ Route::middleware('auth:admin')
             ->only(['index', 'show'])
             ->names('activitylogs');
 
+        // Reports
+        Route::prefix('reports')->as('reports.')->group(function () {
+            Route::get('/bookings', [App\Http\Controllers\Admin\ReportController::class, 'bookings'])
+                ->name('bookings');
+            Route::get('/bookings/export', [App\Http\Controllers\Admin\ReportController::class, 'exportBookings'])
+                ->name('bookings.export');
+            
+            Route::get('/customers', [App\Http\Controllers\Admin\ReportController::class, 'customers'])
+                ->name('customers');
+            Route::get('/customers/export', [App\Http\Controllers\Admin\ReportController::class, 'exportCustomers'])
+                ->name('customers.export');
+            
+            Route::get('/chefs', [App\Http\Controllers\Admin\ReportController::class, 'chefs'])
+                ->name('chefs');
+            Route::get('/chefs/export', [App\Http\Controllers\Admin\ReportController::class, 'exportChefs'])
+                ->name('chefs.export');
+            
+            Route::get('/services', [App\Http\Controllers\Admin\ReportController::class, 'services'])
+                ->name('services');
+            Route::get('/services/export', [App\Http\Controllers\Admin\ReportController::class, 'exportServices'])
+                ->name('services.export');
+            
+            Route::get('/earnings', [App\Http\Controllers\Admin\ReportController::class, 'earnings'])
+                ->name('earnings');
+            Route::get('/earnings/export', [App\Http\Controllers\Admin\ReportController::class, 'exportEarnings'])
+                ->name('earnings.export');
+            
+            Route::get('/transactions', [App\Http\Controllers\Admin\ReportController::class, 'transactions'])
+                ->name('transactions');
+            Route::get('/transactions/export', [App\Http\Controllers\Admin\ReportController::class, 'exportTransactions'])
+                ->name('transactions.export');
+        });
 
         Route::get('verify-email', EmailVerificationPromptController::class)
             ->name('verification.notice');

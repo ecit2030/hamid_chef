@@ -1,59 +1,105 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\ConfirmablePasswordController;
-use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\Auth\EmailVerificationPromptController;
-use App\Http\Controllers\Auth\NewPasswordController;
-use App\Http\Controllers\Auth\PasswordController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\VerifyEmailController;
+/**
+ * Web Authentication Routes
+ * 
+ * NOTE: Customer web login has been disabled.
+ * Customers should authenticate via API only (Sanctum).
+ * 
+ * The /login route now redirects to the landing page.
+ * Chefs should use /chef/login
+ * Admins should use /admin/login
+ */
+
 use Illuminate\Support\Facades\Route;
 
+/*
+|--------------------------------------------------------------------------
+| Disabled Customer Web Login
+|--------------------------------------------------------------------------
+| 
+| Customer authentication is now API-only via Sanctum.
+| The following routes redirect to appropriate pages.
+|
+*/
+
 Route::middleware('guest:web')->group(function () {
-    //Route::get('register', [RegisteredUserController::class, 'create'])
-      //  ->name('register');
+    // Redirect /login to landing page (customers use API)
+    Route::get('login', function () {
+        return redirect()->route('landing');
+    })->name('login');
 
-    //Route::post('register', [RegisteredUserController::class, 'store']);
+    // Redirect POST /login to landing page
+    Route::post('login', function () {
+        return redirect()->route('landing');
+    });
 
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
+    // Redirect register to landing page
+    Route::get('register', function () {
+        return redirect()->route('landing');
+    })->name('register');
 
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    Route::post('register', function () {
+        return redirect()->route('landing');
+    });
 
-    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
-        ->name('password.request');
+    // Keep password reset for API users who might need it via web
+    // These can be removed if not needed
+    Route::get('forgot-password', function () {
+        return redirect()->route('landing');
+    })->name('password.request');
 
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
-        ->name('password.email');
+    Route::post('forgot-password', function () {
+        return redirect()->route('landing');
+    })->name('password.email');
 
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
-        ->name('password.reset');
+    Route::get('reset-password/{token}', function () {
+        return redirect()->route('landing');
+    })->name('password.reset');
 
-    Route::post('reset-password', [NewPasswordController::class, 'store'])
-        ->name('password.store');
+    Route::post('reset-password', function () {
+        return redirect()->route('landing');
+    })->name('password.store');
 });
 
+/*
+|--------------------------------------------------------------------------
+| Authenticated Routes (Disabled for Web Guard)
+|--------------------------------------------------------------------------
+|
+| These routes are no longer needed for web guard since customers
+| authenticate via API only.
+|
+*/
+
 Route::middleware('auth:web')->group(function () {
-    Route::get('verify-email', EmailVerificationPromptController::class)
-        ->name('verification.notice');
+    // Redirect any authenticated web user to landing
+    // (This shouldn't happen since login is disabled)
+    Route::get('verify-email', function () {
+        return redirect()->route('landing');
+    })->name('verification.notice');
 
-    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-        ->middleware(['signed', 'throttle:6,1'])
-        ->name('verification.verify');
+    Route::get('verify-email/{id}/{hash}', function () {
+        return redirect()->route('landing');
+    })->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
 
-    Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-        ->middleware('throttle:6,1')
-        ->name('verification.send');
+    Route::post('email/verification-notification', function () {
+        return redirect()->route('landing');
+    })->middleware('throttle:6,1')->name('verification.send');
 
-    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
-        ->name('password.confirm');
+    Route::get('confirm-password', function () {
+        return redirect()->route('landing');
+    })->name('password.confirm');
 
-    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
+    Route::post('confirm-password', function () {
+        return redirect()->route('landing');
+    });
 
-    Route::put('password', [PasswordController::class, 'update'])->name('password.update');
+    Route::put('password', function () {
+        return redirect()->route('landing');
+    })->name('password.update');
 
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-        ->name('logout');
+    Route::post('logout', function () {
+        return redirect()->route('landing');
+    })->name('logout');
 });

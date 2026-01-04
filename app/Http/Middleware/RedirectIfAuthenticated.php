@@ -50,14 +50,12 @@ class RedirectIfAuthenticated
      */
     protected function defaultRedirectUri($guard): string
     {
-        if($guard == 'admin'){
-            return route('admin.dashboard');
-        }
-        if($guard == 'web' || $guard == null){
-            return route('dashboard');
-        }
-
-        return '/';
+        return match($guard) {
+            'admin' => route('admin.dashboard'),
+            'chef' => route('chef.dashboard'),
+            'web', null => route('landing'),
+            default => '/',
+        };
     }
 
     /**

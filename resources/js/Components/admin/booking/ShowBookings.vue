@@ -209,7 +209,7 @@ function confirmDelete() {
 }
 
 const formatDate = (dateString) => {
-  return new Date(dateString).toLocaleDateString('ar-SA', {
+  return new Date(dateString).toLocaleDateString('ar-EG-u-nu-arab', {
     year: 'numeric',
     month: 'short',
     day: 'numeric'
@@ -217,7 +217,7 @@ const formatDate = (dateString) => {
 }
 
 const formatPrice = (price) => {
-  return new Intl.NumberFormat('ar-SA', {
+  return new Intl.NumberFormat('ar-EG-u-nu-arab', {
     style: 'currency',
     currency: 'SAR'
   }).format(price)

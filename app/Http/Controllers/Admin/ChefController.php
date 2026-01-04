@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreChefRequest;
 use App\Http\Requests\UpdateChefRequest;
 use App\Services\ChefService;
+use App\Services\ChefDetailsService;
 use App\DTOs\ChefDTO;
 use App\Models\Chef;
 use App\Models\Governorate;
@@ -62,25 +63,23 @@ class ChefController extends Controller
         return redirect()->route('admin.chefs.index');
     }
 
-    public function show(Chef $chef)
+    public function show(Chef $chef, ChefDetailsService $chefDetailsService)
     {
-        $chef->load([
-            'categories', 
-            'gallery' => function($query) {
-                $query->where('is_active', true)->orderBy('created_at');
-            }
-        ]);
+        // Get all chef details using service
+        $details = $chefDetailsService->getChefDetails($chef->id);
         
-        // Calculate average rating from all service ratings
-        $averageRating = $chef->ratings()
-            ->where('chef_service_ratings.is_active', true)
-            ->avg('rating');
+        // Add rating to chef model
+        $details['chef']->rating_avg = $details['rating_avg'];
         
-        $chef->rating_avg = $averageRating ? round($averageRating, 2) : 0;
+        // Convert chef to DTO
+        $dto = ChefDTO::fromModel($details['chef'])->toArray();
         
-        $dto = ChefDTO::fromModel($chef)->toArray();
         return Inertia::render('Admin/Chef/Show', [
             'chef' => $dto,
+            'workingHours' => $details['working_hours'],
+            'vacations' => $details['vacations'],
+            'services' => $details['services'],
+            'bookings' => $details['bookings'],
         ]);
     }
 

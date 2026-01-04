@@ -189,7 +189,18 @@ class BookingDTO extends BaseDTO
             'number_of_guests' => $this->number_of_guests,
             'total_amount' => $this->total_amount,
             'booking_status' => $this->booking_status,
+            'payment_status' => $this->payment_status,
         ];
+
+        // Customer details
+        if (isset($this->customer)) {
+            $array['customer'] = [
+                'id' => $this->customer->id ?? null,
+                'first_name' => $this->customer->first_name ?? null,
+                'last_name' => $this->customer->last_name ?? null,
+                'phone_number' => $this->customer->phone_number ?? null,
+            ];
+        }
 
         // Chef details
         if (isset($this->chef)) {
@@ -205,6 +216,16 @@ class BookingDTO extends BaseDTO
         // Service name
         if (isset($this->service)) {
             $array['service_name'] = $this->service->name ?? null;
+        }
+
+        // Address with coordinates for map view
+        if (isset($this->address)) {
+            $array['address'] = [
+                'id' => $this->address->id ?? null,
+                'address' => $this->address->address ?? null,
+                'lat' => $this->address->lat ?? null,
+                'lang' => $this->address->lang ?? null,
+            ];
         }
 
         return $array;

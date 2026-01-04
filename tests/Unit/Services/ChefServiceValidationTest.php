@@ -110,14 +110,17 @@ class ChefServiceValidationTest extends TestCase
 
     public function test_service_respects_soft_deleted_chefs()
     {
-        // Note: This test demonstrates current behavior where unique constraint 
-        // doesn't respect soft deletes. In a real application, you might want to 
-        // modify the database schema to use a composite unique index that includes deleted_at
+        // The database schema uses a composite unique index on (user_id, deleted_at)
+        // This allows creating a new chef for the same user after soft-delete
+        // because (user_id, NULL) is different from (user_id, timestamp)
         
         // Create user with soft-deleted chef
         $user = User::factory()->create();
         $chef = Chef::factory()->create(['user_id' => $user->id]);
         $chef->delete(); // Soft delete
+        
+        // Verify the chef is soft-deleted
+        $this->assertSoftDeleted('chefs', ['id' => $chef->id]);
         
         Auth::login($user);
         
@@ -130,10 +133,17 @@ class ChefServiceValidationTest extends TestCase
             'area_id' => Area::first()->id,
         ];
         
-        // Current behavior: Should throw database constraint exception because unique constraint 
-        // doesn't respect soft deletes (even though our validation logic does)
-        $this->expectException(\Illuminate\Database\UniqueConstraintViolationException::class);
-        $this->chefService->create($chefData);
+        // Should successfully create a new chef because the composite unique constraint
+        // (user_id, deleted_at) allows this - the soft-deleted chef has a timestamp
+        // while the new chef will have NULL for deleted_at
+        $newChef = $this->chefService->create($chefData);
+        
+        $this->assertInstanceOf(Chef::class, $newChef);
+        $this->assertEquals($user->id, $newChef->user_id);
+        $this->assertNull($newChef->deleted_at);
+        
+        // Verify both chefs exist in the database
+        $this->assertDatabaseCount('chefs', 2);
     }
 
     public function test_service_handles_explicit_user_id()

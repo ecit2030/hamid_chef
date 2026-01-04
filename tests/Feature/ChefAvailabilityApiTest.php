@@ -402,7 +402,10 @@ class ChefAvailabilityApiTest extends TestCase
             'is_active' => true
         ]);
 
-        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar?date={$vacationDate}");
+        $response = $this->actingAs($this->user, 'sanctum')
+            ->postJson("/api/chefs/{$this->chef->id}/availability-calendar", [
+                'date' => $vacationDate
+            ]);
 
         $response->assertStatus(200);
         
@@ -432,7 +435,10 @@ class ChefAvailabilityApiTest extends TestCase
             'is_active' => true
         ]);
 
-        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar?date={$vacationDate}");
+        $response = $this->actingAs($this->user, 'sanctum')
+            ->postJson("/api/chefs/{$this->chef->id}/availability-calendar", [
+                'date' => $vacationDate
+            ]);
 
         $response->assertStatus(200);
         
@@ -460,7 +466,10 @@ class ChefAvailabilityApiTest extends TestCase
             'is_active' => true
         ]);
 
-        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar?date={$vacationDate}");
+        $response = $this->actingAs($this->user, 'sanctum')
+            ->postJson("/api/chefs/{$this->chef->id}/availability-calendar", [
+                'date' => $vacationDate
+            ]);
 
         $response->assertStatus(200);
         
@@ -490,7 +499,10 @@ class ChefAvailabilityApiTest extends TestCase
             'is_active' => false
         ]);
 
-        $response = $this->getJson("/api/chefs/{$this->chef->id}/availability-calendar?date={$vacationDate}");
+        $response = $this->actingAs($this->user, 'sanctum')
+            ->postJson("/api/chefs/{$this->chef->id}/availability-calendar", [
+                'date' => $vacationDate
+            ]);
 
         $response->assertStatus(200);
         

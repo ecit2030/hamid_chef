@@ -53,6 +53,9 @@ import TagIcon from "./TagIcon.vue";
 import StarIcon from "./StarIcon.vue";
 import EyeIcon from "./EyeIcon.vue";
 import EyeSlashIcon from "./EyeSlashIcon.vue";
+import ClockIcon from "./ClockIcon.vue";
+import WalletIcon from "./WalletIcon.vue";
+import ChartIcon from "./ChartIcon.vue";
 
 export {
   BellIcon,
@@ -110,4 +113,7 @@ export {
   MailBox,
   SendIcon,
   DraftIcon,
+  ClockIcon,
+  WalletIcon,
+  ChartIcon,
 };

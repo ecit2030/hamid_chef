@@ -30,7 +30,7 @@ class ChefServiceService
      */
     public function query(?array $with = null): Builder
     {
-        return $this->services->query($with);
+        return \App\Models\ChefService::query();
     }
 
     /**
@@ -207,7 +207,13 @@ class ChefServiceService
      */
     public function getQueryForChef(int $chefId, ?array $with = null): Builder
     {
-        return $this->services->query($with)->where('chef_id', $chefId);
+        $query = \App\Models\ChefService::where('chef_id', $chefId);
+        
+        if ($with !== null) {
+            $query->with($with);
+        }
+        
+        return $query;
     }
 
     /**
@@ -215,7 +221,13 @@ class ChefServiceService
      */
     public function findForChef(int|string $id, int $chefId, ?array $with = null)
     {
-        return $this->services->query($with)->where('id', $id)->where('chef_id', $chefId)->firstOrFail();
+        $query = \App\Models\ChefService::where('id', $id)->where('chef_id', $chefId);
+        
+        if ($with !== null) {
+            $query->with($with);
+        }
+        
+        return $query->firstOrFail();
     }
 
     /**
@@ -223,7 +235,13 @@ class ChefServiceService
      */
     public function getActiveServices(?array $with = null): Builder
     {
-        return $this->services->query($with)->where('is_active', true);
+        $query = \App\Models\ChefService::where('is_active', true);
+        
+        if ($with !== null) {
+            $query->with($with);
+        }
+        
+        return $query;
     }
 
     /**
@@ -231,11 +249,16 @@ class ChefServiceService
      */
     public function getServicesByTag(int $tagId, ?array $with = null): Builder
     {
-        return $this->services->query($with)
-            ->whereHas('tags', function ($query) use ($tagId) {
+        $query = \App\Models\ChefService::whereHas('tags', function ($query) use ($tagId) {
                 $query->where('tag_id', $tagId)->where('chef_service_tags.is_active', true);
             })
             ->where('is_active', true);
+        
+        if ($with !== null) {
+            $query->with($with);
+        }
+        
+        return $query;
     }
 
     /**
@@ -243,9 +266,14 @@ class ChefServiceService
      */
     public function getServicesByType(string $serviceType, ?array $with = null): Builder
     {
-        return $this->services->query($with)
-            ->where('service_type', $serviceType)
+        $query = \App\Models\ChefService::where('service_type', $serviceType)
             ->where('is_active', true);
+        
+        if ($with !== null) {
+            $query->with($with);
+        }
+        
+        return $query;
     }
 
     /**
