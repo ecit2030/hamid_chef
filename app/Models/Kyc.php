@@ -20,6 +20,7 @@ class Kyc extends BaseModel
         'address',
         'document_type',
         'document_scan_copy',
+        'certificates',
         'created_by',
         'updated_by',
     ];
@@ -28,6 +29,7 @@ class Kyc extends BaseModel
         'verified_at' => 'datetime',
         'date_of_birth' => 'date',
         'is_verified' => 'boolean',
+        'certificates' => 'array',
     ];
 
     /**

@@ -203,4 +203,88 @@ class KycService
         }
     }
 
+    /**
+     * Add a certificate to the KYC record
+     *
+     * @param Kyc $kyc
+     * @param string $type Certificate type (identity_document, health_certificate, professional_certificate)
+     * @param \Illuminate\Http\UploadedFile $file
+     * @return Kyc
+     */
+    public function addCertificate(Kyc $kyc, string $type, $file): Kyc
+    {
+        // Store file in private storage
+        $filename = (string) \Illuminate\Support\Str::uuid() . '.' . $file->getClientOriginalExtension();
+        $path = $file->storeAs('kyc/certificates', $filename, 'local');
+
+        // Get existing certificates or initialize empty array
+        $certificates = $kyc->certificates ?? [];
+
+        // Add new certificate
+        $certificates[$type] = [
+            'path' => $path,
+            'uploaded_at' => now()->toIso8601String(),
+            'file_type' => $file->getClientOriginalExtension(),
+        ];
+
+        // Update KYC record
+        $kyc->certificates = $certificates;
+        $kyc->save();
+
+        return $kyc->fresh();
+    }
+
+    /**
+     * Remove a certificate from the KYC record
+     *
+     * @param Kyc $kyc
+     * @param string $type Certificate type to remove
+     * @return Kyc
+     */
+    public function removeCertificate(Kyc $kyc, string $type): Kyc
+    {
+        $certificates = $kyc->certificates ?? [];
+
+        if (isset($certificates[$type])) {
+            // Delete the file from storage
+            $path = $certificates[$type]['path'] ?? null;
+            if ($path && Storage::disk('local')->exists($path)) {
+                Storage::disk('local')->delete($path);
+            }
+
+            // Remove from certificates array
+            unset($certificates[$type]);
+
+            // Update KYC record
+            $kyc->certificates = $certificates;
+            $kyc->save();
+        }
+
+        return $kyc->fresh();
+    }
+
+    /**
+     * Get all certificates for a KYC record
+     *
+     * @param Kyc $kyc
+     * @return array
+     */
+    public function getCertificates(Kyc $kyc): array
+    {
+        return $kyc->certificates ?? [];
+    }
+
+    /**
+     * Get certificates of a specific type
+     *
+     * @param Kyc $kyc
+     * @param string $type Certificate type
+     * @return array|null
+     */
+    public function getCertificatesByType(Kyc $kyc, string $type): ?array
+    {
+        $certificates = $kyc->certificates ?? [];
+        return $certificates[$type] ?? null;
+    }
+
 }

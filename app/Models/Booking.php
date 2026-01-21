@@ -30,6 +30,7 @@ class Booking extends BaseModel
         'commission_amount',
         'payment_status',
         'booking_status',
+        'rejection_reason',
         'notes',
         'is_active',
         'created_by',
@@ -46,6 +47,7 @@ class Booking extends BaseModel
         'extra_guests_amount' => 'decimal:2',
         'total_amount' => 'decimal:2',
         'commission_amount' => 'decimal:2',
+        'rejection_reason' => 'string',
     ];
 
     public function customer(): BelongsTo
@@ -83,34 +85,34 @@ class Booking extends BaseModel
     {
         return $this->start_time->copy()->addHours($this->hours_count);
     }
-    
+
     public function getStartDateTimeAttribute(): Carbon
     {
         return Carbon::parse($this->date->format('Y-m-d') . ' ' . $this->start_time->format('H:i:s'));
     }
-    
+
     public function getEndDateTimeAttribute(): Carbon
     {
         return $this->start_date_time->copy()->addHours($this->hours_count);
     }
-    
+
     // Scopes for conflict detection
     public function scopeForChef($query, int $chefId)
     {
         return $query->where('chef_id', $chefId);
     }
-    
+
     public function scopeActive($query)
     {
         return $query->where('is_active', true)
                     ->whereNotIn('booking_status', ['cancelled_by_customer', 'cancelled_by_chef', 'rejected']);
     }
-    
+
     public function scopeOnDate($query, Carbon $date)
     {
         return $query->whereDate('date', $date);
     }
-    
+
     public function scopeInDateRange($query, Carbon $startDate, Carbon $endDate)
     {
         return $query->whereBetween('date', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')]);

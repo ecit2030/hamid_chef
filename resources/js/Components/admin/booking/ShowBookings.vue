@@ -87,6 +87,15 @@
           </Badge>
         </div>
 
+        <div v-if="booking.rejection_reason && booking.booking_status === 'rejected'" class="border-t border-gray-200 px-5 py-4 dark:border-gray-800">
+          <p class="text-xs font-medium uppercase tracking-wide text-gray-400 mb-2">
+            {{ t('booking.rejection_reason') }}
+          </p>
+          <p class="text-sm text-error-600 dark:text-error-400 line-clamp-2">
+            {{ booking.rejection_reason }}
+          </p>
+        </div>
+
         <div class="flex items-center justify-between border-t border-gray-200 px-5 py-4 dark:border-gray-800">
           <div class="flex items-center gap-2">
             <Tooltip :text="t('messages.notAuthorized')" :show="!canView">
@@ -263,7 +272,7 @@ const getPaymentStatusColor = (status) => {
 const filteredData = computed(() => {
   const searchLower = search.value.toLowerCase()
   return (props.bookings?.data || [])
-    .filter((booking) => 
+    .filter((booking) =>
       booking.id?.toString().includes(searchLower) ||
       booking.customer?.first_name?.toLowerCase().includes(searchLower) ||
       booking.customer?.last_name?.toLowerCase().includes(searchLower) ||

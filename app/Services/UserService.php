@@ -39,7 +39,7 @@ class UserService
         if (array_key_exists('password', $attributes) && empty($attributes['password'])) {
             unset($attributes['password']);
         }
-        
+
         return $this->users->update($id, $attributes);
     }
 
@@ -56,5 +56,32 @@ class UserService
     public function deactivate($id)
     {
         return $this->users->deactivate($id);
+    }
+
+    /**
+     * Update user profile
+     *
+     * @param \App\Models\User $user
+     * @param array $data
+     * @return \App\Models\User
+     */
+    public function updateProfile($user, array $data)
+    {
+        // Remove password if empty
+        if (array_key_exists('password', $data) && empty($data['password'])) {
+            unset($data['password']);
+        }
+
+        // Handle avatar upload if present
+        if (isset($data['avatar']) && $data['avatar'] instanceof \Illuminate\Http\UploadedFile) {
+            $data['avatar'] = $this->users->uploadFile($data['avatar'], 'avatars', true);
+
+            // Delete old avatar if exists
+            if ($user->avatar) {
+                $this->users->deleteFile($user->avatar, true);
+            }
+        }
+
+        return $this->users->update($user->id, $data);
     }
 }

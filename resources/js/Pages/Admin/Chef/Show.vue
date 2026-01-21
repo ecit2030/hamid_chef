@@ -52,20 +52,25 @@
           <div v-show="activeTab === 'bookings'">
             <ChefBookingsTab :bookings="bookings" />
           </div>
+
+          <!-- KYC Tab -->
+          <div v-show="activeTab === 'kyc'">
+            <ChefKycTab :kyc="kyc" />
+          </div>
         </div>
       </div>
 
       <!-- Action Buttons -->
       <div class="flex flex-col gap-3 sm:flex-row sm:justify-end">
-        <Link 
-          :href="route('admin.chefs.index')" 
+        <Link
+          :href="route('admin.chefs.index')"
           class="shadow-theme-xs inline-flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 text-sm font-medium text-gray-700 ring-1 ring-gray-300 transition hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]"
         >
           {{ t('buttons.backToList') }}
         </Link>
 
-        <Link 
-          :href="route('admin.chefs.edit', chef.id)" 
+        <Link
+          :href="route('admin.chefs.edit', chef.id)"
           class="bg-brand-500 shadow-theme-xs hover:bg-brand-600 inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-medium text-white transition"
         >
           {{ t('buttons.edit') }}
@@ -83,6 +88,7 @@ import ChefWorkingHoursTab from '@/Components/admin/chef/ChefWorkingHoursTab.vue
 import ChefVacationsTab from '@/Components/admin/chef/ChefVacationsTab.vue'
 import ChefServicesTab from '@/Components/admin/chef/ChefServicesTab.vue'
 import ChefBookingsTab from '@/Components/admin/chef/ChefBookingsTab.vue'
+import ChefKycTab from '@/Components/admin/chef/ChefKycTab.vue'
 import { Link, usePage } from '@inertiajs/vue3'
 import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
@@ -95,6 +101,7 @@ const workingHours = computed(() => usePage().props.workingHours)
 const vacations = computed(() => usePage().props.vacations)
 const services = computed(() => usePage().props.services)
 const bookings = computed(() => usePage().props.bookings)
+const kyc = computed(() => usePage().props.kyc)
 
 const activeTab = ref('info')
 
@@ -104,6 +111,6 @@ const tabs = computed(() => [
   { id: 'vacations', label: t('chefs.vacations') },
   { id: 'services', label: t('chefs.services') },
   { id: 'bookings', label: t('chefs.bookings') },
+  { id: 'kyc', label: t('chefs.kyc') },
 ])
-
 </script>

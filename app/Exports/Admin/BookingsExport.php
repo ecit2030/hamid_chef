@@ -49,6 +49,7 @@ class BookingsExport implements FromCollection, WithHeadings, WithMapping, WithS
             'العمولة',
             'صافي الأرباح',
             'الحالة',
+            'سبب الرفض',
             'تاريخ الإنشاء',
         ];
     }
@@ -69,6 +70,7 @@ class BookingsExport implements FromCollection, WithHeadings, WithMapping, WithS
             $booking->commission_amount,
             $booking->total_amount - $booking->commission_amount,
             $this->getStatusLabel($booking->booking_status),
+            $booking->rejection_reason ?? '-',
             $booking->created_at->format('Y-m-d H:i'),
         ];
     }
@@ -96,7 +98,8 @@ class BookingsExport implements FromCollection, WithHeadings, WithMapping, WithS
             'K' => 12,
             'L' => 15,
             'M' => 20,
-            'N' => 18,
+            'N' => 30,
+            'O' => 18,
         ];
     }
 

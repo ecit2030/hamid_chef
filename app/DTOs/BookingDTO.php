@@ -24,6 +24,7 @@ class BookingDTO extends BaseDTO
     public $commission_amount;
     public $payment_status;
     public $booking_status;
+    public $rejection_reason;
     public $notes;
     public $is_active;
     public $created_by;
@@ -55,6 +56,7 @@ class BookingDTO extends BaseDTO
         $commission_amount,
         $payment_status,
         $booking_status,
+        $rejection_reason,
         $notes,
         $is_active,
         $created_by,
@@ -79,6 +81,7 @@ class BookingDTO extends BaseDTO
         $this->commission_amount = $commission_amount;
         $this->payment_status = $payment_status;
         $this->booking_status = $booking_status;
+        $this->rejection_reason = $rejection_reason;
         $this->notes = $notes;
         $this->is_active = (bool) $is_active;
         $this->created_by = $created_by;
@@ -107,6 +110,7 @@ class BookingDTO extends BaseDTO
             $booking->commission_amount ?? null,
             $booking->payment_status ?? null,
             $booking->booking_status ?? null,
+            $booking->rejection_reason ?? null,
             $booking->notes ?? null,
             $booking->is_active ?? true,
             $booking->created_by ?? null,
@@ -152,6 +156,7 @@ class BookingDTO extends BaseDTO
             'commission_amount' => $this->commission_amount,
             'payment_status' => $this->payment_status,
             'booking_status' => $this->booking_status,
+            'rejection_reason' => $this->rejection_reason,
             'notes' => $this->notes,
             'is_active' => $this->is_active,
             'created_by' => $this->created_by,
@@ -190,6 +195,7 @@ class BookingDTO extends BaseDTO
             'total_amount' => $this->total_amount,
             'booking_status' => $this->booking_status,
             'payment_status' => $this->payment_status,
+            'rejection_reason' => $this->rejection_reason,
         ];
 
         // Customer details
@@ -236,30 +242,30 @@ class BookingDTO extends BaseDTO
     {
         return Carbon::parse($this->start_time)->addHours($this->hours_count);
     }
-    
+
     public function getStartDateTime(): Carbon
     {
         return Carbon::parse($this->date . ' ' . $this->start_time);
     }
-    
+
     public function getEndDateTime(): Carbon
     {
         return $this->getStartDateTime()->addHours($this->hours_count);
     }
-    
+
     // Validation methods
     public function isValidForConflictCheck(): bool
     {
-        return !empty($this->chef_id) 
-            && !empty($this->date) 
-            && !empty($this->start_time) 
+        return !empty($this->chef_id)
+            && !empty($this->date)
+            && !empty($this->start_time)
             && !empty($this->hours_count)
             && $this->hours_count > 0;
     }
-    
+
     public function isActive(): bool
     {
-        return $this->is_active 
+        return $this->is_active
             && !in_array($this->booking_status, ['cancelled_by_customer', 'cancelled_by_chef', 'rejected']);
     }
 }

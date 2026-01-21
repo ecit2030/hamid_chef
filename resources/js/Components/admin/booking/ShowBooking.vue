@@ -75,6 +75,13 @@
                 <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('booking.notes') }}</label>
                 <p class="text-base text-gray-800 dark:text-white/90 whitespace-pre-wrap">{{ booking.notes }}</p>
               </div>
+
+              <div v-if="booking.rejection_reason && booking.booking_status === 'rejected'" class="md:col-span-2">
+                <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('booking.rejection_reason') }}</label>
+                <div class="rounded-lg bg-error-50 dark:bg-error-500/10 border border-error-200 dark:border-error-500/20 p-4">
+                  <p class="text-base text-error-800 dark:text-error-200 whitespace-pre-wrap">{{ booking.rejection_reason }}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -2,9 +2,9 @@
 @import '../js/assets/main.css';
 
 /* Custom Fonts - Air Strip Arabic and Ahlan */
-/* 
+/*
  * IMPORTANT: You need to add the font files to use these custom fonts.
- * 
+ *
  * Steps to add fonts:
  * 1. Create the directory: public/fonts/
  * 2. Add your font files:
@@ -14,7 +14,7 @@
  *    - Ahlan.woff2 (recommended)
  *    - Ahlan.woff (fallback)
  *    - Ahlan.ttf (fallback)
- * 
+ *
  * Until you add the font files, the warnings during build are normal.
  * The site will use fallback fonts (Arial) until the custom fonts are added.
  */
@@ -35,8 +35,8 @@
     font-display: swap;
 }
 
-/* Cairo Font for Admin Panel - Primary Arabic Font */
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap');
+/* Almarai Font for Admin Panel - Primary Arabic Font */
+@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap');
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -44,15 +44,15 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Cairo', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
-    --font-arabic: 'Cairo', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+    --font-sans: 'Almarai', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+    --font-arabic: 'Almarai', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
     --font-english: 'Ahlan', 'Arial', sans-serif;
-    --font-cairo: 'Cairo', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+    --font-cairo: 'Almarai', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
 }
 
 /* Global Font Application */
 body {
-    font-family: 'Cairo', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+    font-family: 'Almarai', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
 }
 
 /* Force Western Arabic numerals (0-9) instead of Eastern Arabic numerals (٠-٩) */

@@ -11,9 +11,9 @@ module.exports = {
 		extend: {
 			fontFamily: {
 				sans: ['Ahlan', 'Arial', 'sans-serif'],
-				arabic: ['Air Strip Arabic', 'Arial', 'sans-serif'],
+				arabic: ['Almarai', 'Arial', 'sans-serif'],
 				english: ['Ahlan', 'Arial', 'sans-serif'],
-				cairo: ['Cairo', 'Arial', 'sans-serif'],
+				cairo: ['Almarai', 'Arial', 'sans-serif'],
 			},
 			colors: {
 				primary: {

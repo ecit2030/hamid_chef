@@ -75,6 +75,13 @@
                 <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('booking.notes') }}</label>
                 <p class="text-base text-gray-800 dark:text-white/90 whitespace-pre-wrap">{{ booking.notes }}</p>
               </div>
+
+              <div v-if="booking.rejection_reason && booking.booking_status === 'rejected'" class="md:col-span-2">
+                <label class="mb-1.5 block text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('booking.rejection_reason') }}</label>
+                <div class="rounded-lg bg-error-50 dark:bg-error-500/10 border border-error-200 dark:border-error-500/20 p-4">
+                  <p class="text-base text-error-800 dark:text-error-200 whitespace-pre-wrap">{{ booking.rejection_reason }}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -113,9 +120,9 @@
                   class="w-full"
                 ></iframe>
               </div>
-              <a 
-                :href="googleMapsDirectionsUrl" 
-                target="_blank" 
+              <a
+                :href="googleMapsDirectionsUrl"
+                target="_blank"
                 class="mt-3 inline-flex items-center gap-2 text-brand-500 hover:text-brand-600 text-sm font-medium"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

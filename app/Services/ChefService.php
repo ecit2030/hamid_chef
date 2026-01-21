@@ -79,7 +79,7 @@ class ChefService
         unset($attributes['categories'], $attributes['gallery_images']);
 
         DB::beginTransaction();
-        
+
         try {
             $chef = $this->chefs->create($attributes);
 
@@ -95,7 +95,7 @@ class ChefService
 
             DB::commit();
             return $chef;
-            
+
         } catch (Exception $e) {
             DB::rollBack();
             throw $e;
@@ -104,7 +104,7 @@ class ChefService
 
     /**
      * Check if user already has a chef profile
-     * 
+     *
      * @param int $userId
      * @throws \App\Exceptions\ValidationException
      */
@@ -119,7 +119,7 @@ class ChefService
 
     /**
      * Handle database exceptions during chef creation
-     * 
+     *
      * @param QueryException $e
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -134,7 +134,7 @@ class ChefService
             $validationException = ValidationException::withMessages([
                 'user_id' => ['المستخدم لديه بالفعل ملف طاهي']
             ]);
-            
+
             return $validationException->render($request);
         }
 
@@ -144,15 +144,15 @@ class ChefService
 
     /**
      * Check if the QueryException is a duplicate chef profile error
-     * 
+     *
      * @param QueryException $e
      * @return bool
      */
     public function isDuplicateChefError(QueryException $e): bool
     {
         $message = $e->getMessage();
-        
-        return str_contains($message, 'Duplicate entry') && 
+
+        return str_contains($message, 'Duplicate entry') &&
                str_contains($message, 'chefs_user_id_unique');
     }
 
@@ -170,7 +170,7 @@ class ChefService
         unset($attributes['categories'], $attributes['gallery_images'], $attributes['delete_gallery_ids']);
 
         DB::beginTransaction();
-        
+
         try {
             $chef = $this->chefs->update($id, $attributes);
 
@@ -186,7 +186,7 @@ class ChefService
 
             DB::commit();
             return $chef;
-            
+
         } catch (Exception $e) {
             DB::rollBack();
             throw $e;
@@ -207,7 +207,7 @@ class ChefService
         unset($attributes['categories'], $attributes['gallery_images'], $attributes['delete_gallery_ids']);
 
         DB::beginTransaction();
-        
+
         try {
             $updatedChef = $this->chefs->updateModel($chef, $attributes);
 
@@ -223,7 +223,7 @@ class ChefService
 
             DB::commit();
             return $updatedChef;
-            
+
         } catch (Exception $e) {
             DB::rollBack();
             throw $e;
@@ -363,7 +363,7 @@ class ChefService
 
     /**
      * مزامنة أقسام الطاهي
-     * 
+     *
      * @param Model $chef
      * @param array $categoryIds
      * @return void
@@ -387,7 +387,7 @@ class ChefService
 
     /**
      * إضافة قسم للطاهي
-     * 
+     *
      * @param int|string $chefId
      * @param int $categoryId
      * @return void
@@ -395,7 +395,7 @@ class ChefService
     public function addCategory(int|string $chefId, int $categoryId): void
     {
         $chef = $this->find($chefId);
-        
+
         if (!$chef->categories()->where('cuisine_id', $categoryId)->exists()) {
             $chef->categories()->attach($categoryId, [
                 'is_active' => true,
@@ -409,7 +409,7 @@ class ChefService
 
     /**
      * إزالة قسم من الطاهي
-     * 
+     *
      * @param int|string $chefId
      * @param int $categoryId
      * @return void
@@ -422,7 +422,7 @@ class ChefService
 
     /**
      * تفعيل/إلغاء تفعيل قسم للطاهي
-     * 
+     *
      * @param int|string $chefId
      * @param int $categoryId
      * @param bool $isActive
@@ -431,12 +431,60 @@ class ChefService
     public function toggleCategoryStatus(int|string $chefId, int $categoryId, bool $isActive): void
     {
         $chef = $this->find($chefId);
-        
+
         $chef->categories()->updateExistingPivot($categoryId, [
             'is_active' => $isActive,
             'updated_by' => Auth::id(),
             'updated_at' => now(),
         ]);
+    }
+
+    /**
+     * Update chef profile (for API)
+     * Updates both user and chef tables in a transaction
+     *
+     * @param \App\Models\Chef $chef
+     * @param array $data
+     * @return \App\Models\Chef
+     */
+    public function updateChefProfile($chef, array $data)
+    {
+        DB::beginTransaction();
+
+        try {
+            // Normalize file attributes
+            $data = $this->normalizeFileAttributes($data);
+
+            // Handle logo upload if present
+            if (isset($data['logo']) && $data['logo'] instanceof UploadedFile) {
+                $data['logo'] = $this->chefs->uploadFile($data['logo'], 'chefs/logos', true);
+
+                // Delete old logo if exists
+                if ($chef->logo) {
+                    $this->chefs->deleteFile($chef->logo, true);
+                }
+            }
+
+            // Handle banner upload if present
+            if (isset($data['banner']) && $data['banner'] instanceof UploadedFile) {
+                $data['banner'] = $this->chefs->uploadFile($data['banner'], 'chefs/banners', true);
+
+                // Delete old banner if exists
+                if ($chef->banner) {
+                    $this->chefs->deleteFile($chef->banner, true);
+                }
+            }
+
+            // Update chef record
+            $chef = $this->chefs->update($chef->id, $data);
+
+            DB::commit();
+            return $chef;
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
 

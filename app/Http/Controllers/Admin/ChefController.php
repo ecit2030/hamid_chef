@@ -67,19 +67,20 @@ class ChefController extends Controller
     {
         // Get all chef details using service
         $details = $chefDetailsService->getChefDetails($chef->id);
-        
+
         // Add rating to chef model
         $details['chef']->rating_avg = $details['rating_avg'];
-        
+
         // Convert chef to DTO
         $dto = ChefDTO::fromModel($details['chef'])->toArray();
-        
+
         return Inertia::render('Admin/Chef/Show', [
             'chef' => $dto,
             'workingHours' => $details['working_hours'],
             'vacations' => $details['vacations'],
             'services' => $details['services'],
             'bookings' => $details['bookings'],
+            'kyc' => $details['kyc'],
         ]);
     }
 

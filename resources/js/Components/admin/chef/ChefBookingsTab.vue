@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-4">
     <h3 class="text-lg font-semibold text-gray-800 dark:text-white">{{ t('chefs.recentBookings') }}</h3>
-    
+
     <div v-if="bookings.length > 0" class="overflow-x-auto">
       <table class="w-full text-sm">
         <thead>
@@ -14,6 +14,7 @@
             <th class="px-4 py-3 text-right font-medium text-gray-500">{{ t('chefs.hours') }}</th>
             <th class="px-4 py-3 text-right font-medium text-gray-500">{{ t('chefs.amount') }}</th>
             <th class="px-4 py-3 text-right font-medium text-gray-500">{{ t('common.status') }}</th>
+            <th class="px-4 py-3 text-right font-medium text-gray-500">{{ t('common.actions') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -49,19 +50,38 @@
                 {{ t(`booking.${booking.booking_status}`) }}
               </span>
             </td>
+            <td class="px-4 py-3">
+              <button
+                v-if="booking.booking_status === 'rejected' && booking.rejection_reason"
+                @click="showRejectionReason(booking.rejection_reason)"
+                class="text-error-600 hover:text-error-700 dark:text-error-400 dark:hover:text-error-300 text-sm font-medium"
+              >
+                {{ t('booking.viewReason') }}
+              </button>
+              <span v-else class="text-gray-400 text-sm">-</span>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
-    
+
     <div v-else class="rounded-xl border border-gray-200 bg-gray-50 p-8 text-center dark:border-gray-800 dark:bg-gray-800/50">
       <p class="text-gray-500 dark:text-gray-400">{{ t('chefs.noBookings') }}</p>
     </div>
+
+    <!-- Rejection Reason Modal -->
+    <RejectionReasonModal
+      :isOpen="isRejectionModalOpen"
+      :rejectionReason="selectedRejectionReason"
+      @close="closeRejectionModal"
+    />
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import RejectionReasonModal from '@/Components/modals/RejectionReasonModal.vue'
 
 const { t } = useI18n()
 
@@ -71,6 +91,19 @@ defineProps({
     required: true
   }
 })
+
+const isRejectionModalOpen = ref(false)
+const selectedRejectionReason = ref('')
+
+const showRejectionReason = (reason) => {
+  selectedRejectionReason.value = reason
+  isRejectionModalOpen.value = true
+}
+
+const closeRejectionModal = () => {
+  isRejectionModalOpen.value = false
+  selectedRejectionReason.value = ''
+}
 
 const arabicMonths = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
 

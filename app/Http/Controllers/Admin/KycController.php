@@ -154,6 +154,48 @@ class KycController extends Controller
         return $kycService->streamDocument($kyc, true);
     }
 
+    /**
+     * Download a specific certificate from KYC
+     *
+     * @param Kyc $kyc
+     * @param string $type
+     * @param KycService $kycService
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    public function downloadCertificate(Kyc $kyc, string $type, KycService $kycService)
+    {
+        // Validate certificate type
+        $validTypes = ['identity_document', 'health_certificate', 'professional_certificate'];
+        if (!in_array($type, $validTypes)) {
+            abort(422, __('Invalid certificate type.'));
+        }
+
+        // Get certificate data
+        $certificate = $kycService->getCertificatesByType($kyc, $type);
+
+        if (!$certificate) {
+            abort(404, __('Certificate not found.'));
+        }
+
+        $path = $certificate['path'] ?? null;
+
+        if (!$path) {
+            abort(404, __('Certificate file path not found.'));
+        }
+
+        // Stream the file
+        if (!\Illuminate\Support\Facades\Storage::disk('local')->exists($path)) {
+            abort(404, __('Certificate file not found.'));
+        }
+
+        $fileName = basename($path);
+        $mimeType = \Illuminate\Support\Facades\Storage::disk('local')->mimeType($path);
+
+        return \Illuminate\Support\Facades\Storage::disk('local')->download($path, $fileName, [
+            'Content-Type' => $mimeType,
+        ]);
+    }
+
     // NOTE: user selection is provided inline in create/edit methods to follow the
     // same pattern used elsewhere (e.g. governorates for selection). This avoids
     // having a shared helper method and keeps the logic local to the controller

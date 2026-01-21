@@ -1,170 +1,213 @@
-# Chef Services API - Postman Collection
+# System Enhancements API - Postman Collection
 
-هذا المجلد يحتوي على مجموعة Postman لاختبار API خدمات الطهاة.
+## 📦 الملفات المتوفرة
 
-## الملفات المتضمنة
+1. **System_Enhancements_API.postman_collection.json** - مجموعة Postman الأساسية
+2. **SYSTEM_ENHANCEMENTS_ENDPOINTS.md** - توثيق شامل لجميع الـ endpoints
 
-1. **Chef_Services_API.postman_collection.json** - مجموعة Postman الرئيسية
-2. **Chef_Services_Environment.postman_environment.json** - بيئة العمل مع المتغيرات
-3. **README.md** - هذا الملف
+## 🚀 كيفية الاستخدام
 
-## كيفية الاستخدام
-
-### 1. استيراد الملفات إلى Postman
+### 1. استيراد المجموعة إلى Postman
 
 1. افتح Postman
-2. اضغط على "Import" في الزاوية العلوية اليسرى
-3. اسحب وأفلت الملفين أو اختر "Upload Files"
-4. استورد كلاً من:
-   - `Chef_Services_API.postman_collection.json`
-   - `Chef_Services_Environment.postman_environment.json`
+2. اضغط على **Import**
+3. اختر ملف `System_Enhancements_API.postman_collection.json`
+4. ستظهر المجموعة في قائمة Collections
 
-### 2. تفعيل البيئة
+### 2. إعداد المتغيرات
 
-1. في الزاوية العلوية اليمنى، اختر "Chef Services Environment"
-2. تأكد من أن `base_url` يشير إلى الخادم الصحيح
+المجموعة تحتوي على متغيرات جاهزة:
 
-### 3. الحصول على رمز المصادقة
+- `base_url`: https://monchef.codebrains.net/api
+- `auth_token`: سيتم ملؤه تلقائياً بعد تسجيل الدخول
+- `booking_id`: يمكنك تعديله حسب الحاجة
 
-1. انتقل إلى مجلد "Authentication"
-2. شغل طلب "Login (Get Token)"
-3. سيتم حفظ الرمز تلقائياً في متغير `auth_token`
+### 3. سير العمل الموصى به
 
-## هيكل المجموعة
+#### الخطوة 1: تسجيل الدخول
 
-### 📁 Public Endpoints
-- **Get All Chef Services** - جلب قائمة الخدمات العامة (لا يحتاج مصادقة)
-- **Get Single Chef Service** - جلب خدمة واحدة (لا يحتاج مصادقة)
+```
+POST /login
+```
 
-### 📁 Protected Endpoints
-- **Create Chef Service** - إنشاء خدمة جديدة
-- **Update Chef Service** - تحديث خدمة موجودة
-- **Delete Chef Service** - حذف خدمة
-- **Activate Chef Service** - تفعيل خدمة
-- **Deactivate Chef Service** - تعطيل خدمة
+- سيتم حفظ الـ token تلقائياً في المتغير `auth_token`
+- جميع الطلبات التالية ستستخدم هذا الـ token
 
-### 📁 Search & Filter Examples
-- **Search Services by Name** - البحث بالاسم
-- **Filter by Chef ID** - فلترة حسب معرف الطاهي
-- **Filter by Service Type** - فلترة حسب نوع الخدمة
-- **Combined Filters** - استخدام عدة فلاتر معاً
+#### الخطوة 2: اختبار الـ Endpoints
 
-### 📁 Authentication
-- **Login (Get Token)** - تسجيل الدخول والحصول على رمز المصادقة
+**للمستخدمين العاديين:**
 
-## المتغيرات المتاحة
+- Get User Profile
+- Update User Profile
 
-| المتغير | الوصف | القيمة الافتراضية |
-|---------|--------|------------------|
-| `base_url` | رابط API الأساسي | `http://localhost:8000/api` |
-| `auth_token` | رمز المصادقة | (يتم ملؤه تلقائياً بعد تسجيل الدخول) |
-| `chef_id` | معرف الطاهي للاختبار | `1` |
-| `service_id` | معرف الخدمة للاختبار | `1` |
+**للشيفات:**
 
-## أمثلة على الاستخدام
+- Get Chef Profile
+- Update Chef Profile
+- Upload KYC Certificates
+- Reject Bookings
 
-### 1. إنشاء خدمة جديدة
+## 📋 الـ Endpoints المتوفرة
+
+### 1. Authentication - المصادقة ✅
+
+- ✅ Login - تسجيل الدخول
+- ✅ Get Current User
+- ✅ Logout
+
+### 2. Booking Rejection - رفض الحجوزات (يحتاج إضافة يدوية)
 
 ```json
 {
-    "chef_id": 1,
-    "name": "خدمة طبخ منزلي",
-    "description": "خدمة طبخ وجبات منزلية شهية",
-    "service_type": "hourly",
-    "hourly_rate": 150.00,
-    "min_hours": 2,
-    "max_guests_included": 4,
-    "allow_extra_guests": true,
-    "extra_guest_price": 25.00,
-    "is_active": true,
-    "tags": [1, 2, 3]
+    "name": "Reject Booking",
+    "request": {
+        "method": "POST",
+        "url": "{{base_url}}/chef/bookings/{{booking_id}}/reject",
+        "body": {
+            "rejection_reason": "عذراً، لدي التزام آخر"
+        }
+    }
 }
 ```
 
-### 2. البحث والفلترة
+### 3. User Profile - الملف الشخصي (يحتاج إضافة يدوية)
 
-- البحث: `?search=طبخ`
-- فلترة حسب الطاهي: `?chef_id=1`
-- فلترة حسب النوع: `?service_type=hourly`
-- فلترة حسب الحالة: `?is_active=1`
-- ترقيم الصفحات: `?per_page=10`
-
-### 3. رفع الصور
-
-عند إنشاء أو تحديث خدمة، يمكن رفع:
-- **feature_image**: الصورة المميزة (ملف واحد)
-- **service_images[]**: صور المعرض (عدة ملفات)
-
-### 4. حذف الصور
-
-عند التحديث، يمكن حذف الصور الموجودة:
 ```json
 {
-    "delete_service_image_ids": [1, 2, 3]
+    "name": "Update User Profile",
+    "request": {
+        "method": "POST",
+        "url": "{{base_url}}/profile",
+        "body": {
+            "first_name": "أحمد",
+            "last_name": "محمد",
+            "email": "ahmed@example.com",
+            "phone_number": "+967777777777"
+        }
+    }
 }
 ```
 
-## أنواع الخدمات
+### 4. Chef Profile - ملف الشيف (يحتاج إضافة يدوية)
 
-### خدمة بالساعة (hourly)
 ```json
 {
-    "service_type": "hourly",
-    "hourly_rate": 150.00,
-    "min_hours": 2
+    "name": "Update Chef Profile",
+    "request": {
+        "method": "POST",
+        "url": "{{base_url}}/chef/profile",
+        "body": {
+            "name": "الشيف أحمد",
+            "base_hourly_rate": 50.0
+        }
+    }
 }
 ```
 
-### خدمة بالباقة (package)
+### 5. KYC Certificates - شهادات التحقق (يحتاج إضافة يدوية)
+
+```
+POST {{base_url}}/chef/kyc/certificates
+Content-Type: multipart/form-data
+
+certificate_type: identity_document
+file: [اختر ملف]
+```
+
+## 🔧 إضافة Endpoints يدوياً
+
+نظراً لقيود حجم الملف، يمكنك إضافة الـ endpoints المتبقية يدوياً:
+
+### إضافة Request جديد:
+
+1. افتح المجموعة في Postman
+2. اضغط على **Add Request**
+3. املأ البيانات:
+    - **Name**: اسم الـ endpoint
+    - **Method**: GET/POST/DELETE
+    - **URL**: {{base_url}}/endpoint-path
+    - **Headers**: Content-Type: application/json (إذا لزم)
+    - **Body**: البيانات المطلوبة
+
+### مثال: إضافة Reject Booking
+
+1. اضغط **Add Request** في مجلد "2. Booking Rejection"
+2. Name: `Reject Booking`
+3. Method: `POST`
+4. URL: `{{base_url}}/chef/bookings/1/reject`
+5. Body (raw JSON):
+
 ```json
 {
-    "service_type": "package",
-    "package_price": 500.00
+    "rejection_reason": "عذراً، لدي التزام آخر في هذا الوقت"
 }
 ```
 
-## رموز الاستجابة
+## 📝 ملاحظات مهمة
 
-| الرمز | المعنى |
-|-------|--------|
-| 200 | نجح الطلب |
-| 201 | تم الإنشاء بنجاح |
-| 401 | غير مصرح |
-| 403 | ممنوع |
-| 404 | غير موجود |
-| 422 | خطأ في التحقق |
-| 500 | خطأ في الخادم |
+### Authentication
 
-## ملاحظات مهمة
+- جميع الـ endpoints تتطلب Bearer Token ما عدا `/login`
+- الـ token يُحفظ تلقائياً بعد تسجيل الدخول
+- إذا انتهت صلاحية الـ token، قم بتسجيل الدخول مرة أخرى
 
-1. **المصادقة**: الطلبات المحمية تحتاج رمز Bearer token
-2. **رفع الملفات**: استخدم `form-data` عند رفع الصور
-3. **التحديث**: استخدم `_method: PUT` مع `form-data` للتحديث مع الملفات
-4. **الفلترة**: جميع المعاملات اختيارية في طلبات البحث
-5. **الترقيم**: استخدم `per_page` للتحكم في عدد النتائج
+### Validation Rules
 
-## استكشاف الأخطاء
+- **rejection_reason**: 1-500 حرف، لا يمكن أن يكون مسافات فقط
+- **email**: يجب أن يكون فريد في النظام
+- **phone_number**: يجب أن يكون فريد في النظام
+- **certificate file**: حد أقصى 5MB، صيغ مسموحة: jpg, jpeg, png, pdf
 
-### خطأ 401 (Unauthorized)
-- تأكد من وجود رمز المصادقة
-- تأكد من صحة الرمز (قم بتسجيل الدخول مرة أخرى)
+### Error Handling
 
-### خطأ 422 (Validation Error)
-- تحقق من البيانات المرسلة
-- تأكد من وجود الحقول المطلوبة
-- تحقق من صيغة البيانات
+- **401**: غير مصرح (تحتاج تسجيل دخول)
+- **403**: ممنوع (ليس لديك صلاحية)
+- **422**: خطأ في البيانات المدخلة
+- **404**: المورد غير موجود
 
-### خطأ 404 (Not Found)
-- تأكد من وجود المورد المطلوب
-- تحقق من معرف الخدمة أو الطاهي
+## 🎯 أمثلة سريعة
 
-## التطوير والاختبار
+### مثال 1: تسجيل دخول وتحديث ملف شخصي
 
-لاختبار شامل للـ API:
+```
+1. POST /login → احصل على token
+2. POST /profile → حدّث البيانات
+3. GET /profile → تحقق من التحديث
+```
 
-1. ابدأ بتسجيل الدخول
-2. اختبر الطلبات العامة (بدون مصادقة)
-3. اختبر إنشاء خدمة جديدة
-4. اختبر التحديث والحذف
-5. اختبر البحث والفلترة
-6. اختبر التفعيل والتعطيل
+### مثال 2: رفع شهادة KYC
+
+```
+1. POST /login (كشيف)
+2. POST /chef/kyc/certificates (رفع شهادة)
+3. GET /chef/kyc/certificates (عرض جميع الشهادات)
+```
+
+### مثال 3: رفض حجز
+
+```
+1. POST /login (كشيف)
+2. POST /chef/bookings/1/reject (رفض مع سبب)
+3. GET /bookings/1 (تحقق من سبب الرفض)
+```
+
+## 📚 مصادر إضافية
+
+- **SYSTEM_ENHANCEMENTS_ENDPOINTS.md**: توثيق تفصيلي لكل endpoint
+- **routes/api.php**: ملف الـ routes الكامل
+- **.kiro/specs/system-enhancements/**: مواصفات المشروع الكاملة
+
+## 🆘 المساعدة
+
+إذا واجهت مشاكل:
+
+1. تأكد من أن الـ token صالح
+2. تحقق من نوع المستخدم (user/chef)
+3. راجع رسائل الأخطاء في Response
+4. تأكد من صحة البيانات المرسلة
+
+---
+
+**تم إنشاؤه بواسطة**: System Enhancements Team  
+**التاريخ**: 2025-01-20  
+**الإصدار**: 1.0

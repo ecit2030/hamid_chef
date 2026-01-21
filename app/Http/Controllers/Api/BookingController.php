@@ -6,6 +6,7 @@ use App\DTOs\BookingDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\UpdateBookingRequest;
+use App\Http\Requests\BookingRejectionRequest;
 use App\Services\BookingService;
 use App\Http\Traits\ExceptionHandler;
 use App\Http\Traits\SuccessResponse;
@@ -292,7 +293,7 @@ class BookingController extends Controller
     /**
      * رفض الحجز (للطاهي)
      */
-    public function reject(BookingService $bookingService, Request $request, $id)
+    public function reject(BookingRejectionRequest $request, BookingService $bookingService, $id)
     {
         try {
             $booking = $bookingService->findForUser($id, $request->user()->id);
@@ -313,7 +314,11 @@ class BookingController extends Controller
                 ], 422);
             }
 
-            $rejected = $bookingService->reject($id);
+            // Get validated rejection reason from request
+            $rejectionReason = $request->validated()['rejection_reason'];
+
+            // Reject booking with reason
+            $rejected = $bookingService->rejectWithReason($id, $rejectionReason);
 
             return $this->updatedResponse(
                 BookingDTO::fromModel($rejected)->toArray(),

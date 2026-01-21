@@ -41,6 +41,10 @@ Route::get('locations/governorates/{id}/districts', [App\Http\Controllers\Api\Lo
 Route::get('locations/districts/{id}/areas', [App\Http\Controllers\Api\LocationController::class, 'areas']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    // Profile Management
+    Route::get('profile', [App\Http\Controllers\Api\ProfileController::class, 'show']);
+    Route::post('profile', [App\Http\Controllers\Api\ProfileController::class, 'update']);
+
     Route::apiResource('addresses', App\Http\Controllers\Api\AddressController::class);
     Route::post('addresses/{address}/activate', [App\Http\Controllers\Api\AddressController::class, 'activate']);
     Route::post('addresses/{address}/deactivate', [App\Http\Controllers\Api\AddressController::class, 'deactivate']);
@@ -70,7 +74,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Show rating for authenticated user (optionally by booking_id)
     Route::get('chef-service-ratings/user/{userId}', [App\Http\Controllers\Api\ChefServiceRatingController::class, 'showByUser'])
         ->name('chef-service-ratings.user');
-    
+
     // Booking API Routes with Rate Limiting
     Route::middleware('App\Http\Middleware\BookingRateLimitMiddleware:general_api')->group(function () {
         Route::get('bookings', [App\Http\Controllers\Api\BookingController::class, 'index']);
@@ -82,13 +86,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('bookings/{booking}', [App\Http\Controllers\Api\BookingController::class, 'destroy']);
         Route::get('chefs/{chef}/bookings', [App\Http\Controllers\Api\BookingController::class, 'getChefBookings']);
     });
-    
+
     // Booking Creation with Stricter Rate Limiting
     Route::middleware('App\Http\Middleware\BookingRateLimitMiddleware:booking_creation')->group(function () {
         Route::post('bookings', [App\Http\Controllers\Api\BookingController::class, 'store']);
         Route::post('bookings/validate', [App\Http\Controllers\Api\BookingController::class, 'validateBooking']);
     });
-    
+
     // Availability Check with Higher Rate Limit
     Route::middleware('App\Http\Middleware\BookingRateLimitMiddleware:availability_check')->group(function () {
         Route::get('chefs/{chef}/availability', [App\Http\Controllers\Api\BookingController::class, 'checkAvailability']);
@@ -107,10 +111,20 @@ Route::get('chefs/{chef}/ratings', [App\Http\Controllers\Api\ChefServiceRatingCo
 
 Route::group(['prefix' => 'chef', 'middleware' => ['auth:sanctum', 'user_role:chef']], function () {
 
+    // Chef Profile Management
+    Route::get('profile', [App\Http\Controllers\Api\ChefProfileController::class, 'show']);
+    Route::post('profile', [App\Http\Controllers\Api\ChefProfileController::class, 'update']);
+
     // KYCs API
     Route::apiResource('kycs', App\Http\Controllers\Api\KycController::class);
     Route::get('kycs/{kyc}/document/view', [App\Http\Controllers\Api\KycController::class, 'viewDocument']);
     Route::get('kycs/{kyc}/document/download', [App\Http\Controllers\Api\KycController::class, 'downloadDocument']);
+
+    // KYC Certificates API
+    Route::post('kyc/certificates', [App\Http\Controllers\Api\KycCertificateController::class, 'store'])->name('api.kyc.certificates.store');
+    Route::get('kyc/certificates', [App\Http\Controllers\Api\KycCertificateController::class, 'index'])->name('api.kyc.certificates.index');
+    Route::delete('kyc/certificates/{type}', [App\Http\Controllers\Api\KycCertificateController::class, 'destroy'])->name('api.kyc.certificates.destroy');
+    Route::get('kyc/certificates/download/{path}', [App\Http\Controllers\Api\KycCertificateController::class, 'download'])->name('api.kyc.certificates.download');
 
     // Chefs API (protected actions only; index/show are public)
     Route::apiResource('chefs', App\Http\Controllers\Api\ChefController::class)->except(['index', 'show']);

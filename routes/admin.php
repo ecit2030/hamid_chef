@@ -130,6 +130,8 @@ Route::middleware('auth:admin')
             ->name('kycs.document.view');
         Route::get('kycs/{kyc}/document/download', [KycController::class, 'downloadDocument'])
             ->name('kycs.document.download');
+        Route::get('kycs/{kyc}/certificates/{type}/download', [KycController::class, 'downloadCertificate'])
+            ->name('kyc.certificates.download');
         Route::resource('kycs', KycController::class)
             ->names('kycs');
 
@@ -146,6 +148,9 @@ Route::middleware('auth:admin')
         // Bookings
         Route::resource('bookings', App\Http\Controllers\Admin\BookingController::class)
             ->names('bookings');
+
+        Route::post('bookings/{id}/reject', [App\Http\Controllers\Admin\BookingController::class, 'reject'])
+            ->name('bookings.reject');
 
         Route::post('bookings/bulk-update', [App\Http\Controllers\Admin\BookingController::class, 'bulkUpdate'])
             ->name('bookings.bulk-update');
@@ -279,27 +284,27 @@ Route::middleware('auth:admin')
                 ->name('bookings');
             Route::get('/bookings/export', [App\Http\Controllers\Admin\ReportController::class, 'exportBookings'])
                 ->name('bookings.export');
-            
+
             Route::get('/customers', [App\Http\Controllers\Admin\ReportController::class, 'customers'])
                 ->name('customers');
             Route::get('/customers/export', [App\Http\Controllers\Admin\ReportController::class, 'exportCustomers'])
                 ->name('customers.export');
-            
+
             Route::get('/chefs', [App\Http\Controllers\Admin\ReportController::class, 'chefs'])
                 ->name('chefs');
             Route::get('/chefs/export', [App\Http\Controllers\Admin\ReportController::class, 'exportChefs'])
                 ->name('chefs.export');
-            
+
             Route::get('/services', [App\Http\Controllers\Admin\ReportController::class, 'services'])
                 ->name('services');
             Route::get('/services/export', [App\Http\Controllers\Admin\ReportController::class, 'exportServices'])
                 ->name('services.export');
-            
+
             Route::get('/earnings', [App\Http\Controllers\Admin\ReportController::class, 'earnings'])
                 ->name('earnings');
             Route::get('/earnings/export', [App\Http\Controllers\Admin\ReportController::class, 'exportEarnings'])
                 ->name('earnings.export');
-            
+
             Route::get('/transactions', [App\Http\Controllers\Admin\ReportController::class, 'transactions'])
                 ->name('transactions');
             Route::get('/transactions/export', [App\Http\Controllers\Admin\ReportController::class, 'exportTransactions'])

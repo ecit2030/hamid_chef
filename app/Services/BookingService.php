@@ -80,7 +80,7 @@ class BookingService
 
         // Use conflict service for safe creation
         $result = $this->conflictService->createBookingWithLocking($bookingDTO);
-        
+
         if (!$result['success']) {
             throw new \Exception($result['message'], 409);
         }
@@ -96,10 +96,10 @@ class BookingService
     public function update($id, array $attributes)
     {
         $existingBooking = $this->bookings->findOrFail($id);
-        
+
         // Check if time-related fields are being updated
-        $timeFieldsChanged = isset($attributes['date']) || 
-                           isset($attributes['start_time']) || 
+        $timeFieldsChanged = isset($attributes['date']) ||
+                           isset($attributes['start_time']) ||
                            isset($attributes['hours_count']);
 
         if ($timeFieldsChanged) {
@@ -154,7 +154,7 @@ class BookingService
     public function cancel($id, string $reason = 'cancelled_by_customer'): bool
     {
         $booking = $this->bookings->findOrFail($id);
-        
+
         // Update booking status to cancelled
         $result = $this->bookings->update($id, [
             'booking_status' => $reason,
@@ -180,8 +180,8 @@ class BookingService
     public function getChefBookingsForDate(int $chefId, string $date): array
     {
         $bookings = $this->bookings->getChefBookingsInRange(
-            $chefId, 
-            Carbon::parse($date), 
+            $chefId,
+            Carbon::parse($date),
             Carbon::parse($date)
         );
 
@@ -244,8 +244,8 @@ class BookingService
     public function updateModel($booking, array $attributes)
     {
         // Check if time-related fields are being updated
-        $timeFieldsChanged = isset($attributes['date']) || 
-                           isset($attributes['start_time']) || 
+        $timeFieldsChanged = isset($attributes['date']) ||
+                           isset($attributes['start_time']) ||
                            isset($attributes['hours_count']);
 
         if ($timeFieldsChanged) {
@@ -305,14 +305,37 @@ class BookingService
 
     /**
      * Reject a booking (for chef)
+     *
+     * @param int $id Booking ID
+     * @param string|null $rejectionReason Optional rejection reason
+     * @return mixed Updated booking model
      */
-    public function reject($id)
+    public function reject($id, ?string $rejectionReason = null)
     {
-        return $this->bookings->update($id, [
+        $updateData = [
             'booking_status' => 'rejected',
             'is_active' => false,
             'updated_at' => now()
-        ]);
+        ];
+
+        // Add rejection reason if provided
+        if ($rejectionReason !== null) {
+            $updateData['rejection_reason'] = $rejectionReason;
+        }
+
+        return $this->bookings->update($id, $updateData);
+    }
+
+    /**
+     * Reject a booking with a required reason
+     *
+     * @param int $id Booking ID
+     * @param string $rejectionReason Rejection reason (required)
+     * @return mixed Updated booking model
+     */
+    public function rejectWithReason($id, string $rejectionReason)
+    {
+        return $this->reject($id, $rejectionReason);
     }
 
     /**

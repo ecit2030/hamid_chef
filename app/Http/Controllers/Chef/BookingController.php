@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Chef;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BookingRejectionRequest;
 use App\Models\Booking;
 use App\Services\BookingService;
 use App\DTOs\BookingDTO;
@@ -84,9 +85,9 @@ class BookingController extends Controller
     {
         $user = Auth::guard('chef')->user();
         $chef = $user->chef;
-        
+
         $booking = Booking::findOrFail($id);
-        
+
         // Ensure the booking belongs to this chef
         if ($booking->chef_id !== $chef->id) {
             abort(403);
@@ -100,20 +101,23 @@ class BookingController extends Controller
     /**
      * Reject a pending booking.
      */
-    public function reject(Request $request, int $id)
+    public function reject(BookingRejectionRequest $request, int $id)
     {
         $user = Auth::guard('chef')->user();
         $chef = $user->chef;
-        
+
         $booking = Booking::findOrFail($id);
-        
+
         // Ensure the booking belongs to this chef
         if ($booking->chef_id !== $chef->id) {
             abort(403);
         }
 
-        $reason = $request->input('reason', '');
-        $this->bookingService->reject($id, $reason);
+        // Get validated rejection reason from request
+        $rejectionReason = $request->validated()['rejection_reason'];
+
+        // Reject booking with reason
+        $this->bookingService->rejectWithReason($id, $rejectionReason);
 
         return back()->with('success', __('booking.rejected_successfully'));
     }
@@ -125,9 +129,9 @@ class BookingController extends Controller
     {
         $user = Auth::guard('chef')->user();
         $chef = $user->chef;
-        
+
         $booking = Booking::findOrFail($id);
-        
+
         // Ensure the booking belongs to this chef
         if ($booking->chef_id !== $chef->id) {
             abort(403);

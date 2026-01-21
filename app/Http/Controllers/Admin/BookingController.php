@@ -30,9 +30,9 @@ class BookingController extends Controller
         try {
             $perPage = $request->get('per_page', 9);
             $with = ['customer', 'chef', 'service', 'address'];
-            
+
             $bookings = $bookingService->paginate($perPage, $with);
-            
+
             return Inertia::render('Admin/Bookings/Index', [
                 'bookings' => $bookings,
                 'filters' => $request->only(['search', 'status', 'chef_id', 'date_from', 'date_to'])
@@ -51,7 +51,7 @@ class BookingController extends Controller
         $chefs = \App\Models\Chef::where('is_active', true)->get(['id', 'name', 'email']);
         $addresses = \App\Models\Address::where('is_active', true)->with('user:id,first_name,last_name')->get(['id', 'user_id', 'address', 'label']);
         $chefServices = \App\Models\ChefService::with('chef')->where('is_active', true)->get([
-            'id', 'chef_id', 'name', 'service_type', 'hourly_rate', 'package_price', 
+            'id', 'chef_id', 'name', 'service_type', 'hourly_rate', 'package_price',
             'min_hours', 'max_guests_included', 'allow_extra_guests', 'extra_guest_price'
         ]);
 
@@ -124,7 +124,7 @@ class BookingController extends Controller
     {
         try {
             $booking = $bookingService->find($id, ['customer', 'chef', 'service', 'address', 'transactions', 'rating']);
-            
+
             return Inertia::render('Admin/Bookings/Show', [
                 'booking' => BookingDTO::fromModel($booking)->toArray()
             ]);
@@ -140,11 +140,11 @@ class BookingController extends Controller
     {
         try {
             $booking = $bookingService->find($id, ['customer', 'chef', 'service', 'address']);
-            
+
             $customers = \App\Models\User::where('user_type', 'customer')->get(['id', 'first_name', 'last_name', 'email']);
             $chefs = \App\Models\Chef::where('is_active', true)->get(['id', 'name', 'email']);
             $addresses = \App\Models\Address::where('is_active', true)->get(['id', 'address']);
-            
+
             return Inertia::render('Admin/Bookings/Edit', [
                 'booking' => BookingDTO::fromModel($booking)->toArray(),
                 'customers' => $customers,
@@ -173,10 +173,10 @@ class BookingController extends Controller
                            ->with('success', 'Booking updated successfully');
 
         } catch (\Exception $e) {
-            $errorMessage = $e->getCode() === 409 ? 
+            $errorMessage = $e->getCode() === 409 ?
                 'Booking update conflicts with existing reservations: ' . $e->getMessage() :
                 'Error updating booking: ' . $e->getMessage();
-            
+
             return back()->withErrors(['error' => $errorMessage])
                         ->withInput();
         }
@@ -270,6 +270,26 @@ class BookingController extends Controller
     }
 
     /**
+     * Reject a booking with reason
+     */
+    public function reject(int $id, Request $request, BookingService $bookingService): RedirectResponse
+    {
+        $request->validate([
+            'rejection_reason' => 'required|string|min:1|max:500',
+        ]);
+
+        try {
+            $booking = $bookingService->rejectWithReason($id, $request->rejection_reason);
+
+            return redirect()->route('admin.bookings.show', $id)
+                           ->with('success', 'Booking rejected successfully');
+
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Error rejecting booking: ' . $e->getMessage()]);
+        }
+    }
+
+    /**
      * Bulk update booking statuses
      */
     public function bulkUpdate(Request $request, BookingService $bookingService)
@@ -278,7 +298,7 @@ class BookingController extends Controller
             'booking_ids' => 'required|array',
             'booking_ids.*' => 'integer|exists:bookings,id',
             'action' => 'required|in:accept,reject,cancel',
-            'reason' => 'nullable|string|max:500'
+            'rejection_reason' => 'required_if:action,reject|nullable|string|min:1|max:500'
         ]);
 
         try {
@@ -295,11 +315,7 @@ class BookingController extends Controller
                             ]);
                             break;
                         case 'reject':
-                            $bookingService->update($bookingId, [
-                                'booking_status' => 'rejected',
-                                'notes' => $request->reason,
-                                'updated_by' => Auth::id()
-                            ]);
+                            $bookingService->rejectWithReason($bookingId, $request->rejection_reason);
                             break;
                         case 'cancel':
                             $bookingService->cancel($bookingId, 'cancelled_by_admin');

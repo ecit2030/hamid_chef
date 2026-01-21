@@ -36,6 +36,7 @@ class ChefDetailsService
             'vacations' => $this->getVacations($chef),
             'services' => $this->getServices($chef),
             'bookings' => $this->getRecentBookings($chef),
+            'kyc' => $this->getKycData($chef),
         ];
     }
 
@@ -72,13 +73,13 @@ class ChefDetailsService
             5 => 'thursday',
             6 => 'friday',
         ];
-        
+
         $grouped = $chef->workingHours()
             ->orderByRaw("FIELD(day_of_week, 0, 1, 2, 3, 4, 5, 6)")
             ->orderBy('start_time')
             ->get()
             ->groupBy('day_of_week');
-        
+
         // Convert to array format that preserves keys in JSON
         $result = [];
         foreach ($grouped as $dayNumber => $slots) {
@@ -93,7 +94,7 @@ class ChefDetailsService
                 ];
             })->values()->toArray();
         }
-        
+
         return $result;
     }
 
@@ -170,8 +171,8 @@ class ChefDetailsService
             ->map(function($booking) {
                 return [
                     'id' => $booking->id,
-                    'customer_name' => $booking->customer 
-                        ? $booking->customer->first_name . ' ' . $booking->customer->last_name 
+                    'customer_name' => $booking->customer
+                        ? $booking->customer->first_name . ' ' . $booking->customer->last_name
                         : '-',
                     'service_name' => $booking->service?->name ?? '-',
                     'date' => $booking->date,
@@ -185,5 +186,50 @@ class ChefDetailsService
             })
             ->values()
             ->toArray();
+    }
+
+    /**
+     * Get KYC data with certificates
+     *
+     * @param Chef $chef
+     * @return array|null
+     */
+    protected function getKycData(Chef $chef): ?array
+    {
+        $kyc = $chef->user->kyc ?? null;
+
+        if (!$kyc) {
+            return null;
+        }
+
+        $certificates = $kyc->certificates ?? [];
+        $certificatesFormatted = [];
+
+        // Format certificates with download URLs
+        foreach ($certificates as $type => $certificate) {
+            $certificatesFormatted[$type] = [
+                'path' => $certificate['path'] ?? null,
+                'uploaded_at' => $certificate['uploaded_at'] ?? null,
+                'file_type' => $certificate['file_type'] ?? null,
+                'download_url' => $certificate['path']
+                    ? route('admin.kyc.certificates.download', ['kyc' => $kyc->id, 'type' => $type])
+                    : null,
+            ];
+        }
+
+        return [
+            'id' => $kyc->id,
+            'status' => $kyc->status,
+            'rejected_reason' => $kyc->rejected_reason,
+            'verified_at' => $kyc->verified_at?->format('Y-m-d H:i'),
+            'full_name' => $kyc->full_name,
+            'gender' => $kyc->gender,
+            'date_of_birth' => $kyc->date_of_birth?->format('Y-m-d'),
+            'address' => $kyc->address,
+            'document_type' => $kyc->document_type,
+            'certificates' => $certificatesFormatted,
+            'created_at' => $kyc->created_at?->format('Y-m-d H:i'),
+            'updated_at' => $kyc->updated_at?->format('Y-m-d H:i'),
+        ];
     }
 }

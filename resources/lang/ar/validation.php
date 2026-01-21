@@ -155,6 +155,14 @@ return [
     'uppercase'              => 'يجب أن يحتوي الحقل :attribute على حروف كبيرة.',
     'url'                    => 'صيغة رابط حقل :attribute غير صحيحة.',
     'uuid'                   => 'حقل :attribute يجب أن يكون بصيغة UUID سليمة.',
+
+    // Booking rejection reason validation messages
+    'rejection_reason_required' => 'سبب الرفض مطلوب.',
+    'rejection_reason_string' => 'يجب أن يكون سبب الرفض نصاً.',
+    'rejection_reason_min' => 'يجب أن يحتوي سبب الرفض على حرف واحد على الأقل.',
+    'rejection_reason_max' => 'يجب ألا يتجاوز سبب الرفض :max حرفاً.',
+    'rejection_reason_whitespace' => 'لا يمكن أن يحتوي سبب الرفض على مسافات فارغة فقط.',
+
     // KYC-specific messages (kept here per repository convention)
     'kyc' => [
         'errors' => [
