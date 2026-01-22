@@ -85,6 +85,7 @@ class BookingController extends Controller
                 $validated['commission_amount'] ?? 0,
                 'pending',
                 'pending',
+                null, // rejection_reason
                 $validated['notes'] ?? null,
                 true,
                 $validated['created_by'],
