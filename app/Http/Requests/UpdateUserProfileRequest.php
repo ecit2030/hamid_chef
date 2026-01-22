@@ -42,7 +42,7 @@ class UpdateUserProfileRequest extends FormRequest
                 Rule::unique('users', 'email')->ignore($userId),
             ],
             'address' => ['sometimes', 'string', 'max:500'],
-            'avatar' => ['sometimes', 'nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'avatar' => ['sometimes', 'nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
         ];
     }
 
@@ -68,6 +68,10 @@ class UpdateUserProfileRequest extends FormRequest
             'email.unique' => __('validation.unique', ['attribute' => __('validation.attributes.email')]),
             'address.string' => __('validation.string', ['attribute' => __('validation.attributes.address')]),
             'address.max' => __('validation.max.string', ['attribute' => __('validation.attributes.address'), 'max' => 500]),
+            'avatar.file' => __('validation.file', ['attribute' => 'avatar']),
+            'avatar.image' => __('validation.image', ['attribute' => 'avatar']),
+            'avatar.mimes' => __('validation.mimes', ['attribute' => 'avatar', 'values' => 'jpeg, png, jpg, gif, webp']),
+            'avatar.max' => __('validation.max.file', ['attribute' => 'avatar', 'max' => '2048']),
         ];
     }
 }

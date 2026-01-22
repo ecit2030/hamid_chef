@@ -72,6 +72,14 @@ class UserService
             unset($data['password']);
         }
 
+        // Log the data being updated for debugging
+        \Log::info('UserService::updateProfile', [
+            'user_id' => $user->id,
+            'data_keys' => array_keys($data),
+            'has_avatar' => isset($data['avatar']),
+            'avatar_type' => isset($data['avatar']) ? get_class($data['avatar']) : 'not set',
+        ]);
+
         // Handle avatar upload - BaseRepository will handle the file upload automatically
         // Just pass the UploadedFile instance and it will be processed
 

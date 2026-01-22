@@ -27,7 +27,24 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        $updatedUser = $this->userService->updateProfile($user, $request->validated());
+        // Get all validated data including files
+        $data = $request->validated();
+
+        // Ensure avatar file is included if present in request
+        if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
+            $data['avatar'] = $request->file('avatar');
+        }
+
+        // Log for debugging
+        \Log::info('ProfileController::update', [
+            'user_id' => $user->id,
+            'request_all_keys' => array_keys($request->all()),
+            'validated_keys' => array_keys($data),
+            'has_file_avatar' => $request->hasFile('avatar'),
+            'files' => array_keys($request->allFiles()),
+        ]);
+
+        $updatedUser = $this->userService->updateProfile($user, $data);
 
         return response()->json([
             'message' => __('Profile updated successfully'),
