@@ -34,6 +34,7 @@ class UpdateChefProfileRequest extends FormRequest
             'district_id' => ['sometimes', 'integer', 'exists:districts,id'],
             'area_id' => ['sometimes', 'integer', 'exists:areas,id'],
             'base_hourly_rate' => ['sometimes', 'numeric', 'min:0', 'max:9999.99'],
+            'avatar' => ['sometimes', 'nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
     }
 

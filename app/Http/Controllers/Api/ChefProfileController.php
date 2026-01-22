@@ -7,6 +7,9 @@ use App\Http\Requests\UpdateChefProfileRequest;
 use App\Http\Resources\ChefResource;
 use App\Services\ChefService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ChefProfileController extends Controller
 {
@@ -43,12 +46,64 @@ class ChefProfileController extends Controller
             ], 404);
         }
 
-        $updatedChef = $this->chefService->updateChefProfile($chef, $request->validated());
+        DB::beginTransaction();
 
-        return response()->json([
-            'message' => __('Chef profile updated successfully'),
-            'data' => new ChefResource($updatedChef),
-        ]);
+        try {
+            $data = $request->validated();
+
+            // Separate user data from chef data
+            $userData = [];
+            $chefData = [];
+
+            // User fields that should be updated in users table
+            $userFields = ['avatar'];
+
+            foreach ($data as $key => $value) {
+                if (in_array($key, $userFields)) {
+                    $userData[$key] = $value;
+                } else {
+                    $chefData[$key] = $value;
+                }
+            }
+
+            // Update user data if present (handle avatar upload)
+            if (!empty($userData)) {
+                foreach ($userData as $key => $value) {
+                    if ($value instanceof \Illuminate\Http\UploadedFile) {
+                        // Store file
+                        $filename = Str::uuid() . '.' . $value->getClientOriginalExtension();
+                        $path = $value->storeAs('users', $filename, 'public');
+
+                        // Delete old file if exists
+                        if ($user->$key && Storage::disk('public')->exists($user->$key)) {
+                            Storage::disk('public')->delete($user->$key);
+                        }
+
+                        $userData[$key] = $path;
+                    }
+                }
+
+                $user->update($userData);
+            }
+
+            // Update chef data if present
+            if (!empty($chefData)) {
+                $updatedChef = $this->chefService->updateChefProfile($chef, $chefData);
+            } else {
+                $updatedChef = $chef->fresh();
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'message' => __('Chef profile updated successfully'),
+                'data' => new ChefResource($updatedChef),
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     /**

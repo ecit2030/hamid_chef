@@ -15,14 +15,12 @@ class StoreChefServiceRequest extends FormRequest
 
     public function rules(): array
     {
-        return [
+        $rules = [
             // chef_id is NOT required - it will be auto-assigned from authenticated chef
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:2000',
             'service_type' => 'required|in:hourly,package',
-            'hourly_rate' => 'nullable|numeric|min:0',
             'min_hours' => 'nullable|integer|min:1',
-            'package_price' => 'nullable|numeric|min:0',
             'max_guests_included' => 'nullable|integer|min:1',
             'allow_extra_guests' => 'nullable|boolean',
             'extra_guest_price' => 'nullable|numeric|min:0',
@@ -37,6 +35,21 @@ class StoreChefServiceRequest extends FormRequest
             'equipment.*.name' => 'required_with:equipment.*|string|max:100',
             'equipment.*.is_included' => 'nullable|boolean',
         ];
+
+        // Conditional validation based on service_type
+        if ($this->input('service_type') === 'hourly') {
+            $rules['hourly_rate'] = 'required|numeric|min:0';
+        } else {
+            $rules['hourly_rate'] = 'nullable|numeric|min:0';
+        }
+
+        if ($this->input('service_type') === 'package') {
+            $rules['package_price'] = 'required|numeric|min:0';
+        } else {
+            $rules['package_price'] = 'nullable|numeric|min:0';
+        }
+
+        return $rules;
     }
 
     /**

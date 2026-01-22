@@ -452,30 +452,10 @@ class ChefService
         DB::beginTransaction();
 
         try {
-            // Normalize file attributes
+            // Normalize file attributes - BaseRepository will handle file uploads automatically
             $data = $this->normalizeFileAttributes($data);
 
-            // Handle logo upload if present
-            if (isset($data['logo']) && $data['logo'] instanceof UploadedFile) {
-                $data['logo'] = $this->chefs->uploadFile($data['logo'], 'chefs/logos', true);
-
-                // Delete old logo if exists
-                if ($chef->logo) {
-                    $this->chefs->deleteFile($chef->logo, true);
-                }
-            }
-
-            // Handle banner upload if present
-            if (isset($data['banner']) && $data['banner'] instanceof UploadedFile) {
-                $data['banner'] = $this->chefs->uploadFile($data['banner'], 'chefs/banners', true);
-
-                // Delete old banner if exists
-                if ($chef->banner) {
-                    $this->chefs->deleteFile($chef->banner, true);
-                }
-            }
-
-            // Update chef record
+            // Update chef record - BaseRepository handles logo and banner uploads
             $chef = $this->chefs->update($chef->id, $data);
 
             DB::commit();

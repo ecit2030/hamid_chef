@@ -3,12 +3,27 @@
 namespace App\Repositories;
 
 use App\Models\ChefService;
+use App\Repositories\Eloquent\BaseRepository;
 use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-class ChefServiceRepository
+class ChefServiceRepository extends BaseRepository
 {
+    /**
+     * Default relationships to load with chef services
+     */
+    protected array $defaultWith = [
+        'chef.user',
+        'tags',
+        'images',
+        'equipment'
+    ];
+
+    public function __construct(ChefService $model)
+    {
+        parent::__construct($model);
+    }
     /**
      * Get services for report with pagination.
      */
@@ -36,7 +51,7 @@ class ChefServiceRepository
             ->latest()
             ->paginate($perPage);
     }
-    
+
     /**
      * Get services statistics.
      */
@@ -51,7 +66,7 @@ class ChefServiceRepository
                 ->sum('total_amount'),
         ];
     }
-    
+
     /**
      * Get services for export.
      */

@@ -42,6 +42,7 @@ class UpdateUserProfileRequest extends FormRequest
                 Rule::unique('users', 'email')->ignore($userId),
             ],
             'address' => ['sometimes', 'string', 'max:500'],
+            'avatar' => ['sometimes', 'nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
     }
 

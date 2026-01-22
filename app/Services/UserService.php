@@ -72,15 +72,8 @@ class UserService
             unset($data['password']);
         }
 
-        // Handle avatar upload if present
-        if (isset($data['avatar']) && $data['avatar'] instanceof \Illuminate\Http\UploadedFile) {
-            $data['avatar'] = $this->users->uploadFile($data['avatar'], 'avatars', true);
-
-            // Delete old avatar if exists
-            if ($user->avatar) {
-                $this->users->deleteFile($user->avatar, true);
-            }
-        }
+        // Handle avatar upload - BaseRepository will handle the file upload automatically
+        // Just pass the UploadedFile instance and it will be processed
 
         return $this->users->update($user->id, $data);
     }
