@@ -155,6 +155,24 @@
                 <span class="text-sm text-gray-500 dark:text-gray-400">{{ t('booking.extra_guests') }} ({{ booking.extra_guests_count }})</span>
                 <span class="text-sm text-gray-900 dark:text-white/90">{{ formatPrice(booking.extra_guests_amount) }}</span>
               </div>
+
+              <!-- Discount Information -->
+              <div v-if="booking.discount_amount && booking.discount_amount > 0" class="border-t border-gray-200 dark:border-gray-700 pt-4">
+                <div class="flex justify-between mb-2">
+                  <span class="text-sm text-gray-500 dark:text-gray-400">{{ t('booking.subtotal') }}</span>
+                  <span class="text-sm text-gray-900 dark:text-white/90">{{ formatPrice(booking.original_amount || booking.total_amount) }}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <div class="flex items-center gap-2">
+                    <span class="text-sm text-success-600 dark:text-success-400">{{ t('booking.discount') }}</span>
+                    <span v-if="booking.discount_code" class="inline-flex items-center rounded-md bg-success-50 dark:bg-success-500/10 px-2 py-1 text-xs font-medium text-success-700 dark:text-success-400 ring-1 ring-inset ring-success-600/20 dark:ring-success-500/20">
+                      {{ booking.discount_code }}
+                    </span>
+                  </div>
+                  <span class="text-sm text-success-600 dark:text-success-400">-{{ formatPrice(booking.discount_amount) }}</span>
+                </div>
+              </div>
+
               <div class="border-t border-gray-200 dark:border-gray-700 pt-4 flex justify-between">
                 <span class="text-base font-medium text-gray-900 dark:text-white/90">{{ t('booking.total_amount') }}</span>
                 <span class="text-base font-medium text-gray-900 dark:text-white/90">{{ formatPrice(booking.total_amount) }}</span>

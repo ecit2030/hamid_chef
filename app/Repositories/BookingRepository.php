@@ -18,6 +18,7 @@ class BookingRepository extends BaseRepository
         'address',
         'transactions',
         'rating',
+        'discountCode',
     ];
 
     public function __construct(Booking $model)
@@ -59,10 +60,10 @@ class BookingRepository extends BaseRepository
      * Find bookings that conflict with the given time range
      */
     public function findConflictingBookings(
-        int $chefId, 
-        Carbon $date, 
-        Carbon $startDateTime, 
-        Carbon $endDateTime, 
+        int $chefId,
+        Carbon $date,
+        Carbon $startDateTime,
+        Carbon $endDateTime,
         ?int $excludeBookingId = null
     ): Collection {
         $dateTimeConcat = $this->getDateTimeConcat();
@@ -120,9 +121,9 @@ class BookingRepository extends BaseRepository
      * Find bookings within a specific time range for gap validation
      */
     public function findBookingsWithinTimeRange(
-        int $chefId, 
-        Carbon $startDateTime, 
-        Carbon $endDateTime, 
+        int $chefId,
+        Carbon $startDateTime,
+        Carbon $endDateTime,
         ?int $excludeBookingId = null
     ): Collection {
         $dateTimeConcat = $this->getDateTimeConcat();
@@ -181,7 +182,7 @@ class BookingRepository extends BaseRepository
             ->onDate($date)
             ->exists();
     }
-    
+
     /**
      * Get bookings for report with pagination.
      */
@@ -194,7 +195,7 @@ class BookingRepository extends BaseRepository
             ->latest()
             ->paginate($perPage);
     }
-    
+
     /**
      * Get bookings statistics.
      */
@@ -204,7 +205,7 @@ class BookingRepository extends BaseRepository
             ->when($startDate, fn($q) => $q->where('created_at', '>=', $startDate))
             ->when($endDate, fn($q) => $q->where('created_at', '<=', $endDate))
             ->when($status, fn($q) => $q->where('booking_status', $status));
-        
+
         return [
             'total' => (clone $query)->count(),
             'completed' => (clone $query)->where('booking_status', 'completed')->count(),
@@ -215,7 +216,7 @@ class BookingRepository extends BaseRepository
             'total_hours' => (clone $query)->where('booking_status', 'completed')->sum('hours_count'),
         ];
     }
-    
+
     /**
      * Get bookings for export.
      */
@@ -228,7 +229,7 @@ class BookingRepository extends BaseRepository
             ->orderBy('created_at', 'desc')
             ->get();
     }
-    
+
     /**
      * Get daily earnings.
      */

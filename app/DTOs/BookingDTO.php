@@ -27,6 +27,7 @@ class BookingDTO extends BaseDTO
     public $rejection_reason;
     public $cancellation_reason;
     public $discount_code_id;
+    public $discount_code;
     public $discount_amount;
     public $original_amount;
     public $notes;
@@ -41,6 +42,7 @@ class BookingDTO extends BaseDTO
     public $chef;
     public $service;
     public $address;
+    public $discountCodeRelation;
 
     public function __construct(
         $id,
@@ -63,6 +65,7 @@ class BookingDTO extends BaseDTO
         $rejection_reason,
         $cancellation_reason,
         $discount_code_id,
+        $discount_code,
         $discount_amount,
         $original_amount,
         $notes,
@@ -92,6 +95,7 @@ class BookingDTO extends BaseDTO
         $this->rejection_reason = $rejection_reason;
         $this->cancellation_reason = $cancellation_reason;
         $this->discount_code_id = $discount_code_id;
+        $this->discount_code = $discount_code;
         $this->discount_amount = $discount_amount;
         $this->original_amount = $original_amount;
         $this->notes = $notes;
@@ -125,6 +129,7 @@ class BookingDTO extends BaseDTO
             $booking->rejection_reason ?? null,
             $booking->cancellation_reason ?? null,
             $booking->discount_code_id ?? null,
+            $booking->discountCode?->code ?? null,
             $booking->discount_amount ?? 0,
             $booking->original_amount ?? null,
             $booking->notes ?? null,
@@ -147,6 +152,9 @@ class BookingDTO extends BaseDTO
         }
         if ($booking->relationLoaded('address')) {
             $dto->address = $booking->address;
+        }
+        if ($booking->relationLoaded('discountCode')) {
+            $dto->discountCodeRelation = $booking->discountCode;
         }
 
         return $dto;
@@ -175,6 +183,7 @@ class BookingDTO extends BaseDTO
             'rejection_reason' => $this->rejection_reason,
             'cancellation_reason' => $this->cancellation_reason,
             'discount_code_id' => $this->discount_code_id,
+            'discount_code' => $this->discount_code,
             'discount_amount' => $this->discount_amount,
             'original_amount' => $this->original_amount,
             'notes' => $this->notes,
@@ -217,6 +226,9 @@ class BookingDTO extends BaseDTO
             'payment_status' => $this->payment_status,
             'rejection_reason' => $this->rejection_reason,
             'cancellation_reason' => $this->cancellation_reason,
+            'discount_code' => $this->discount_code,
+            'discount_amount' => $this->discount_amount,
+            'original_amount' => $this->original_amount,
         ];
 
         // Customer details

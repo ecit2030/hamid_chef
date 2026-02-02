@@ -875,7 +875,17 @@
         "viewReason": "عرض السبب",
         "rejection_reason_required": "سبب الرفض مطلوب",
         "accepted_successfully": "تم قبول الحجز بنجاح",
-        "action_failed": "فشلت العملية"
+        "action_failed": "فشلت العملية",
+        "rejected_successfully": "تم رفض الحجز بنجاح",
+        "completed_successfully": "تم إكمال الحجز بنجاح",
+        "location_on_map": "الموقع على الخريطة",
+        "open_in_google_maps": "فتح في خرائط جوجل",
+        "service_information": "معلومات الخدمة",
+        "subtotal": "المجموع الفرعي",
+        "discount": "الخصم",
+        "discount_applied": "تم تطبيق الخصم",
+        "discount_code": "كود الخصم",
+        "cancellation_reason": "سبب الإلغاء"
     },
     "auth": {
         "login": {

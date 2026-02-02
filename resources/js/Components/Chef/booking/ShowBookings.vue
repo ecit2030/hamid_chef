@@ -205,11 +205,23 @@
                             >
                                 {{ t("booking.total_amount") }}
                             </p>
-                            <p
-                                class="mt-1 text-base font-semibold text-gray-800 dark:text-white/90"
-                            >
-                                {{ formatPrice(booking.total_amount) }}
-                            </p>
+                            <div class="flex items-center gap-2 mt-1">
+                                <p
+                                    class="text-base font-semibold text-gray-800 dark:text-white/90"
+                                >
+                                    {{ formatPrice(booking.total_amount) }}
+                                </p>
+                                <span
+                                    v-if="booking.discount_amount && booking.discount_amount > 0"
+                                    class="inline-flex items-center rounded-md bg-success-50 dark:bg-success-500/10 px-2 py-0.5 text-xs font-medium text-success-700 dark:text-success-400"
+                                    :title="t('booking.discount_applied')"
+                                >
+                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                                    </svg>
+                                    {{ t("booking.discount") }}
+                                </span>
+                            </div>
                         </div>
                         <Badge
                             :color="
