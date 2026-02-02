@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "8f2c7d3e-4b5a-4c6d-9e1f-0123456789cd",
-    "name": "MoonChef - Chef Services API",
+    "name": "Mon Chef - Chef Services API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": "Collection for testing Chef Services endpoints (public index/show and protected actions under /api/chef)"
   },

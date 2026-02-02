@@ -254,6 +254,10 @@ Route::middleware('auth:admin')
         Route::patch('terms-and-conditions/{id}/deactivate', [App\Http\Controllers\Admin\TermsAndConditionsController::class, 'deactivate'])
             ->name('terms-and-conditions.deactivate');
 
+        // Discount Codes
+        Route::resource('discount-codes', App\Http\Controllers\Admin\DiscountCodeController::class)
+            ->names('discount-codes');
+
         // Admins (managers of the system)
         Route::resource('admins', AdminController::class)
             ->names('admins');

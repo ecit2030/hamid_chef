@@ -736,7 +736,7 @@
       "submit": "Sign In",
       "noAccount": "Don't have an account?",
       "signUp": "Sign Up",
-      "tagline": "MoonChef admin dashboard for managing chefs and orders"
+      "tagline": "Mon Chef admin dashboard for managing chefs and orders"
     }
   },
   "equipment": {

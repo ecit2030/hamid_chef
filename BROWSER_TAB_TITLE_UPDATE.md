@@ -22,9 +22,9 @@ Changed the browser tab title from "Laravel" to "Mon Chef".
 
 ### 2. التحقق من الأيقونة (Favicon)
 
-الأيقونة موجودة بالفعل في `public/favicon.svg` وتحتوي على شعار MoonChef (هلال مع قبعة طاهي).
+الأيقونة موجودة بالفعل في `public/favicon.svg` وتحتوي على شعار Mon Chef (هلال مع قبعة طاهي).
 
-The favicon already exists at `public/favicon.svg` and contains the MoonChef logo (crescent moon with chef hat).
+The favicon already exists at `public/favicon.svg` and contains the Mon Chef logo (crescent moon with chef hat).
 
 **الأيقونات المضافة:**
 
@@ -39,19 +39,19 @@ The favicon already exists at `public/favicon.svg` and contains the MoonChef log
 
 ## الملفات الموجودة | Existing Files
 
-- `public/favicon.svg` - أيقونة الموقع (MoonChef Logo)
+- `public/favicon.svg` - أيقونة الموقع (Mon Chef Logo)
 
 ## النتيجة | Result
 
 الآن عند فتح أي صفحة في الموقع:
 
 - ✅ عنوان التاب: **Mon Chef**
-- ✅ أيقونة التاب: شعار MoonChef (هلال مع قبعة طاهي)
+- ✅ أيقونة التاب: شعار Mon Chef (هلال مع قبعة طاهي)
 
 Now when opening any page on the site:
 
 - ✅ Tab Title: **Mon Chef**
-- ✅ Tab Icon: MoonChef logo (crescent moon with chef hat)
+- ✅ Tab Icon: Mon Chef logo (crescent moon with chef hat)
 
 ## ملاحظات | Notes
 
@@ -101,7 +101,7 @@ import { Head } from "@inertiajs/vue3";
 2. انظر إلى التاب في الأعلى
 3. يجب أن ترى:
     - النص: "Mon Chef"
-    - الأيقونة: شعار MoonChef
+    - الأيقونة: شعار Mon Chef
 
 ## مثال على الكود الكامل | Complete Code Example
 

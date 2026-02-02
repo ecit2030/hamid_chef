@@ -99,6 +99,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('bookings/validate', [App\Http\Controllers\Api\BookingController::class, 'validateBooking']);
     });
 
+    // Discount Codes - Validate discount code
+    Route::post('discount-codes/validate', [App\Http\Controllers\Api\DiscountCodeController::class, 'validateCode']);
+
     // Availability Check with Higher Rate Limit
     Route::middleware('App\Http\Middleware\BookingRateLimitMiddleware:availability_check')->group(function () {
         Route::get('chefs/{chef}/availability', [App\Http\Controllers\Api\BookingController::class, 'checkAvailability']);

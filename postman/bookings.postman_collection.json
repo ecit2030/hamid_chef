@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "booking-collection-0001",
-    "name": "MoonChef - Bookings API",
+    "name": "Mon Chef - Bookings API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": "Collection to test Bookings endpoints (list, show, create, update, delete, check-availability). Generated from Chef_Services API collection patterns."
   },

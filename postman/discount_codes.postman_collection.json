@@ -1,0 +1,745 @@
+{
+	"info": {
+		"_postman_id": "discount-codes-api-collection",
+		"name": "Discount Codes API",
+		"description": "مجموعة كاملة لاختبار API أكواد الخصم\n\nيتضمن:\n- التحقق من كود الخصم\n- سيناريوهات مختلفة (نجاح وفشل)\n- أمثلة على جميع حالات الخطأ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login - Get Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.token) {",
+									"        pm.environment.set(\"auth_token\", jsonData.token);",
+									"        pm.environment.set(\"user_id\", jsonData.user.id);",
+									"        console.log(\"Token saved: \" + jsonData.token);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phone_number\": \"0501234567\",\n    \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						},
+						"description": "تسجيل الدخول للحصول على Token\n\nالبيانات الافتراضية:\n- رقم الهاتف: 0501234567\n- كلمة المرور: password"
+					},
+					"response": []
+				}
+			],
+			"description": "المصادقة والحصول على Token"
+		},
+		{
+			"name": "Validate Discount Code",
+			"item": [
+				{
+					"name": "✅ Valid Code - Amount Above Minimum",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has success field\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('success');",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Response has discount data\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('valid');",
+									"    pm.expect(jsonData.data).to.have.property('discount_amount');",
+									"    pm.expect(jsonData.data).to.have.property('final_amount');",
+									"});",
+									"",
+									"pm.test(\"Discount calculation is correct\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var originalAmount = jsonData.data.original_amount;",
+									"    var discountAmount = jsonData.data.discount_amount;",
+									"    var finalAmount = jsonData.data.final_amount;",
+									"    pm.expect(finalAmount).to.equal(originalAmount - discountAmount);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"TEST2024\",\n    \"amount\": 200\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/discount-codes/validate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"discount-codes",
+								"validate"
+							]
+						},
+						"description": "اختبار كود صالح مع مبلغ أعلى من الحد الأدنى\n\n**المدخلات:**\n- الكود: TEST2024\n- المبلغ: 200 ريال\n\n**النتيجة المتوقعة:**\n- الحالة: 200 OK\n- الخصم: 40 ريال (20%)\n- المبلغ النهائي: 160 ريال"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"code\": \"TEST2024\",\n    \"amount\": 200\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/discount-codes/validate",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"discount-codes",
+										"validate"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"valid\": true,\n        \"discount_code_id\": 3,\n        \"code\": \"TEST2024\",\n        \"type\": \"percentage\",\n        \"value\": \"20.00\",\n        \"original_amount\": 200,\n        \"discount_amount\": 40,\n        \"final_amount\": 160\n    },\n    \"message\": \"الكود صالح\"\n}"
+						}
+					]
+				},
+				{
+					"name": "✅ Valid Code - Amount At Minimum",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Discount is applied correctly\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.original_amount).to.equal(100);",
+									"    pm.expect(jsonData.data.discount_amount).to.equal(20);",
+									"    pm.expect(jsonData.data.final_amount).to.equal(80);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"TEST2024\",\n    \"amount\": 100\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/discount-codes/validate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"discount-codes",
+								"validate"
+							]
+						},
+						"description": "اختبار كود صالح مع مبلغ عند الحد الأدنى بالضبط\n\n**المدخلات:**\n- الكود: TEST2024\n- المبلغ: 100 ريال (الحد الأدنى)\n\n**النتيجة المتوقعة:**\n- الحالة: 200 OK\n- الخصم: 20 ريال (20%)\n- المبلغ النهائي: 80 ريال"
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Valid Code - High Amount (Max Discount)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Max discount is applied\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    // 20% of 500 = 100, but max is 50",
+									"    pm.expect(jsonData.data.discount_amount).to.equal(50);",
+									"    pm.expect(jsonData.data.final_amount).to.equal(450);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"TEST2024\",\n    \"amount\": 500\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/discount-codes/validate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"discount-codes",
+								"validate"
+							]
+						},
+						"description": "اختبار تطبيق الحد الأقصى للخصم\n\n**المدخلات:**\n- الكود: TEST2024\n- المبلغ: 500 ريال\n\n**الحساب:**\n- 20% من 500 = 100 ريال\n- الحد الأقصى: 50 ريال\n\n**النتيجة المتوقعة:**\n- الحالة: 200 OK\n- الخصم: 50 ريال (الحد الأقصى)\n- المبلغ النهائي: 450 ريال"
+					},
+					"response": []
+				},
+				{
+					"name": "❌ Invalid - Amount Below Minimum",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"pm.test(\"Error message is returned\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('success');",
+									"    pm.expect(jsonData.success).to.be.false;",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"    pm.expect(jsonData.message).to.include('الحد الأدنى');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"TEST2024\",\n    \"amount\": 50\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/discount-codes/validate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"discount-codes",
+								"validate"
+							]
+						},
+						"description": "اختبار رفض الكود عندما يكون المبلغ أقل من الحد الأدنى\n\n**المدخلات:**\n- الكود: TEST2024\n- المبلغ: 50 ريال (أقل من 100)\n\n**النتيجة المتوقعة:**\n- الحالة: 422 Unprocessable Content\n- الرسالة: \"الحد الأدنى للطلب هو 100 ريال\""
+					},
+					"response": [
+						{
+							"name": "Error Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"code\": \"TEST2024\",\n    \"amount\": 50\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/discount-codes/validate",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"discount-codes",
+										"validate"
+									]
+								}
+							},
+							"status": "Unprocessable Content",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [],
+							"cookie": [],
+							"body": "{\n    \"success\": false,\n    \"message\": \"الحد الأدنى للطلب هو 100 ريال\"\n}"
+						}
+					]
+				},
+				{
+					"name": "❌ Invalid - Non-Existent Code",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"pm.test(\"Error message indicates code not found\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.success).to.be.false;",
+									"    pm.expect(jsonData.message).to.include('غير موجود');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"INVALID123\",\n    \"amount\": 200\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/discount-codes/validate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"discount-codes",
+								"validate"
+							]
+						},
+						"description": "اختبار رفض كود غير موجود\n\n**المدخلات:**\n- الكود: INVALID123 (غير موجود)\n- المبلغ: 200 ريال\n\n**النتيجة المتوقعة:**\n- الحالة: 422 Unprocessable Content\n- الرسالة: \"الكود غير موجود\""
+					},
+					"response": []
+				},
+				{
+					"name": "❌ Invalid - Missing Code",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"pm.test(\"Validation error for code field\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('errors');",
+									"    pm.expect(jsonData.errors).to.have.property('code');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 200\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/discount-codes/validate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"discount-codes",
+								"validate"
+							]
+						},
+						"description": "اختبار التحقق من الحقول المطلوبة - الكود مفقود\n\n**المدخلات:**\n- المبلغ: 200 ريال\n- الكود: مفقود\n\n**النتيجة المتوقعة:**\n- الحالة: 422 Unprocessable Content\n- خطأ التحقق: حقل الكود مطلوب"
+					},
+					"response": []
+				},
+				{
+					"name": "❌ Invalid - Missing Amount",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"pm.test(\"Validation error for amount field\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('errors');",
+									"    pm.expect(jsonData.errors).to.have.property('amount');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"TEST2024\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/discount-codes/validate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"discount-codes",
+								"validate"
+							]
+						},
+						"description": "اختبار التحقق من الحقول المطلوبة - المبلغ مفقود\n\n**المدخلات:**\n- الكود: TEST2024\n- المبلغ: مفقود\n\n**النتيجة المتوقعة:**\n- الحالة: 422 Unprocessable Content\n- خطأ التحقق: حقل المبلغ مطلوب"
+					},
+					"response": []
+				},
+				{
+					"name": "❌ Invalid - Negative Amount",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 422\", function () {",
+									"    pm.response.to.have.status(422);",
+									"});",
+									"",
+									"pm.test(\"Validation error for negative amount\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('errors');",
+									"    pm.expect(jsonData.errors).to.have.property('amount');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"TEST2024\",\n    \"amount\": -100\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/discount-codes/validate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"discount-codes",
+								"validate"
+							]
+						},
+						"description": "اختبار رفض المبلغ السالب\n\n**المدخلات:**\n- الكود: TEST2024\n- المبلغ: -100 (سالب)\n\n**النتيجة المتوقعة:**\n- الحالة: 422 Unprocessable Content\n- خطأ التحقق: المبلغ يجب أن يكون أكبر من أو يساوي 0"
+					},
+					"response": []
+				},
+				{
+					"name": "❌ Unauthorized - No Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Unauthenticated message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"    pm.expect(jsonData.message).to.include('Unauthenticated');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"TEST2024\",\n    \"amount\": 200\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/discount-codes/validate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"discount-codes",
+								"validate"
+							]
+						},
+						"description": "اختبار الوصول بدون Token\n\n**المدخلات:**\n- بدون Authorization Header\n\n**النتيجة المتوقعة:**\n- الحالة: 401 Unauthorized\n- الرسالة: \"Unauthenticated\""
+					},
+					"response": []
+				}
+			],
+			"description": "التحقق من صلاحية أكواد الخصم"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

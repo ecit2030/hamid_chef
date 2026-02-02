@@ -34,6 +34,8 @@ use App\Repositories\ConversationRepository;
 use App\Repositories\MessageRepository;
 use App\Repositories\ChefWorkingHourRepository;
 use App\Repositories\ChefVacationRepository;
+use App\Repositories\DiscountCodeRepository;
+use App\Repositories\DiscountCodeUsageRepository;
 
 // Models
 use App\Models\User;
@@ -67,6 +69,8 @@ use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\ChefWorkingHour;
 use App\Models\ChefVacation;
+use App\Models\DiscountCode;
+use App\Models\DiscountCodeUsage;
 
 // Services
 use App\Services\UserService;
@@ -101,6 +105,7 @@ use App\Services\MessageService;
 use App\Services\ChefWorkingHourService;
 use App\Services\ChefVacationService;
 use App\Services\ChefAvailabilityService;
+use App\Services\DiscountCodeService;
 
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -137,6 +142,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(MessageRepository::class, fn($app) => new MessageRepository($app->make(Message::class)));
         $this->app->bind(ChefWorkingHourRepository::class, fn($app) => new ChefWorkingHourRepository($app->make(ChefWorkingHour::class)));
         $this->app->bind(ChefVacationRepository::class, fn($app) => new ChefVacationRepository($app->make(ChefVacation::class)));
+        $this->app->bind(DiscountCodeRepository::class, fn($app) => new DiscountCodeRepository($app->make(DiscountCode::class)));
+        $this->app->bind(DiscountCodeUsageRepository::class, fn($app) => new DiscountCodeUsageRepository($app->make(DiscountCodeUsage::class)));
 
         // Bind Services to their Repositories
         $this->app->bind(UserService::class, fn($app) => new UserService($app->make(UserRepository::class)));
@@ -146,9 +153,14 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(AddressService::class, fn($app) => new AddressService($app->make(AddressRepository::class)));
         $this->app->bind(AdminService::class, fn($app) => new AdminService($app->make(AdminRepository::class)));
         $this->app->bind(BookingConflictService::class, fn($app) => new BookingConflictService($app->make(BookingRepository::class)));
+        $this->app->bind(DiscountCodeService::class, fn($app) => new DiscountCodeService(
+            $app->make(DiscountCodeRepository::class),
+            $app->make(DiscountCodeUsageRepository::class)
+        ));
         $this->app->bind(BookingService::class, fn($app) => new BookingService(
             $app->make(BookingRepository::class),
-            $app->make(BookingConflictService::class)
+            $app->make(BookingConflictService::class),
+            $app->make(DiscountCodeService::class)
         ));
         $this->app->bind(BookingTransactionService::class, fn($app) => new BookingTransactionService($app->make(BookingTransactionRepository::class)));
         $this->app->bind(CategoryService::class, fn($app) => new CategoryService(

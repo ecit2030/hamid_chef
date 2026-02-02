@@ -528,6 +528,12 @@ const menuGroups = computed(() =>
                     permission: "terms-and-conditions.view",
                 },
                 {
+                    icon: PageIcon,
+                    name: t("menu.discount_codes"),
+                    path: route("admin.discount-codes.index"),
+                    permission: "discount-codes.view",
+                },
+                {
                     icon: UserCircleIcon,
                     name: t("menu.profile"),
                     path: route("admin.profile"),

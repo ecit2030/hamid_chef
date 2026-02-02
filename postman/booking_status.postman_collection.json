@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "booking-status-collection-0001",
-    "name": "MoonChef - Booking Status Management",
+    "name": "Mon Chef - Booking Status Management",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": "Endpoints لإدارة حالة الحجز: إلغاء من العميل، وقبول/رفض/إلغاء/إكمال من الطاهي."
   },

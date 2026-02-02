@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "b3c2d1e4-5f6a-47b8-9abc-9876543210ab",
-    "name": "MoonChef - Categories API",
+    "name": "Mon Chef - Categories API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": "Collection for testing Categories endpoints (protected under /api/categories)"
   },

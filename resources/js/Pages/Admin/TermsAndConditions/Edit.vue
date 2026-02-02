@@ -114,13 +114,7 @@
                 </div>
 
                 <!-- Submit Button -->
-                <div class="mt-6 flex justify-end gap-4">
-                    <Link
-                        :href="route('admin.terms-and-conditions.index')"
-                        class="rounded-lg border border-gray-300 px-6 py-2 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
-                    >
-                        {{ $t("common.cancel") }}
-                    </Link>
+                <div class="mt-6 flex justify-start gap-4">
                     <button
                         type="submit"
                         :disabled="form.processing"
@@ -128,6 +122,12 @@
                     >
                         {{ form.processing ? $t("common.saving") : $t("common.save") }}
                     </button>
+                    <Link
+                        :href="route('admin.terms-and-conditions.index')"
+                        class="rounded-lg border border-gray-300 px-6 py-2 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                    >
+                        {{ $t("common.cancel") }}
+                    </Link>
                 </div>
             </form>
         </div>

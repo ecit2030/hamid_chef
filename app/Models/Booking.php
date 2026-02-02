@@ -27,6 +27,9 @@ class Booking extends BaseModel
         'extra_guests_count',
         'extra_guests_amount',
         'total_amount',
+        'discount_code_id',
+        'discount_amount',
+        'original_amount',
         'commission_amount',
         'payment_status',
         'booking_status',
@@ -47,6 +50,8 @@ class Booking extends BaseModel
         'unit_price' => 'decimal:2',
         'extra_guests_amount' => 'decimal:2',
         'total_amount' => 'decimal:2',
+        'discount_amount' => 'decimal:2',
+        'original_amount' => 'decimal:2',
         'commission_amount' => 'decimal:2',
         'rejection_reason' => 'string',
         'cancellation_reason' => 'string',
@@ -70,6 +75,11 @@ class Booking extends BaseModel
     public function address(): BelongsTo
     {
         return $this->belongsTo(Address::class);
+    }
+
+    public function discountCode(): BelongsTo
+    {
+        return $this->belongsTo(DiscountCode::class);
     }
 
     public function transactions(): HasMany

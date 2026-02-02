@@ -57,6 +57,7 @@ return [
     'categories'   => ['view', 'create', 'update', 'delete'],
     'landing-page-sections' => ['view', 'create', 'update', 'delete'],
     'terms-and-conditions' => ['view', 'create', 'update', 'delete'],
+    'discount-codes' => ['view', 'create', 'update', 'delete'],
 
     // Address Management
     'addresses'    => ['view', 'create', 'update', 'delete'],
@@ -129,6 +130,7 @@ return [
     'categories'   => ['en' => 'Categories',    'ar' => 'التصنيفات'],
     'landing-page-sections' => ['en' => 'Landing Pages', 'ar' => 'الصفحات الخارجية'],
     'terms-and-conditions' => ['en' => 'Terms and Conditions', 'ar' => 'الشروط والأحكام'],
+    'discount-codes' => ['en' => 'Discount Codes', 'ar' => 'أكواد الخصم'],
 
     // Chef Management
     'chefs'        => ['en' => 'Chefs',         'ar' => 'الطهاة'],

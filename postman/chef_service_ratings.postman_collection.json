@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "c3f9b2a0-2a4e-4f6a-9d2b-123456789abc",
-    "name": "MoonChef - Chef Service Ratings",
+    "name": "Mon Chef - Chef Service Ratings",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": "Collection for testing Chef Service Ratings endpoints (create, update, delete, list, show)"
   },

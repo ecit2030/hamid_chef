@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "kyc-collection-001",
-    "name": "MoonChef - KYC",
+    "name": "Mon Chef - KYC",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": "Postman collection for KYC API endpoints (user-facing)"
   },

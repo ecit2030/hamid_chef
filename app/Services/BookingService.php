@@ -10,11 +10,16 @@ class BookingService
 {
     protected BookingRepository $bookings;
     protected BookingConflictService $conflictService;
+    protected DiscountCodeService $discountCodeService;
 
-    public function __construct(BookingRepository $bookings, BookingConflictService $conflictService)
-    {
+    public function __construct(
+        BookingRepository $bookings,
+        BookingConflictService $conflictService,
+        DiscountCodeService $discountCodeService
+    ) {
         $this->bookings = $bookings;
         $this->conflictService = $conflictService;
+        $this->discountCodeService = $discountCodeService;
     }
 
     public function all(array $with = [])
@@ -90,7 +95,23 @@ class BookingService
 
     public function createWithConflictCheck(BookingDTO $bookingDTO): array
     {
-        return $this->conflictService->createBookingWithLocking($bookingDTO);
+        $result = $this->conflictService->createBookingWithLocking($bookingDTO);
+
+        // If booking was created successfully and has a discount code, apply it
+        if ($result['success'] && $bookingDTO->discount_code_id) {
+            $this->discountCodeService->applyDiscount(
+                $bookingDTO->discount_code_id,
+                $bookingDTO->customer_id,
+                $result['booking']->id,
+                [
+                    'original_amount' => $bookingDTO->original_amount,
+                    'discount_amount' => $bookingDTO->discount_amount,
+                    'final_amount' => $bookingDTO->total_amount,
+                ]
+            );
+        }
+
+        return $result;
     }
 
     public function update($id, array $attributes)
