@@ -20,10 +20,8 @@ class BookingController extends Controller
 {
     use ExceptionHandler, SuccessResponse, CanFilter;
 
-    public function __construct()
-    {
-        $this->middleware('auth:sanctum');
-    }
+    // Auth middleware is already applied in routes/api.php
+    // No need to duplicate it here
 
     /**
      * عرض قائمة حجوزات المستخدم الحالي مع فلاتر وترقيم
@@ -86,6 +84,7 @@ class BookingController extends Controller
                 'pending',
                 'pending',
                 null, // rejection_reason
+                null, // cancellation_reason
                 $validated['notes'] ?? null,
                 true,
                 $validated['created_by'],
@@ -174,29 +173,38 @@ class BookingController extends Controller
     /**
      * إلغاء الحجز من العميل فقط
      */
-    public function cancelByCustomer(BookingService $bookingService, Request $request, $id)
+    public function cancelByCustomer(BookingService $bookingService, Request $request, $booking)
     {
         try {
-            $booking = $bookingService->findForUser($id, $request->user()->id);
+            // Validate cancellation_reason
+            $validated = $request->validate([
+                'cancellation_reason' => 'required|string|min:10|max:500',
+            ], [
+                'cancellation_reason.required' => 'سبب الإلغاء مطلوب',
+                'cancellation_reason.min' => 'سبب الإلغاء يجب أن يكون 10 أحرف على الأقل',
+                'cancellation_reason.max' => 'سبب الإلغاء يجب ألا يتجاوز 500 حرف',
+            ]);
+
+            $bookingModel = $bookingService->findForUser($booking, $request->user()->id);
 
             // صلاحية خاصة بالعميل فقط
-            $this->authorize('cancelByCustomer', $booking);
+            $this->authorize('cancelByCustomer', $bookingModel);
 
             // يسمح للعميل بالإلغاء فقط إذا كانت الحالة الحالية "pending" أو "accepted"
-            if (!in_array($booking->booking_status, ['pending', 'accepted'])) {
+            if (!in_array($bookingModel->booking_status, ['pending', 'accepted'])) {
                 return response()->json([
                     'success' => false,
                     'message' => 'لا يمكن للعميل إلغاء الحجز في حالته الحالية',
                     'errors' => [
                         'booking_status' => [
                             'الحالة الحالية لا تسمح بالإلغاء',
-                            'current_status: ' . $booking->booking_status
+                            'current_status: ' . $bookingModel->booking_status
                         ]
                     ]
                 ], 422);
             }
 
-            $cancelled = $bookingService->cancel($id, 'cancelled_by_customer');
+            $cancelled = $bookingService->cancel($booking, 'cancelled_by_customer', $validated['cancellation_reason']);
 
             if (!$cancelled) {
                 return response()->json([

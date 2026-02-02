@@ -244,6 +244,16 @@ Route::middleware('auth:admin')
         Route::patch('landing-page-sections/{id}/deactivate', [App\Http\Controllers\Admin\LandingPageSectionController::class, 'deactivate'])
             ->name('landing-page-sections.deactivate');
 
+        // Terms and Conditions
+        Route::resource('terms-and-conditions', App\Http\Controllers\Admin\TermsAndConditionsController::class)
+            ->names('terms-and-conditions');
+
+        Route::patch('terms-and-conditions/{id}/activate', [App\Http\Controllers\Admin\TermsAndConditionsController::class, 'activate'])
+            ->name('terms-and-conditions.activate');
+
+        Route::patch('terms-and-conditions/{id}/deactivate', [App\Http\Controllers\Admin\TermsAndConditionsController::class, 'deactivate'])
+            ->name('terms-and-conditions.deactivate');
+
         // Admins (managers of the system)
         Route::resource('admins', AdminController::class)
             ->names('admins');

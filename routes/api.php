@@ -32,6 +32,12 @@ Route::get('categories/{id}', [App\Http\Controllers\Api\CategoryController::clas
 // Public route for landing page sections
 Route::get('landing-page-sections', [App\Http\Controllers\Api\LandingPageSectionController::class, 'index']);
 Route::get('landing-page-sections/{sectionKey}', [App\Http\Controllers\Api\LandingPageSectionController::class, 'show']);
+
+// Public route for Terms and Conditions
+Route::get('terms-and-conditions', [App\Http\Controllers\Api\TermsAndConditionsController::class, 'index']);
+Route::get('terms-and-conditions/versions', [App\Http\Controllers\Api\TermsAndConditionsController::class, 'versions']);
+Route::get('terms-and-conditions/{id}', [App\Http\Controllers\Api\TermsAndConditionsController::class, 'show']);
+
 // Public: tags index
 Route::get('tags', [App\Http\Controllers\Api\TagController::class, 'index']);
 

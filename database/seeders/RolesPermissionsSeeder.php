@@ -62,7 +62,7 @@ class RolesPermissionsSeeder extends Seeder
                 ->values();
 
             // Create roles
-            
+
             // Super Admin: All permissions
             $superAdmin = Role::updateOrCreate(
                 ['name' => 'super_admin', 'guard_name' => $guard],
@@ -87,7 +87,7 @@ class RolesPermissionsSeeder extends Seeder
             );
             $supportPerms = $allActionPerms
                 ->filter(fn ($name) => Str::startsWith($name, [
-                    'bookings.', 'booking-transactions.', 'users.view', 
+                    'bookings.', 'booking-transactions.', 'users.view',
                     'chefs.view', 'chef-services.view', 'dashboard.'
                 ]))
                 ->values();
@@ -105,14 +105,14 @@ class RolesPermissionsSeeder extends Seeder
                 ->values();
             $chefManager->syncPermissions($chefManagerPerms->all());
 
-            // Content Manager: Landing pages, categories, tags
+            // Content Manager: Landing pages, categories, tags, terms and conditions
             $contentManager = Role::updateOrCreate(
                 ['name' => 'content_manager', 'guard_name' => $guard],
                 ['display_name' => $this->json(['en' => 'Content Manager', 'ar' => 'مدير المحتوى'])]
             );
             $contentManagerPerms = $allActionPerms
                 ->filter(fn ($name) => Str::startsWith($name, [
-                    'landing-page-sections.', 'categories.', 'tags.', 'dashboard.'
+                    'landing-page-sections.', 'categories.', 'tags.', 'terms-and-conditions.', 'dashboard.'
                 ]))
                 ->values();
             $contentManager->syncPermissions($contentManagerPerms->all());
@@ -139,7 +139,7 @@ class RolesPermissionsSeeder extends Seeder
         });
 
         app(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
-        
+
         $this->command->info('✅ تم إضافة الأدوار والصلاحيات بنجاح');
     }
 }

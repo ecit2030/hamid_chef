@@ -6,9 +6,9 @@
       aria-live="polite"
       aria-busy="true"
     >
-      <div class="flex flex-col items-center gap-4">
-        <SpinnerThree />
-        <span class="text-white text-sm">{{ t('common.loading') }}</span>
+      <div class="flex flex-col items-center gap-6">
+        <LogoSpinner :size="100" :stroke-width="5" :logo-padding="25" />
+        <span class="text-white text-base font-medium">{{ t('common.loading') }}</span>
       </div>
     </div>
   </transition>
@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { useGlobalLoading } from '@/composables/useGlobalLoading'
 import { useI18n } from 'vue-i18n'
-import SpinnerThree from '@/Components/spinner/SpinnerThree.vue'
+import LogoSpinner from '@/Components/spinner/LogoSpinner.vue'
 
 const { globalLoading } = useGlobalLoading()
 const { t } = useI18n()

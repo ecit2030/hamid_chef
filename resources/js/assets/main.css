@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap')
 layer(base);
 
 @import 'tailwindcss';
@@ -7,7 +7,7 @@ layer(base);
 
 @theme {
   --font-*: initial;
-  --font-outfit: Outfit, sans-serif;
+  --font-almarai: 'Almarai', sans-serif;
 
   --breakpoint-*: initial;
   --breakpoint-2xsm: 375px;
@@ -41,18 +41,18 @@ layer(base);
   --color-white: #ffffff;
   --color-black: #101828;
 
-  --color-brand-25: #f2f7ff;
-  --color-brand-50: #ecf3ff;
-  --color-brand-100: #dde9ff;
-  --color-brand-200: #c2d6ff;
-  --color-brand-300: #9cb9ff;
-  --color-brand-400: #7592ff;
-  --color-brand-500: #465fff;
-  --color-brand-600: #3641f5;
-  --color-brand-700: #2a31d8;
-  --color-brand-800: #252dae;
-  --color-brand-900: #262e89;
-  --color-brand-950: #161950;
+  --color-brand-25: #E6EBF2;
+  --color-brand-50: #CCD7E5;
+  --color-brand-100: #B3C3D8;
+  --color-brand-200: #99AFCB;
+  --color-brand-300: #809BBE;
+  --color-brand-400: #6687B1;
+  --color-brand-500: #083064;
+  --color-brand-600: #062650;
+  --color-brand-700: #051D3C;
+  --color-brand-800: #031328;
+  --color-brand-900: #020A14;
+  --color-brand-950: #010509;
 
   --color-blue-light-25: #f5fbff;
   --color-blue-light-50: #f0f9ff;
@@ -184,7 +184,7 @@ layer(base);
     cursor: pointer;
   }
   body {
-    @apply relative font-normal font-outfit z-1 bg-gray-50;
+    @apply relative font-normal font-almarai z-1 bg-gray-50;
   }
 }
 

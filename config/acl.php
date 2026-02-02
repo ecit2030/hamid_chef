@@ -35,7 +35,7 @@ return [
     'resources' => [
     // Dashboard
     'dashboard'    => ['view'],
-    
+
     // Location Management
     'areas'        => ['view', 'create', 'update', 'delete'],
     'districts'    => ['view', 'create', 'update', 'delete'],
@@ -48,18 +48,19 @@ return [
     'permissions'  => ['view'],
     'profile'      => ['view', 'update'],
     'activitylogs' => ['view'],
-    
+
     // KYC & Verification
     'kycs'         => ['view', 'create', 'update', 'delete'],
-    
+
     // Content Management
     'tags'         => ['view', 'create', 'update', 'delete'],
     'categories'   => ['view', 'create', 'update', 'delete'],
     'landing-page-sections' => ['view', 'create', 'update', 'delete'],
-    
+    'terms-and-conditions' => ['view', 'create', 'update', 'delete'],
+
     // Address Management
     'addresses'    => ['view', 'create', 'update', 'delete'],
-    
+
     // Chef Management
     'chefs'        => ['view', 'create', 'update', 'delete'],
     'chef-services' => ['view', 'create', 'update', 'delete'],
@@ -70,30 +71,30 @@ return [
     'chef-gallery' => ['view', 'create', 'update', 'delete'],
     'chef-working-hours' => ['view', 'create', 'update', 'delete'],
     'chef-vacations' => ['view', 'create', 'update', 'delete'],
-    
+
     // Booking Management
     'bookings'     => ['view', 'create', 'update', 'delete'],
     'booking-transactions' => ['view', 'create', 'update', 'delete'],
-    
+
     // Rating & Reviews
     'chef-service-ratings' => ['view', 'create', 'update', 'delete'],
-    
+
     // Financial Management
     'chef-wallets' => ['view', 'create', 'update', 'delete'],
     'chef-wallet-transactions' => ['view', 'create', 'update', 'delete'],
     'chef-withdrawal-requests' => ['view', 'create', 'update', 'delete'],
     'withdrawal-methods' => ['view', 'create', 'update', 'delete'],
-    
+
     // Reports
     'reports'      => ['view'],
     'financial-reports' => ['view'],
     'booking-reports' => ['view'],
     'chef-reports' => ['view'],
-    
+
     // Settings
     'settings'     => ['view', 'update'],
     'system-settings' => ['view', 'update'],
-    
+
     ],
 
     /*
@@ -105,11 +106,11 @@ return [
     'resource_labels' => [
     // Dashboard
     'dashboard'    => ['en' => 'Dashboard',          'ar' => 'لوحة التحكم'],
-    
+
     // Location Management
-    'areas'        => ['en' => 'Areas',         'ar' => 'المناطق'],
-    'districts'    => ['en' => 'Districts',     'ar' => 'المديريات'],
-    'governorates' => ['en' => 'Governorates',  'ar' => 'المحافظات'],
+    'areas'        => ['en' => 'Neighborhoods',     'ar' => 'الأحياء'],
+    'districts'    => ['en' => 'Cities',     'ar' => 'المدن'],
+    'governorates' => ['en' => 'Regions',  'ar' => 'المناطق'],
 
     // User Management
     'users'        => ['en' => 'Users',         'ar' => 'المستخدمون'],
@@ -118,16 +119,17 @@ return [
     'permissions'  => ['en' => 'Permissions',   'ar' => 'الصلاحيات'],
     'profile'      => ['en' => 'Profile',       'ar' => 'الملف الشخصي'],
     'activitylogs' => ['en' => 'Activity Logs', 'ar' => 'سجل التغييرات'],
-    
+
     // KYC & Verification
     'kycs'         => ['en' => 'KYC Requests',  'ar' => 'طلبات KYC'],
-    
+
     // Content Management
     'addresses'    => ['en' => 'Addresses',     'ar' => 'العناوين'],
     'tags'         => ['en' => 'Tags',          'ar' => 'الوسوم'],
     'categories'   => ['en' => 'Categories',    'ar' => 'التصنيفات'],
     'landing-page-sections' => ['en' => 'Landing Pages', 'ar' => 'الصفحات الخارجية'],
-    
+    'terms-and-conditions' => ['en' => 'Terms and Conditions', 'ar' => 'الشروط والأحكام'],
+
     // Chef Management
     'chefs'        => ['en' => 'Chefs',         'ar' => 'الطهاة'],
     'chef-services' => ['en' => 'Chef Services', 'ar' => 'خدمات الطهاة'],
@@ -138,26 +140,26 @@ return [
     'chef-gallery' => ['en' => 'Chef Gallery', 'ar' => 'معرض الطهاة'],
     'chef-working-hours' => ['en' => 'Working Hours', 'ar' => 'ساعات العمل'],
     'chef-vacations' => ['en' => 'Vacations', 'ar' => 'الإجازات'],
-    
+
     // Booking Management
     'bookings'     => ['en' => 'Bookings',      'ar' => 'الحجوزات'],
     'booking-transactions' => ['en' => 'Booking Transactions', 'ar' => 'معاملات الحجوزات'],
-    
+
     // Rating & Reviews
     'chef-service-ratings' => ['en' => 'Service Ratings', 'ar' => 'تقييمات الخدمات'],
-    
+
     // Financial Management
     'chef-wallets' => ['en' => 'Chef Wallets', 'ar' => 'محافظ الطهاة'],
     'chef-wallet-transactions' => ['en' => 'Wallet Transactions', 'ar' => 'معاملات المحافظ'],
     'chef-withdrawal-requests' => ['en' => 'Withdrawal Requests', 'ar' => 'طلبات السحب'],
     'withdrawal-methods' => ['en' => 'Withdrawal Methods', 'ar' => 'طرق السحب'],
-    
+
     // Reports
     'reports'      => ['en' => 'Reports',       'ar' => 'التقارير'],
     'financial-reports' => ['en' => 'Financial Reports', 'ar' => 'التقارير المالية'],
     'booking-reports' => ['en' => 'Booking Reports', 'ar' => 'تقارير الحجوزات'],
     'chef-reports' => ['en' => 'Chef Reports', 'ar' => 'تقارير الطهاة'],
-    
+
     // Settings
     'settings'     => ['en' => 'Settings',      'ar' => 'الإعدادات'],
     'system-settings' => ['en' => 'System Settings', 'ar' => 'إعدادات النظام'],

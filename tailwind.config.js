@@ -10,7 +10,7 @@ module.exports = {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['Ahlan', 'Arial', 'sans-serif'],
+				sans: ['Almarai', 'Arial', 'sans-serif'],
 				arabic: ['Almarai', 'Arial', 'sans-serif'],
 				english: ['Ahlan', 'Arial', 'sans-serif'],
 				cairo: ['Almarai', 'Arial', 'sans-serif'],

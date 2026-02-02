@@ -9,8 +9,9 @@
 
         <!-- Custom fonts are loaded via @font-face in app.css -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title inertia>Mon Chef</title>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+        <link rel="apple-touch-icon" href="/favicon.svg">
         @routes
         @vite(['resources/js/app.js'])
         @inertiaHead

@@ -151,16 +151,23 @@ class BookingService
         return $this->bookings->delete($id);
     }
 
-    public function cancel($id, string $reason = 'cancelled_by_customer'): bool
+    public function cancel($id, string $reason = 'cancelled_by_customer', ?string $cancellationReason = null): bool
     {
         $booking = $this->bookings->findOrFail($id);
 
-        // Update booking status to cancelled
-        $result = $this->bookings->update($id, [
+        $updateData = [
             'booking_status' => $reason,
             'is_active' => false,
             'updated_at' => now()
-        ]);
+        ];
+
+        // Add cancellation_reason if provided
+        if ($cancellationReason !== null) {
+            $updateData['cancellation_reason'] = $cancellationReason;
+        }
+
+        // Update booking status to cancelled
+        $result = $this->bookings->update($id, $updateData);
 
         // Repository update returns the model; convert to boolean success
         $success = (bool) $result;

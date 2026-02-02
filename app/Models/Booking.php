@@ -31,6 +31,7 @@ class Booking extends BaseModel
         'payment_status',
         'booking_status',
         'rejection_reason',
+        'cancellation_reason',
         'notes',
         'is_active',
         'created_by',
@@ -48,6 +49,7 @@ class Booking extends BaseModel
         'total_amount' => 'decimal:2',
         'commission_amount' => 'decimal:2',
         'rejection_reason' => 'string',
+        'cancellation_reason' => 'string',
     ];
 
     public function customer(): BelongsTo
