@@ -1,58 +1,101 @@
 <template>
-  <nav class="fixed top-0 left-0 right-0 z-[1000] bg-white shadow-sm">
+  <nav
+    :class="[
+      'fixed top-0 left-0 right-0 z-[1000] transition-all duration-300',
+      navbarClasses
+    ]"
+    :style="navbarStyle"
+  >
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-20">
-        
+      <div
+        :class="[
+          'flex items-center justify-between transition-all duration-300',
+          isScrolled ? 'h-16' : 'h-20'
+        ]"
+      >
         <!-- Logo -->
         <div class="flex-shrink-0">
-          <Link href="/" class="flex items-center gap-2">
-            <img 
-              v-if="logoUrl" 
-              :src="logoUrl" 
-              :alt="logoAlt" 
-              class="h-12 w-auto object-contain"
+          <Link href="/" class="flex items-center gap-2 group">
+            <img
+              v-if="logoUrl"
+              :src="logoUrl"
+              :alt="logoAlt"
+              :class="[
+                'w-auto object-contain transition-all duration-300',
+                isScrolled ? 'h-10' : 'h-12'
+              ]"
               @error="handleImageError"
             />
           </Link>
         </div>
-        
+
         <!-- Desktop Navigation -->
-        <div class="hidden lg:flex items-center gap-8">
+        <div class="hidden lg:flex items-center gap-1">
           <template v-for="item in navItems" :key="item.href">
             <Link
               v-if="!item.href.startsWith('#')"
               :href="item.href"
-              class="text-gray-700 hover:text-primary font-medium transition-colors"
+              :class="navLinkClasses"
             >
               {{ currentLang === 'ar' ? item.label_ar : item.label_en }}
             </Link>
             <a
               v-else
               :href="item.href"
-              class="text-gray-700 hover:text-primary font-medium transition-colors"
+              :class="[
+                navLinkClasses,
+                { 'bg-primary/10 text-primary': activeSection === item.href.slice(1) }
+              ]"
+              @click="handleNavClick"
             >
               {{ currentLang === 'ar' ? item.label_ar : item.label_en }}
             </a>
           </template>
         </div>
-        
-        <!-- Language Switcher -->
+
+        <!-- Actions -->
         <div class="flex items-center gap-3">
+          <!-- Dark Mode Toggle -->
+          <button
+            v-if="showDarkModeToggle"
+            @click="toggleDarkMode"
+            class="p-2 rounded-full transition-all duration-300 hover:bg-primary/10"
+            :class="isScrolled || !transparent ? 'text-primary' : 'text-white'"
+          >
+            <svg v-if="isDarkMode" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" />
+            </svg>
+            <svg v-else class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+            </svg>
+          </button>
+
+          <!-- Language Switcher -->
           <button
             v-if="showLanguageSwitcher"
             @click="toggleLanguage"
-            class="flex items-center gap-2 px-4 py-2 bg-secondary text-primary font-semibold rounded-full hover:bg-secondary-600 transition-colors"
+            :class="[
+              'flex items-center gap-2 px-4 py-2 font-semibold rounded-full transition-all duration-300',
+              isScrolled || !transparent
+                ? 'bg-secondary text-primary hover:bg-secondary-600'
+                : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
+            ]"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
             </svg>
             {{ currentLang === 'ar' ? 'English' : 'عربي' }}
           </button>
-          
+
           <!-- Mobile Menu Button -->
           <button
             @click="toggleMobileMenu"
-            class="lg:hidden p-2 text-gray-700 hover:text-primary"
+            :class="[
+              'lg:hidden p-2 rounded-lg transition-all duration-300',
+              isScrolled || !transparent
+                ? 'text-primary hover:bg-primary/10'
+                : 'text-white hover:bg-white/20'
+            ]"
           >
             <svg v-if="!isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -64,36 +107,53 @@
         </div>
       </div>
     </div>
-    
-    <!-- Mobile Menu -->
+
+    <!-- Mobile Menu - Full Screen Overlay -->
     <Transition
-      enter-active-class="transition duration-200 ease-out"
-      enter-from-class="opacity-0 -translate-y-2"
-      enter-to-class="opacity-100 translate-y-0"
-      leave-active-class="transition duration-150 ease-in"
-      leave-from-class="opacity-100 translate-y-0"
-      leave-to-class="opacity-0 -translate-y-2"
+      enter-active-class="transition duration-300 ease-out"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="transition duration-200 ease-in"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
     >
-      <div v-if="isMobileMenuOpen" class="lg:hidden bg-white border-t shadow-lg">
-        <div class="container mx-auto px-4 py-4 space-y-2">
-          <template v-for="item in navItems" :key="'mobile-' + item.href">
-            <Link
-              v-if="!item.href.startsWith('#')"
-              :href="item.href"
-              class="block px-4 py-3 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg font-medium"
-              @click="closeMobileMenu"
-            >
-              {{ currentLang === 'ar' ? item.label_ar : item.label_en }}
-            </Link>
-            <a
-              v-else
-              :href="item.href"
-              class="block px-4 py-3 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg font-medium"
-              @click="closeMobileMenu"
-            >
-              {{ currentLang === 'ar' ? item.label_ar : item.label_en }}
-            </a>
-          </template>
+      <div
+        v-if="isMobileMenuOpen"
+        class="lg:hidden fixed inset-0 top-16 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg z-50"
+      >
+        <div class="container mx-auto px-4 py-8">
+          <div class="space-y-2">
+            <template v-for="(item, index) in navItems" :key="'mobile-' + item.href">
+              <Transition
+                enter-active-class="transition duration-300 ease-out"
+                :enter-from-class="`opacity-0 translate-x-${currentLang === 'ar' ? '' : '-'}4`"
+                enter-to-class="opacity-100 translate-x-0"
+                :style="{ transitionDelay: `${index * 50}ms` }"
+              >
+                <Link
+                  v-if="!item.href.startsWith('#')"
+                  :href="item.href"
+                  class="block px-6 py-4 text-xl font-bold text-primary hover:bg-primary/10 rounded-xl transition-all duration-300"
+                  @click="closeMobileMenu"
+                >
+                  {{ currentLang === 'ar' ? item.label_ar : item.label_en }}
+                </Link>
+                <a
+                  v-else
+                  :href="item.href"
+                  :class="[
+                    'block px-6 py-4 text-xl font-bold rounded-xl transition-all duration-300',
+                    activeSection === item.href.slice(1)
+                      ? 'bg-primary text-white'
+                      : 'text-primary hover:bg-primary/10'
+                  ]"
+                  @click="closeMobileMenu"
+                >
+                  {{ currentLang === 'ar' ? item.label_ar : item.label_en }}
+                </a>
+              </Transition>
+            </template>
+          </div>
         </div>
       </div>
     </Transition>
@@ -101,7 +161,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { Link } from '@inertiajs/vue3'
 
 const props = defineProps({
@@ -116,7 +176,10 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['toggle-language', 'toggle-dark-mode'])
+
 const isMobileMenuOpen = ref(false)
+const isScrolled = ref(false)
+const activeSection = ref('hero')
 
 const logoUrl = computed(() => {
   if (!props.logo) return '/images/logo/logo.png'
@@ -124,8 +187,103 @@ const logoUrl = computed(() => {
   return `/storage/${props.logo}`
 })
 
-const handleImageError = (e) => { e.target.src = '/images/logo/logo.png' }
-const toggleMobileMenu = () => { isMobileMenuOpen.value = !isMobileMenuOpen.value }
-const closeMobileMenu = () => { isMobileMenuOpen.value = false }
-const toggleLanguage = () => { emit('toggle-language') }
+const navbarClasses = computed(() => {
+  if (isScrolled.value || !props.transparent) {
+    return [
+      'bg-white/80 dark:bg-gray-900/80',
+      'backdrop-blur-lg',
+      'shadow-lg',
+      'shadow-primary/5',
+      'border-b',
+      'border-white/20'
+    ].join(' ')
+  }
+  return 'bg-transparent'
+})
+
+const navbarStyle = computed(() => {
+  if (isScrolled.value || !props.transparent) {
+    return {
+      backdropFilter: 'blur(16px) saturate(150%)',
+      WebkitBackdropFilter: 'blur(16px) saturate(150%)'
+    }
+  }
+  return {}
+})
+
+const navLinkClasses = computed(() => {
+  const base = 'px-4 py-2 font-medium rounded-lg transition-all duration-300'
+
+  if (isScrolled.value || !props.transparent) {
+    return `${base} text-gray-700 dark:text-gray-200 hover:text-primary hover:bg-primary/10`
+  }
+  return `${base} text-white/90 hover:text-white hover:bg-white/20`
+})
+
+const handleScroll = () => {
+  if (typeof window !== 'undefined') {
+    isScrolled.value = window.scrollY > 50
+
+    // Update active section based on scroll position
+    const sections = props.navItems
+      .filter((item) => item.href.startsWith('#'))
+      .map((item) => item.href.slice(1))
+
+    for (const sectionId of sections.reverse()) {
+      const element = document.getElementById(sectionId)
+      if (element) {
+        const rect = element.getBoundingClientRect()
+        if (rect.top <= 100) {
+          activeSection.value = sectionId
+          break
+        }
+      }
+    }
+  }
+}
+
+const handleNavClick = () => {
+  closeMobileMenu()
+}
+
+const handleImageError = (e) => {
+  e.target.src = '/images/logo/logo.png'
+}
+
+const toggleMobileMenu = () => {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value
+  // Prevent body scroll when menu is open
+  if (isMobileMenuOpen.value) {
+    document.body.style.overflow = 'hidden'
+  } else {
+    document.body.style.overflow = ''
+  }
+}
+
+const closeMobileMenu = () => {
+  isMobileMenuOpen.value = false
+  document.body.style.overflow = ''
+}
+
+const toggleLanguage = () => {
+  emit('toggle-language')
+}
+
+const toggleDarkMode = () => {
+  emit('toggle-dark-mode')
+}
+
+onMounted(() => {
+  if (typeof window !== 'undefined') {
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+  }
+})
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('scroll', handleScroll)
+    document.body.style.overflow = ''
+  }
+})
 </script>
