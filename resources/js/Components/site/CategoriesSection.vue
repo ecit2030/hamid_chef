@@ -6,21 +6,21 @@
         ref="headerRef"
         :class="['text-center mb-12', headerAnimationClasses]"
       >
-        <div class="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 backdrop-blur-sm text-primary rounded-full mb-6 border border-primary/20">
+        <div class="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-primary rounded-full mb-6">
           <span class="text-xl">🍽️</span>
           <span class="font-bold">{{ currentLang === 'ar' ? 'تصنيفات الطعام' : 'Food Categories' }}</span>
         </div>
 
-        <h2 class="text-4xl lg:text-5xl font-black text-primary mb-4">
+        <h2 class="text-4xl lg:text-5xl font-black text-primary dark:text-white mb-4">
           {{ currentLang === 'ar' ? section?.title_ar : section?.title_en }}
         </h2>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
           {{ currentLang === 'ar' ? section?.description_ar : section?.description_en }}
         </p>
       </div>
 
       <!-- Categories Grid -->
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div v-if="categories.length > 0" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <a
           v-for="(category, index) in categories"
           :key="index"
@@ -28,15 +28,9 @@
           :class="['group block', cardAnimationClasses]"
           :style="{ transitionDelay: `${index * 100}ms` }"
         >
-          <GlassCard
-            :animated="false"
-            :hover-effect="true"
-            :glow="true"
-            padding="lg"
-            class="text-center h-full"
-          >
+          <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center h-full hover:border-primary dark:hover:border-secondary transition-colors duration-300">
             <!-- Icon -->
-            <div class="relative w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary to-primary-600 rounded-xl flex items-center justify-center shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-primary/30">
+            <div class="relative w-16 h-16 mx-auto mb-4 bg-primary rounded-xl flex items-center justify-center">
               <img
                 v-if="category.icon"
                 :src="`/storage/${category.icon}`"
@@ -49,24 +43,34 @@
             </div>
 
             <!-- Name -->
-            <h3 class="relative text-lg font-black text-primary mb-2 transition-colors group-hover:text-primary-600">
+            <h3 class="relative text-lg font-black text-primary dark:text-white mb-2">
               {{ currentLang === 'ar' ? category.name_ar : category.name_en }}
             </h3>
 
             <!-- Description -->
-            <p v-if="category.description_ar || category.description_en" class="relative text-gray-600 text-sm leading-relaxed">
+            <p v-if="category.description_ar || category.description_en" class="relative text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
               {{ currentLang === 'ar' ? category.description_ar : category.description_en }}
             </p>
 
             <!-- Arrow -->
-            <div class="relative mt-4 flex items-center justify-center text-primary opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+            <div class="relative mt-4 flex items-center justify-center text-primary dark:text-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <span class="text-sm font-semibold mr-2">{{ currentLang === 'ar' ? 'استكشف' : 'Explore' }}</span>
               <svg class="w-5 h-5" :class="currentLang === 'ar' ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </div>
-          </GlassCard>
+          </div>
         </a>
+      </div>
+
+      <!-- Empty State -->
+      <div v-else class="text-center py-12">
+        <div class="w-24 h-24 mx-auto mb-6 bg-secondary rounded-full flex items-center justify-center">
+          <span class="text-5xl">🍽️</span>
+        </div>
+        <p class="text-gray-600 dark:text-gray-300 text-lg">
+          {{ currentLang === 'ar' ? 'سيتم عرض التصنيفات قريباً' : 'Categories coming soon' }}
+        </p>
       </div>
     </div>
   </section>
@@ -76,7 +80,6 @@
 import { ref, computed, onMounted } from 'vue'
 import { useScrollTrigger } from '@/composables/useScrollTrigger'
 import { useAnimations } from '@/composables/useAnimations'
-import GlassCard from '@/Components/ui/GlassCard.vue'
 
 const props = defineProps({
   section: { type: Object, required: true },

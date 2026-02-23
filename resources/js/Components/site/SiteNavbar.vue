@@ -1,29 +1,20 @@
 <template>
   <nav
     :class="[
-      'fixed top-0 left-0 right-0 z-[1000] transition-all duration-300',
+      'fixed top-0 left-0 right-0 z-[1000]',
       navbarClasses
     ]"
-    :style="navbarStyle"
   >
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div
-        :class="[
-          'flex items-center justify-between transition-all duration-300',
-          isScrolled ? 'h-16' : 'h-20'
-        ]"
-      >
+      <div class="flex items-center justify-between h-16">
         <!-- Logo -->
         <div class="flex-shrink-0">
-          <Link href="/" class="flex items-center gap-2 group">
+          <Link href="/" class="flex items-center gap-2">
             <img
               v-if="logoUrl"
               :src="logoUrl"
               :alt="logoAlt"
-              :class="[
-                'w-auto object-contain transition-all duration-300',
-                isScrolled ? 'h-10' : 'h-12'
-              ]"
+              class="h-10 w-auto object-contain"
               @error="handleImageError"
             />
           </Link>
@@ -44,7 +35,9 @@
               :href="item.href"
               :class="[
                 navLinkClasses,
-                { 'bg-primary/10 text-primary': activeSection === item.href.slice(1) }
+                activeSection === item.href.slice(1)
+                  ? 'text-primary dark:text-secondary font-semibold'
+                  : ''
               ]"
               @click="handleNavClick"
             >
@@ -59,8 +52,7 @@
           <button
             v-if="showDarkModeToggle"
             @click="toggleDarkMode"
-            class="p-2 rounded-full transition-all duration-300 hover:bg-primary/10"
-            :class="isScrolled || !transparent ? 'text-primary' : 'text-white'"
+            class="p-2 rounded-lg text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-secondary transition-colors duration-200"
           >
             <svg v-if="isDarkMode" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" />
@@ -74,12 +66,7 @@
           <button
             v-if="showLanguageSwitcher"
             @click="toggleLanguage"
-            :class="[
-              'flex items-center gap-2 px-4 py-2 font-semibold rounded-full transition-all duration-300',
-              isScrolled || !transparent
-                ? 'bg-secondary text-primary hover:bg-secondary-600'
-                : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
-            ]"
+            class="flex items-center gap-2 px-4 py-2 font-semibold rounded-lg bg-secondary text-primary hover:bg-secondary-600 transition-colors duration-200"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
@@ -90,12 +77,7 @@
           <!-- Mobile Menu Button -->
           <button
             @click="toggleMobileMenu"
-            :class="[
-              'lg:hidden p-2 rounded-lg transition-all duration-300',
-              isScrolled || !transparent
-                ? 'text-primary hover:bg-primary/10'
-                : 'text-white hover:bg-white/20'
-            ]"
+            class="lg:hidden p-2 rounded-lg text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-secondary transition-colors duration-200"
           >
             <svg v-if="!isMobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -110,48 +92,41 @@
 
     <!-- Mobile Menu - Full Screen Overlay -->
     <Transition
-      enter-active-class="transition duration-300 ease-out"
+      enter-active-class="transition duration-200 ease-out"
       enter-from-class="opacity-0"
       enter-to-class="opacity-100"
-      leave-active-class="transition duration-200 ease-in"
+      leave-active-class="transition duration-150 ease-in"
       leave-from-class="opacity-100"
       leave-to-class="opacity-0"
     >
       <div
         v-if="isMobileMenuOpen"
-        class="lg:hidden fixed inset-0 top-16 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg z-50"
+        class="lg:hidden fixed inset-0 top-16 bg-white dark:bg-gray-900 z-50"
       >
         <div class="container mx-auto px-4 py-8">
           <div class="space-y-2">
-            <template v-for="(item, index) in navItems" :key="'mobile-' + item.href">
-              <Transition
-                enter-active-class="transition duration-300 ease-out"
-                :enter-from-class="`opacity-0 translate-x-${currentLang === 'ar' ? '' : '-'}4`"
-                enter-to-class="opacity-100 translate-x-0"
-                :style="{ transitionDelay: `${index * 50}ms` }"
+            <template v-for="item in navItems" :key="'mobile-' + item.href">
+              <Link
+                v-if="!item.href.startsWith('#')"
+                :href="item.href"
+                class="block px-6 py-4 text-xl font-bold text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-secondary rounded-xl transition-colors duration-200"
+                @click="closeMobileMenu"
               >
-                <Link
-                  v-if="!item.href.startsWith('#')"
-                  :href="item.href"
-                  class="block px-6 py-4 text-xl font-bold text-primary hover:bg-primary/10 rounded-xl transition-all duration-300"
-                  @click="closeMobileMenu"
-                >
-                  {{ currentLang === 'ar' ? item.label_ar : item.label_en }}
-                </Link>
-                <a
-                  v-else
-                  :href="item.href"
-                  :class="[
-                    'block px-6 py-4 text-xl font-bold rounded-xl transition-all duration-300',
-                    activeSection === item.href.slice(1)
-                      ? 'bg-primary text-white'
-                      : 'text-primary hover:bg-primary/10'
-                  ]"
-                  @click="closeMobileMenu"
-                >
-                  {{ currentLang === 'ar' ? item.label_ar : item.label_en }}
-                </a>
-              </Transition>
+                {{ currentLang === 'ar' ? item.label_ar : item.label_en }}
+              </Link>
+              <a
+                v-else
+                :href="item.href"
+                :class="[
+                  'block px-6 py-4 text-xl font-bold rounded-xl transition-colors duration-200',
+                  activeSection === item.href.slice(1)
+                    ? 'bg-primary text-white'
+                    : 'text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-secondary'
+                ]"
+                @click="closeMobileMenu"
+              >
+                {{ currentLang === 'ar' ? item.label_ar : item.label_en }}
+              </a>
             </template>
           </div>
         </div>
@@ -170,7 +145,7 @@ const props = defineProps({
   navItems: { type: Array, default: () => [] },
   currentLang: { type: String, default: 'ar' },
   showLanguageSwitcher: { type: Boolean, default: true },
-  showDarkModeToggle: { type: Boolean, default: false },
+  showDarkModeToggle: { type: Boolean, default: true },
   isDarkMode: { type: Boolean, default: false },
   transparent: { type: Boolean, default: false }
 })
@@ -187,37 +162,23 @@ const logoUrl = computed(() => {
   return `/storage/${props.logo}`
 })
 
+// Navbar classes - professional style with transparency support
 const navbarClasses = computed(() => {
   if (isScrolled.value || !props.transparent) {
-    return [
-      'bg-white/80 dark:bg-gray-900/80',
-      'backdrop-blur-lg',
-      'shadow-lg',
-      'shadow-primary/5',
-      'border-b',
-      'border-white/20'
-    ].join(' ')
+    return 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 shadow-sm'
   }
+  // When transparent (hero section), use transparent with blur
   return 'bg-transparent'
 })
 
-const navbarStyle = computed(() => {
-  if (isScrolled.value || !props.transparent) {
-    return {
-      backdropFilter: 'blur(16px) saturate(150%)',
-      WebkitBackdropFilter: 'blur(16px) saturate(150%)'
-    }
-  }
-  return {}
-})
-
+// Professional link classes with smooth transitions
 const navLinkClasses = computed(() => {
-  const base = 'px-4 py-2 font-medium rounded-lg transition-all duration-300'
+  const base = 'px-4 py-2 font-semibold rounded-lg transition-all duration-300'
 
   if (isScrolled.value || !props.transparent) {
-    return `${base} text-gray-700 dark:text-gray-200 hover:text-primary hover:bg-primary/10`
+    return `${base} text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-secondary hover:bg-gray-50 dark:hover:bg-gray-800`
   }
-  return `${base} text-white/90 hover:text-white hover:bg-white/20`
+  return `${base} text-white/90 hover:text-white hover:bg-white/10`
 })
 
 const handleScroll = () => {
@@ -252,7 +213,6 @@ const handleImageError = (e) => {
 
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value
-  // Prevent body scroll when menu is open
   if (isMobileMenuOpen.value) {
     document.body.style.overflow = 'hidden'
   } else {

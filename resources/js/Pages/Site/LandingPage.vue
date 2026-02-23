@@ -1,21 +1,21 @@
 <template>
   <div
-    class="min-h-screen transition-colors duration-500"
+    class="min-h-screen"
     :dir="currentLocale === 'ar' ? 'rtl' : 'ltr'"
-    :class="{ 'dark': isDarkMode }"
+    :class="isDarkMode ? 'dark bg-gray-900' : 'bg-white'"
   >
-    <!-- Loading Overlay -->
+    <!-- Simple Loading Overlay -->
     <Transition name="fade">
       <div
         v-if="isLoading"
-        class="fixed inset-0 z-[100] flex items-center justify-center bg-white dark:bg-gray-900 transition-colors duration-500"
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-white dark:bg-gray-900"
       >
         <div class="text-center">
-          <div class="w-20 h-20 mx-auto mb-4 bg-secondary rounded-2xl flex items-center justify-center animate-bounce">
-            <span class="text-4xl">👨‍🍳</span>
+          <div class="w-16 h-16 mx-auto mb-4 bg-secondary rounded-xl flex items-center justify-center">
+            <span class="text-3xl">👨‍🍳</span>
           </div>
           <div class="flex gap-1 justify-center">
-            <span class="w-2 h-2 bg-primary rounded-full animate-pulse" style="animation-delay: 0ms"></span>
+            <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
             <span class="w-2 h-2 bg-primary rounded-full animate-pulse" style="animation-delay: 150ms"></span>
             <span class="w-2 h-2 bg-primary rounded-full animate-pulse" style="animation-delay: 300ms"></span>
           </div>
@@ -23,25 +23,13 @@
       </div>
     </Transition>
 
-    <!-- Unified Background for entire page -->
-    <div
-      class="fixed inset-0 -z-10 transition-colors duration-500"
-      :class="isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-b from-white via-secondary/20 to-secondary/30'"
-    >
-      <!-- Cooking Pattern Overlay -->
-      <div
-        class="absolute inset-0 transition-opacity duration-500"
-        :class="isDarkMode ? 'opacity-[0.02]' : 'opacity-[0.04]'"
-        style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;80&quot; height=&quot;80&quot; viewBox=&quot;0 0 80 80&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;%23083064&quot;%3E%3Ccircle cx=&quot;40&quot; cy=&quot;40&quot; r=&quot;3&quot;/%3E%3Ccircle cx=&quot;10&quot; cy=&quot;10&quot; r=&quot;2&quot;/%3E%3Ccircle cx=&quot;70&quot; cy=&quot;10&quot; r=&quot;2&quot;/%3E%3Ccircle cx=&quot;10&quot; cy=&quot;70&quot; r=&quot;2&quot;/%3E%3Ccircle cx=&quot;70&quot; cy=&quot;70&quot; r=&quot;2&quot;/%3E%3C/g%3E%3C/svg%3E');"
-      ></div>
-    </div>
-
     <!-- Navbar -->
     <SiteNavbar
       transparent
       :current-lang="currentLocale"
       :nav-items="navItems"
       :is-dark-mode="isDarkMode"
+      :show-dark-mode-toggle="true"
       @toggle-language="toggleLanguage"
       @toggle-dark-mode="toggleDarkMode"
     />
@@ -55,14 +43,15 @@
       :is-dark-mode="isDarkMode"
     />
 
-    <!-- Main Content with unified background -->
-    <main class="relative">
+    <!-- Main Content -->
+    <main>
       <!-- Features Section -->
       <FeaturesSection
         v-if="sections.features"
         id="features"
         :section="sections.features"
         :current-lang="currentLocale"
+        :is-dark-mode="isDarkMode"
       />
 
       <!-- How It Works Section -->
@@ -71,6 +60,7 @@
         id="how-it-works"
         :section="sections.how_it_works"
         :current-lang="currentLocale"
+        :is-dark-mode="isDarkMode"
       />
 
       <!-- Why Us Section -->
@@ -79,6 +69,7 @@
         id="why-us"
         :section="sections.why_us"
         :current-lang="currentLocale"
+        :is-dark-mode="isDarkMode"
       />
 
       <!-- Top Chefs Section -->
@@ -87,6 +78,8 @@
         id="top-chefs"
         :section="sections.top_chefs"
         :current-lang="currentLocale"
+        :is-dark-mode="isDarkMode"
+        class="bg-gray-50 dark:bg-gray-800"
       />
 
       <!-- Categories Section -->
@@ -95,6 +88,8 @@
         id="categories"
         :section="sections.categories"
         :current-lang="currentLocale"
+        :is-dark-mode="isDarkMode"
+        class="bg-white dark:bg-gray-900"
       />
 
       <!-- Testimonials Section -->
@@ -103,6 +98,7 @@
         id="testimonials"
         :section="sections.testimonials"
         :current-lang="currentLocale"
+        :is-dark-mode="isDarkMode"
       />
 
       <!-- About Us Section -->
@@ -111,6 +107,8 @@
         id="about"
         :section="sections.about_us"
         :current-lang="currentLocale"
+        :is-dark-mode="isDarkMode"
+        class="bg-white dark:bg-gray-900"
       />
 
       <!-- Vision & Mission Section -->
@@ -119,14 +117,8 @@
         id="vision-mission"
         :section="sections.vision_mission"
         :current-lang="currentLocale"
-      />
-
-      <!-- Contact Section -->
-      <ContactSection
-        v-if="sections.contact"
-        id="contact"
-        :section="sections.contact"
-        :current-lang="currentLocale"
+        :is-dark-mode="isDarkMode"
+        class="bg-gray-50 dark:bg-gray-800"
       />
 
       <!-- CTA Section -->
@@ -135,6 +127,16 @@
         id="cta"
         :section="sections.cta"
         :current-lang="currentLocale"
+        :is-dark-mode="isDarkMode"
+      />
+
+      <!-- Contact Section -->
+      <ContactSection
+        v-if="sections.contact"
+        id="contact"
+        :section="sections.contact"
+        :current-lang="currentLocale"
+        :is-dark-mode="isDarkMode"
       />
     </main>
 
@@ -192,7 +194,6 @@ const initDarkMode = () => {
   if (savedMode !== null) {
     isDarkMode.value = savedMode === 'true'
   } else {
-    // Check system preference
     isDarkMode.value = window.matchMedia('(prefers-color-scheme: dark)').matches
   }
 
@@ -215,11 +216,9 @@ watch(isDarkMode, (newValue) => {
 
 onMounted(() => {
   initDarkMode()
-
-  // Simulate loading (non-blocking)
   setTimeout(() => {
     isLoading.value = false
-  }, 800)
+  }, 500)
 })
 
 const toggleLanguage = () => {
@@ -242,7 +241,7 @@ const toggleDarkMode = () => {
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0.3s ease;
 }
 
 .fade-enter-from,

@@ -181,7 +181,7 @@ h6, .text-h6 {
     color: #e2e8f0;
 }
 
-/* Glassmorphism Utilities */
+/* Glassmorphism Utilities - For Admin Panel Only */
 .glass {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
@@ -206,6 +206,85 @@ h6, .text-h6 {
     background: rgba(30, 41, 59, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   Flat Design Utilities - For Landing Page
+   ============================================ */
+
+/* Flat Card - No shadows, simple borders */
+.flat-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    transition: border-color 0.2s ease;
+}
+
+.dark .flat-card {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+.flat-card:hover {
+    border-color: #083064;
+}
+
+.dark .flat-card:hover {
+    border-color: #CBE4F8;
+}
+
+/* Flat Button - Solid colors, no shadows */
+.flat-btn-primary {
+    background: #083064;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 1rem 2rem;
+    font-weight: 700;
+    transition: background-color 0.2s ease;
+}
+
+.flat-btn-primary:hover {
+    background: #062650;
+}
+
+.flat-btn-secondary {
+    background: #CBE4F8;
+    color: #083064;
+    border: none;
+    border-radius: 12px;
+    padding: 1rem 2rem;
+    font-weight: 700;
+    transition: background-color 0.2s ease;
+}
+
+.flat-btn-secondary:hover {
+    background: #A3D1F3;
+}
+
+.flat-btn-outline {
+    background: transparent;
+    color: #083064;
+    border: 2px solid #083064;
+    border-radius: 12px;
+    padding: 1rem 2rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+.flat-btn-outline:hover {
+    background: #083064;
+    color: white;
+}
+
+.dark .flat-btn-outline {
+    color: #CBE4F8;
+    border-color: #CBE4F8;
+}
+
+.dark .flat-btn-outline:hover {
+    background: #CBE4F8;
+    color: #083064;
 }
 
 /* Glow Effects */

@@ -1,20 +1,20 @@
 <template>
-  <section class="relative py-24 overflow-hidden">
+  <section class="relative py-24 overflow-hidden bg-gray-50 dark:bg-gray-800">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <!-- Section Header -->
       <div
         ref="headerRef"
         :class="['text-center mb-16', headerAnimationClasses]"
       >
-        <div class="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 backdrop-blur-sm text-primary rounded-full mb-6 border border-primary/20">
+        <div class="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 dark:bg-primary/20 text-primary dark:text-secondary rounded-full mb-6 border border-primary/20 dark:border-secondary/30">
           <span class="text-xl">💬</span>
           <span class="font-bold">{{ currentLang === 'ar' ? 'آراء عملائنا' : 'Testimonials' }}</span>
         </div>
 
-        <h2 class="text-4xl lg:text-5xl font-black text-primary mb-4">
+        <h2 class="text-4xl lg:text-5xl font-black text-primary dark:text-white mb-6">
           {{ currentLang === 'ar' ? section?.title_ar : section?.title_en }}
         </h2>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
           {{ currentLang === 'ar' ? section?.description_ar : section?.description_en }}
         </p>
       </div>
@@ -25,7 +25,7 @@
         <button
           v-if="testimonials.length > 3"
           @click="prevSlide"
-          class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 bg-white/80 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-primary hover:bg-white hover:scale-110 transition-all duration-300 hidden lg:flex"
+          class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-14 h-14 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center text-primary dark:text-white hover:bg-primary hover:text-white dark:hover:bg-secondary dark:hover:text-primary transition-all duration-300 shadow-lg hidden lg:flex"
         >
           <svg class="w-6 h-6" :class="currentLang === 'ar' ? '' : 'rotate-180'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -35,7 +35,7 @@
         <button
           v-if="testimonials.length > 3"
           @click="nextSlide"
-          class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 bg-white/80 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-primary hover:bg-white hover:scale-110 transition-all duration-300 hidden lg:flex"
+          class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-14 h-14 bg-white dark:bg-gray-900 rounded-full flex items-center justify-center text-primary dark:text-white hover:bg-primary hover:text-white dark:hover:bg-secondary dark:hover:text-primary transition-all duration-300 shadow-lg hidden lg:flex"
         >
           <svg class="w-6 h-6" :class="currentLang === 'ar' ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -43,26 +43,23 @@
         </button>
 
         <!-- Testimonials Grid -->
-        <div class="grid md:grid-cols-3 gap-6 overflow-hidden">
+        <div class="grid md:grid-cols-3 gap-8 overflow-hidden">
           <div
             v-for="(testimonial, index) in visibleTestimonials"
             :key="index"
             :class="['group', cardAnimationClasses]"
             :style="{ transitionDelay: `${index * 100}ms` }"
           >
-            <GlassCard
-              :animated="false"
-              :hover-effect="true"
-              :glow="true"
-              padding="lg"
-              class="h-full"
-            >
+            <div class="bg-white dark:bg-gray-900 rounded-2xl p-8 h-full border border-gray-100 dark:border-gray-700 hover:border-primary/30 dark:hover:border-secondary/30 transition-all duration-300 hover:-translate-y-1 relative">
+              <!-- Quote Icon Background -->
+              <div class="absolute top-4 right-4 text-8xl text-primary/5 dark:text-secondary/5 font-serif leading-none">"</div>
+
               <!-- Stars -->
-              <div class="flex items-center gap-1 mb-4">
+              <div class="flex items-center gap-1 mb-6 relative z-10">
                 <svg
                   v-for="star in 5"
                   :key="star"
-                  class="w-5 h-5 text-yellow-500 transition-transform hover:scale-125"
+                  class="w-5 h-5 text-yellow-500"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -70,47 +67,44 @@
                 </svg>
               </div>
 
-              <!-- Quote Icon -->
-              <div class="text-5xl text-primary/20 mb-3 font-serif">"</div>
-
               <!-- Content -->
-              <p class="text-gray-700 leading-relaxed mb-6">
-                {{ currentLang === 'ar' ? testimonial.content_ar : testimonial.content_en }}
+              <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-8 relative z-10">
+                {{ currentLang === 'ar' ? (testimonial.content_ar || testimonial.comment_ar) : (testimonial.content_en || testimonial.comment_en) }}
               </p>
 
               <!-- Author -->
-              <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
-                <div class="w-12 h-12 bg-gradient-to-br from-primary to-primary-600 rounded-full flex items-center justify-center overflow-hidden shadow-lg transition-transform group-hover:scale-110">
+              <div class="flex items-center gap-4 pt-6 border-t border-gray-100 dark:border-gray-700 relative z-10">
+                <div class="w-14 h-14 bg-gradient-to-br from-primary to-primary-600 rounded-full flex items-center justify-center overflow-hidden shadow-lg shadow-primary/20">
                   <img
                     v-if="testimonial.avatar"
-                    :src="`/storage/${testimonial.avatar}`"
-                    :alt="testimonial.name"
+                    :src="testimonial.avatar?.startsWith('http') ? testimonial.avatar : `/storage/${testimonial.avatar}`"
+                    :alt="currentLang === 'ar' ? (testimonial.name_ar || testimonial.name) : (testimonial.name_en || testimonial.name)"
                     class="w-full h-full object-cover"
                   />
-                  <span v-else class="text-white font-black text-lg">
-                    {{ testimonial.name?.charAt(0) }}
+                  <span v-else class="text-white font-bold text-xl">
+                    {{ (currentLang === 'ar' ? (testimonial.name_ar || testimonial.name) : (testimonial.name_en || testimonial.name))?.charAt(0) }}
                   </span>
                 </div>
                 <div>
-                  <h4 class="font-black text-primary">{{ testimonial.name }}</h4>
-                  <p class="text-gray-500 text-sm">{{ currentLang === 'ar' ? testimonial.role_ar : testimonial.role_en }}</p>
+                  <h4 class="font-bold text-primary dark:text-white text-lg">{{ currentLang === 'ar' ? (testimonial.name_ar || testimonial.name) : (testimonial.name_en || testimonial.name) }}</h4>
+                  <p class="text-gray-500 dark:text-gray-400">{{ currentLang === 'ar' ? testimonial.role_ar : testimonial.role_en }}</p>
                 </div>
               </div>
-            </GlassCard>
+            </div>
           </div>
         </div>
 
         <!-- Dots Indicator -->
-        <div v-if="testimonials.length > 3" class="flex justify-center gap-2 mt-8">
+        <div v-if="testimonials.length > 3" class="flex justify-center gap-3 mt-10">
           <button
             v-for="(_, index) in Math.ceil(testimonials.length / 3)"
             :key="index"
             @click="goToSlide(index)"
             :class="[
-              'w-3 h-3 rounded-full transition-all duration-300',
+              'h-3 rounded-full transition-all duration-300',
               currentSlide === index
-                ? 'bg-primary w-8'
-                : 'bg-gray-300 hover:bg-gray-400'
+                ? 'bg-primary w-10'
+                : 'bg-gray-300 dark:bg-gray-600 hover:bg-primary/50 w-3'
             ]"
           />
         </div>
@@ -123,7 +117,6 @@
 import { ref, computed, onMounted } from 'vue'
 import { useScrollTrigger } from '@/composables/useScrollTrigger'
 import { useAnimations } from '@/composables/useAnimations'
-import GlassCard from '@/Components/ui/GlassCard.vue'
 
 const props = defineProps({
   section: { type: Object, required: true },

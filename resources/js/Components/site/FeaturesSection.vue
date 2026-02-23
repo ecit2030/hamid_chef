@@ -1,39 +1,33 @@
 <template>
-  <section id="features" class="py-24 relative overflow-hidden">
+  <section id="features" class="py-24 bg-gray-50 dark:bg-gray-800">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Section Header -->
-      <div
-        ref="headerRef"
-        :class="['text-center mb-16', headerAnimationClasses]"
-      >
-        <div class="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 backdrop-blur-sm text-primary rounded-full mb-6 border border-primary/20">
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 dark:bg-primary/20 text-primary dark:text-secondary rounded-full mb-6 border border-primary/20 dark:border-secondary/30">
           <span class="text-xl">🍽️</span>
           <span class="font-bold">{{ currentLang === 'ar' ? 'خدماتنا المميزة' : 'Our Services' }}</span>
         </div>
 
-        <h2 class="text-4xl lg:text-5xl font-black text-primary mb-4">
+        <h2 class="text-4xl lg:text-5xl font-black text-primary dark:text-white mb-6">
           {{ currentLang === 'ar' ? section?.title_ar : section?.title_en }}
         </h2>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
           {{ currentLang === 'ar' ? section?.description_ar : section?.description_en }}
         </p>
       </div>
 
-      <!-- Features Grid -->
-      <div ref="gridRef" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <GlassCard
+      <!-- Features Grid - Modern Professional Design -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div
           v-for="(feature, index) in features"
           :key="index"
-          :animated="true"
-          animation-type="slideUp"
-          :hover-effect="true"
-          :glow="true"
-          padding="lg"
-          class="group"
-          :style="{ transitionDelay: `${index * 100}ms` }"
+          class="group relative bg-white dark:bg-gray-900 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 hover:border-primary/30 dark:hover:border-secondary/30 transition-all duration-300 hover:-translate-y-1"
         >
+          <!-- Accent Line -->
+          <div class="absolute top-0 left-8 right-8 h-1 bg-gradient-to-r from-primary to-primary-600 rounded-b-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
           <!-- Icon -->
-          <div class="w-16 h-16 bg-gradient-to-br from-primary to-primary-600 rounded-xl flex items-center justify-center mb-5 shadow-xl transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-primary/30">
+          <div class="w-16 h-16 bg-gradient-to-br from-primary to-primary-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
             <img
               v-if="feature.icon"
               :src="`/storage/${feature.icon}`"
@@ -46,56 +40,35 @@
           </div>
 
           <!-- Content -->
-          <h3 class="text-xl font-black text-primary mb-3 transition-colors group-hover:text-primary-600">
+          <h3 class="text-xl font-bold text-primary dark:text-white mb-4 group-hover:text-primary-600 dark:group-hover:text-secondary transition-colors duration-300">
             {{ currentLang === 'ar' ? feature.title_ar : feature.title_en }}
           </h3>
 
-          <p class="text-gray-600 text-sm leading-relaxed">
+          <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
             {{ currentLang === 'ar' ? feature.description_ar : feature.description_en }}
           </p>
 
-          <!-- Hover Arrow -->
-          <div class="mt-4 flex items-center gap-2 text-primary opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
-            <span class="text-sm font-semibold">{{ currentLang === 'ar' ? 'اعرف المزيد' : 'Learn more' }}</span>
+          <!-- Arrow Icon -->
+          <div class="mt-6 flex items-center gap-2 text-primary dark:text-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span class="text-sm font-semibold">{{ currentLang === 'ar' ? 'اعرف المزيد' : 'Learn More' }}</span>
             <svg class="w-4 h-4" :class="currentLang === 'ar' ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </div>
-        </GlassCard>
+        </div>
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useScrollTrigger } from '@/composables/useScrollTrigger'
-import { useAnimations } from '@/composables/useAnimations'
-import GlassCard from '@/Components/ui/GlassCard.vue'
+import { computed } from 'vue'
 
 const props = defineProps({
   section: { type: Object, required: true },
-  currentLang: { type: String, default: 'ar' }
-})
-
-const headerRef = ref(null)
-const gridRef = ref(null)
-
-const { isVisible: headerVisible, observe: observeHeader } = useScrollTrigger({ threshold: 0.2 })
-const { getAnimationClasses, prefersReducedMotion } = useAnimations()
-
-onMounted(() => {
-  if (headerRef.value) {
-    observeHeader(headerRef.value)
-  }
+  currentLang: { type: String, default: 'ar' },
+  isDarkMode: { type: Boolean, default: false }
 })
 
 const features = computed(() => props.section?.additional_data?.features || [])
-
-const headerAnimationClasses = computed(() => {
-  if (prefersReducedMotion.value) return 'opacity-100'
-  return headerVisible.value
-    ? 'opacity-100 translate-y-0 transition-all duration-700'
-    : 'opacity-0 translate-y-8 transition-all duration-700'
-})
 </script>

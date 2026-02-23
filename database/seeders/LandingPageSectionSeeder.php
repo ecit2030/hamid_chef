@@ -17,8 +17,8 @@ class LandingPageSectionSeeder extends Seeder
             // Hero Section
             [
                 'section_key' => 'hero',
-                'title_ar' => 'مون شيف - احجز طاهيك المفضل',
-                'title_en' => 'Moon Chef - Book Your Favorite Chef',
+                'title_ar' => 'منصة الطهاة - احجز طاهيك المفضل',
+                'title_en' => 'Chef Platform - Book Your Favorite Chef',
                 'description_ar' => 'منصة تربط الطهاة المحترفين بالعملاء لتقديم تجربة طهي استثنائية في منزلك',
                 'description_en' => 'A platform connecting professional chefs with customers for an exceptional cooking experience at your home',
                 'display_order' => 0,
@@ -30,13 +30,13 @@ class LandingPageSectionSeeder extends Seeder
                             'title_en' => 'Discover the Best Chefs',
                             'description_ar' => 'تصفح مجموعة واسعة من الطهاة المحترفين واختر الأنسب لمناسبتك',
                             'description_en' => 'Browse a wide selection of professional chefs and choose the perfect one for your occasion',
-                            'image' => 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1920&q=80'
                         ],
-                        [
-                            'title_ar' => 'احجز بسهولة وأمان',
-                            'title_en' => 'Book Easily and Securely',
-                            'description_ar' => 'نظام حجز سهل وآمن مع خيارات دفع متعددة',
-                            'description_en' => 'Easy and secure booking system with multiple payment options',
+                    ],
+                    'stats' => [
+                        ['number' => '500+', 'label_ar' => 'طاهي محترف', 'label_en' => 'Professional Chefs'],
+                        ['number' => '10,000+', 'label_ar' => 'عميل سعيد', 'label_en' => 'Happy Customers'],
+                        ['number' => '15,000+', 'label_ar' => 'حجز ناجح', 'label_en' => 'Successful Bookings'],
+                        ['number' => '4.9/5', 'label_ar' => 'تقييم العملاء', 'l with multiple payment options',
                             'image' => 'https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=1920&q=80'
                         ],
                         [

@@ -8,31 +8,26 @@
         <!-- Image Side -->
         <div class="relative" :class="currentLang === 'ar' ? 'order-2' : 'order-1'">
           <!-- Main Image -->
-          <GlassCard
-            :animated="false"
-            :hover-effect="true"
-            padding="none"
-            class="overflow-hidden"
-          >
+          <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
             <img
               v-if="section?.image"
               :src="`/storage/${section.image}`"
               :alt="currentLang === 'ar' ? section?.title_ar : section?.title_en"
-              class="w-full h-auto object-cover transition-transform duration-500 hover:scale-105"
+              class="w-full h-auto object-cover"
             />
-            <div v-else class="w-full aspect-[4/3] bg-gradient-to-br from-primary to-primary-600 flex items-center justify-center">
+            <div v-else class="w-full aspect-[4/3] bg-primary flex items-center justify-center">
               <span class="text-9xl">👨‍🍳</span>
             </div>
-          </GlassCard>
+          </div>
 
           <!-- Floating Card -->
-          <div class="absolute -bottom-6 -right-6 bg-gradient-to-br from-primary to-primary-600 rounded-2xl p-5 shadow-2xl transform hover:scale-105 transition-transform">
+          <div class="absolute -bottom-6 -right-6 bg-primary rounded-2xl p-5">
             <div class="text-4xl font-black text-secondary">15+</div>
             <div class="text-white font-bold text-sm">{{ currentLang === 'ar' ? 'سنوات خبرة' : 'Years Experience' }}</div>
           </div>
 
           <!-- Decorative Circle -->
-          <div class="absolute -top-6 -left-6 w-20 h-20 bg-secondary rounded-full flex items-center justify-center shadow-xl border-4 border-white transform hover:rotate-12 transition-transform">
+          <div class="absolute -top-6 -left-6 w-20 h-20 bg-secondary rounded-full flex items-center justify-center border-4 border-white dark:border-gray-900">
             <span class="text-3xl">🍳</span>
           </div>
         </div>
@@ -40,52 +35,49 @@
         <!-- Content Side -->
         <div class="space-y-6" :class="currentLang === 'ar' ? 'order-1 text-right' : 'order-2 text-left'">
           <!-- Badge -->
-          <div class="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 backdrop-blur-sm text-primary rounded-full border border-primary/20">
+          <div class="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-primary rounded-full">
             <span class="text-xl">👋</span>
             <span class="font-bold">{{ currentLang === 'ar' ? 'تعرف علينا' : 'About Us' }}</span>
           </div>
 
           <!-- Title -->
-          <h2 class="text-4xl lg:text-5xl font-black text-primary leading-tight">
+          <h2 class="text-4xl lg:text-5xl font-black text-primary dark:text-white leading-tight">
             {{ currentLang === 'ar' ? section?.title_ar : section?.title_en }}
           </h2>
 
           <!-- Description -->
-          <p class="text-lg text-gray-600 leading-relaxed">
+          <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
             {{ currentLang === 'ar' ? section?.description_ar : section?.description_en }}
           </p>
 
           <!-- Features List -->
           <div v-if="features.length" class="space-y-3 pt-4">
-            <GlassCard
+            <div
               v-for="(feature, index) in features"
               :key="index"
-              :animated="false"
-              :hover-effect="true"
-              padding="sm"
-              class="flex items-center gap-4"
+              class="flex items-center gap-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:border-primary dark:hover:border-secondary transition-colors duration-300"
               :style="{ transitionDelay: `${index * 100}ms` }"
             >
-              <div class="w-10 h-10 bg-gradient-to-br from-primary to-primary-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg">
+              <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <span class="text-gray-800 font-bold">
+              <span class="text-gray-800 dark:text-white font-bold">
                 {{ currentLang === 'ar' ? feature.text_ar : feature.text_en }}
               </span>
-            </GlassCard>
+            </div>
           </div>
 
           <!-- CTA Button -->
           <a
             href="#contact"
-            class="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-primary to-primary-600 text-white font-bold text-lg rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/30"
+            class="inline-flex items-center gap-3 px-8 py-4 bg-primary text-white font-bold text-lg rounded-xl hover:bg-primary-600 transition-colors duration-300"
           >
             {{ currentLang === 'ar' ? 'تواصل معنا' : 'Contact Us' }}
             <svg
-              class="w-5 h-5 transition-transform group-hover:translate-x-1"
-              :class="currentLang === 'ar' ? 'rotate-180 group-hover:-translate-x-1' : ''"
+              class="w-5 h-5"
+              :class="currentLang === 'ar' ? 'rotate-180' : ''"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -103,7 +95,6 @@
 import { ref, computed, onMounted } from 'vue'
 import { useScrollTrigger } from '@/composables/useScrollTrigger'
 import { useAnimations } from '@/composables/useAnimations'
-import GlassCard from '@/Components/ui/GlassCard.vue'
 
 const props = defineProps({
   section: { type: Object, required: true },
