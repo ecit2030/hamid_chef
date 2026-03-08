@@ -8,7 +8,7 @@
     "variable": [
         {
             "key": "base_url",
-            "value": "https://monchef.codebrains.net"
+            "value": "http://hamid_chef.test/"
         },
         {
             "key": "api_token",

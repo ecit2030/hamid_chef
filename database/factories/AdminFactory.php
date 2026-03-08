@@ -23,7 +23,7 @@ class AdminFactory extends Factory
             'phone_number' => fake()->numerify('5########'),
             'whatsapp_number' => fake()->numerify('7########'),
             'address' => fake()->address(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => Hash::make('password'),
             'facebook' => 'https://facebook.com/' . fake()->userName(),
             'x_url' => 'https://x.com/' . fake()->userName(),
             'linkedin' => 'https://linkedin.com/in/' . fake()->userName(),

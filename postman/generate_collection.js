@@ -20,7 +20,7 @@ const collection = {
   "variable": [
     {
       "key": "base_url",
-      "value": "https://monchef.codebrains.net/api",
+      "value": "http://hamid_chef.test/",
       "type": "string"
     },
     {

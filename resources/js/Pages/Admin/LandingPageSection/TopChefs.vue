@@ -17,7 +17,7 @@ import { useI18n } from 'vue-i18n';
 import PageBreadcrumb from '@/Components/common/PageBreadcrumb.vue';
 import ComponentCard from '@/Components/common/ComponentCard.vue';
 import AdminLayout from '@/Components/layout/AdminLayout.vue';
-import TopChefs from '@/components/admin/landing-page-section/TopChefs.vue';
+import TopChefs from '@/Components/admin/landing-page-section/TopChefs.vue';
 
 const { t } = useI18n();
 

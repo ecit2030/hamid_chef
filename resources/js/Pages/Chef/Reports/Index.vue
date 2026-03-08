@@ -1,13 +1,13 @@
 <template>
   <ChefLayout>
     <PageBreadcrumb :pageTitle="t('reports.title')" />
-    
+
     <div class="space-y-6">
       <!-- Period Filter -->
       <div class="flex items-center justify-between">
         <h2 class="text-xl font-semibold text-gray-800 dark:text-white">{{ t('reports.overview') }}</h2>
-        <select 
-          v-model="selectedPeriod" 
+        <select
+          v-model="selectedPeriod"
           @change="changePeriod"
           class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white"
         >
@@ -232,7 +232,7 @@ import { CalenderIcon, WalletIcon, TaskIcon } from '@/icons'
 
 Chart.register(...registerables)
 
-// Simple icon components
+// Simple icon Components
 const CheckIcon = { template: '<svg class="fill-current" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' }
 const StarIcon = { template: '<svg class="fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>' }
 
@@ -326,15 +326,15 @@ const initCharts = () => {
   // Status Pie Chart
   if (statusChartRef.value && props.bookingsByStatus) {
     const ctx = statusChartRef.value.getContext('2d')
-    
+
     if (statusChart) {
       statusChart.destroy()
     }
-    
+
     const labels = Object.keys(props.bookingsByStatus).map(s => statusLabels[s] || s)
     const data = Object.values(props.bookingsByStatus)
     const colors = Object.keys(props.bookingsByStatus).map(s => statusColors[s] || '#9ca3af')
-    
+
     statusChart = new Chart(ctx, {
       type: 'doughnut',
       data: {
@@ -361,19 +361,19 @@ const initCharts = () => {
       }
     })
   }
-  
+
   // Earnings Line Chart
   if (earningsChartRef.value && props.earningsByMonth?.length) {
     const ctx = earningsChartRef.value.getContext('2d')
-    
+
     if (earningsChart) {
       earningsChart.destroy()
     }
-    
+
     const labels = props.earningsByMonth.map(e => arabicMonths[e.month - 1])
     const netData = props.earningsByMonth.map(e => e.net)
     const totalData = props.earningsByMonth.map(e => e.total)
-    
+
     earningsChart = new Chart(ctx, {
       type: 'line',
       data: {
