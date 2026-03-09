@@ -124,7 +124,7 @@
 		</div>
 
 		<!-- Service Images Section -->
-		<ChefGalleryViewer 
+		<ChefGalleryViewer
 			:images="service.images || []"
 			:loading="false"
 			label="chef_services.serviceImages"
@@ -149,8 +149,8 @@
 									<h3 class="text-base font-medium text-gray-900 dark:text-white">{{ equipment.name }}</h3>
 									<span
 										class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
-										:class="equipment.is_included 
-											? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' 
+										:class="equipment.is_included
+											? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
 											: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'"
 									>
 										{{ equipment.is_included ? $t('equipment.included') : $t('equipment.client_provided') }}
@@ -193,7 +193,7 @@ import { Link } from '@inertiajs/vue3'
 import { useI18n } from 'vue-i18n'
 import { TaskIcon, ChefIcon } from '@/icons'
 import ChefGalleryViewer from '@/Components/common/ChefGalleryViewer.vue'
-import ShowChefServiceRatings from '@/Components/Chef/chef-service-rating/ShowChefServiceRatings.vue'
+import ShowChefServiceRatings from '@/Components/chef/chef-service-rating/ShowChefServiceRatings.vue'
 
 const { t, locale } = useI18n()
 

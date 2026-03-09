@@ -108,7 +108,7 @@
             </div>
 
             <div class="md:col-span-2">
-              <TagSelector 
+              <TagSelector
                 v-model="form.tags"
                 :tags="tags"
                 :error="form.errors.tags"
@@ -116,9 +116,9 @@
             </div>
 
             <div class="md:col-span-2">
-              <MultiImageUpload 
+              <MultiImageUpload
                 v-model="form.service_images"
-                input-id="service-images-upload" 
+                input-id="service-images-upload"
                 label="chef_services.serviceImages"
                 :max-images="8"
               />
@@ -183,14 +183,14 @@ import { useNotifications } from '@/composables/useNotifications'
 import MultiImageUpload from '@/Components/common/MultiImageUpload.vue'
 import ImageUploadBox from '@/Components/common/ImageUploadBox.vue'
 import TagSelector from '@/Components/TagSelector.vue'
-import EquipmentManager from '@/Components/Chef/chef-service/EquipmentManager.vue'
+import EquipmentManager from '@/Components/chef/chef-service/EquipmentManager.vue'
 
 const { t } = useI18n()
 const { success, error } = useNotifications()
 
-const props = defineProps({ 
-  chefs: Array, 
-  tags: Array 
+const props = defineProps({
+  chefs: Array,
+  tags: Array
 })
 
 const form = useForm({

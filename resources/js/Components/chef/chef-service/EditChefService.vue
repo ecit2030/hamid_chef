@@ -60,7 +60,7 @@
 						</div>
 
 						<div class="md:col-span-2">
-							<TagSelector 
+							<TagSelector
 								v-model="form.tags"
 								:tags="tags"
 								:error="form.errors.tags"
@@ -73,11 +73,11 @@
 		</div>
 
 		<!-- Feature Image Section -->
-		<ImageUploadBox 
-			v-model="form.feature_image" 
-			input-id="feature-image-upload" 
+		<ImageUploadBox
+			v-model="form.feature_image"
+			input-id="feature-image-upload"
 			:initial-image="props.service.feature_image ? `/storage/${props.service.feature_image}` : null"
-			label="chef_services.featureImage" 
+			label="chef_services.featureImage"
 		/>
 		<p v-if="form.errors.feature_image" class="mt-1 text-sm text-error-500">{{ form.errors.feature_image }}</p>
 
@@ -87,7 +87,7 @@
 				<h2 class="text-lg font-medium text-gray-800 dark:text-white">{{ t('chef_services.serviceImages') }}</h2>
 			</div>
 			<div class="p-4 sm:p-6">
-				<GalleryManager 
+				<GalleryManager
 					v-model:new-images="form.service_images"
 					v-model:delete-ids="form.delete_service_image_ids"
 					:existing-images="existingServiceImages"
@@ -166,13 +166,13 @@ import { useNotifications } from '@/composables/useNotifications'
 import ImageUploadBox from '@/Components/common/ImageUploadBox.vue'
 import GalleryManager from '@/Components/common/GalleryManager.vue'
 import TagSelector from '@/Components/TagSelector.vue'
-import EquipmentManager from '@/Components/Chef/chef-service/EquipmentManager.vue'
+import EquipmentManager from '@/Components/chef/chef-service/EquipmentManager.vue'
 
 const { t } = useI18n()
 const { success, error } = useNotifications()
 
-const props = defineProps({ 
-	service: { type: Object, required: true }, 
+const props = defineProps({
+	service: { type: Object, required: true },
 	tags: { type: Array, required: true }
 })
 
@@ -210,12 +210,12 @@ const existingServiceImages = computed(() => {
 function update() {
 	// إنشاء نسخة من البيانات للتعديل
 	const formData = { ...form.data() }
-	
+
 	// إذا كانت الصورة المميزة URL وليس ملف جديد، لا نرسلها
 	if (typeof formData.feature_image === 'string' && formData.feature_image.startsWith('/storage/')) {
 		delete formData.feature_image
 	}
-	
+
 	form.transform(() => formData).post(route('chef.services.update', props.service.id), {
 		onSuccess: () => success(t('chef_services.serviceUpdatedSuccessfully')),
 		onError: () => error(t('chef_services.serviceUpdateFailed')),

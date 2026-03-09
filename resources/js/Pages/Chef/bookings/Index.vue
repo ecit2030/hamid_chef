@@ -3,7 +3,7 @@
     <PageBreadcrumb :pageTitle="currentPageTitle" />
     <div class="space-y-5 sm:space-y-6">
       <ComponentCard :title="currentPageTitle">
-        <ShowBooking :booking="booking" />
+        <ShowBookings :bookings="bookings" />
       </ComponentCard>
     </div>
   </ChefLayout>
@@ -13,13 +13,13 @@
 import PageBreadcrumb from '@/Components/common/PageBreadcrumb.vue'
 import ChefLayout from '@/Components/layout/ChefLayout.vue'
 import ComponentCard from '@/Components/common/ComponentCard.vue'
-import ShowBooking from '@/Components/Chef/Booking/ShowBooking.vue'
+import ShowBookings from '@/Components/chef/booking/ShowBookings.vue'
 import { usePage } from '@inertiajs/vue3'
-import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
-const currentPageTitle = computed(() => t('booking.booking_details'))
+const currentPageTitle = computed(() => t('menu.bookings'))
 
-const booking = computed(() => usePage().props.booking)
+const bookings = computed(() => usePage().props.bookings)
 </script>
