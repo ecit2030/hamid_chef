@@ -45,7 +45,7 @@ class BookingController extends Controller
             return BookingDTO::fromModel($booking)->toIndexArray();
         });
 
-        return Inertia::render('Chef/Bookings/Index', [
+        return Inertia::render('Chef/bookings/Index', [
             'bookings' => $bookings,
             'filters' => [
                 'status' => $status,
@@ -73,7 +73,7 @@ class BookingController extends Controller
             'transactions',
         ]);
 
-        return Inertia::render('Chef/Bookings/Show', [
+        return Inertia::render('Chef/bookings/Show', [
             'booking' => BookingDTO::fromModel($booking)->toArray(),
         ]);
     }
