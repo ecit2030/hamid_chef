@@ -13,7 +13,7 @@
 import PageBreadcrumb from '@/Components/common/PageBreadcrumb.vue'
 import AdminLayout from '@/Components/layout/AdminLayout.vue'
 import ComponentCard from '@/Components/common/ComponentCard.vue'
-import ShowBookings from '@/Components/admin/booking/ShowBookings.vue'
+import ShowBookings from '@/Components/admin/Booking/ShowBookings.vue'
 import { usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'

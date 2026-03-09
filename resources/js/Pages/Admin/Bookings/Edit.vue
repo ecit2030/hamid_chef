@@ -3,11 +3,11 @@
     <PageBreadcrumb :pageTitle="currentPageTitle" />
     <div class="space-y-5 sm:space-y-6">
       <ComponentCard :title="currentPageTitle">
-        <EditBooking 
+        <EditBooking
           :booking="booking"
           :customers="customers"
-          :chefs="chefs" 
-          :addresses="addresses" 
+          :chefs="chefs"
+          :addresses="addresses"
         />
       </ComponentCard>
     </div>
@@ -18,7 +18,7 @@
 import PageBreadcrumb from '@/Components/common/PageBreadcrumb.vue'
 import AdminLayout from '@/Components/layout/AdminLayout.vue'
 import ComponentCard from '@/Components/common/ComponentCard.vue'
-import EditBooking from '@/Components/admin/booking/EditBooking.vue'
+import EditBooking from '@/Components/admin/Booking/EditBooking.vue'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import { usePage } from '@inertiajs/vue3'
