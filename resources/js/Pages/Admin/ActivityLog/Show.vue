@@ -8,7 +8,7 @@
 <script setup>
 import AdminLayout from '@/Components/layout/AdminLayout.vue'
 import PageBreadcrumb from '@/Components/common/PageBreadcrumb.vue'
-import ShowActivityLogForm from '@/Components/admin/activityLog/ShowActivityLog.vue'
+import ShowActivityLogForm from '@/Components/admin/activity-log/ShowActivityLog.vue'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { usePage } from '@inertiajs/vue3'
