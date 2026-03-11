@@ -85,7 +85,7 @@ class ChefService
 
             // Create gallery images if provided
             if (!empty($galleryImages)) {
-                $this->galleryService->createMultiple($chef->id, $galleryImages);
+                $this->galleryService->createMultiple($chef->id, $galleryImages, $chef->user_id);
             }
 
             DB::commit();
@@ -176,7 +176,7 @@ class ChefService
 
             // Update gallery if provided
             if ($galleryImages !== null || !empty($deleteGalleryIds)) {
-                $this->galleryService->updateGallery($chef->id, $galleryImages ?? [], $deleteGalleryIds);
+                $this->galleryService->updateGallery($chef->id, $galleryImages ?? [], $deleteGalleryIds, $chef->user_id);
             }
 
             DB::commit();
@@ -213,7 +213,7 @@ class ChefService
 
             // Update gallery if provided
             if ($galleryImages !== null || !empty($deleteGalleryIds)) {
-                $this->galleryService->updateGallery($updatedChef->id, $galleryImages ?? [], $deleteGalleryIds);
+                $this->galleryService->updateGallery($updatedChef->id, $galleryImages ?? [], $deleteGalleryIds, $updatedChef->user_id);
             }
 
             DB::commit();
@@ -365,13 +365,15 @@ class ChefService
      */
     protected function syncChefCategories(Model $chef, array $categoryIds): void
     {
-        // Prepare sync data with additional pivot data
+        // created_by/updated_by reference users.id - use chef's user_id (from form) or web user
+        $userId = $chef->user_id ?? (Auth::guard('web')->check() ? Auth::guard('web')->id() : null);
+
         $syncData = [];
         foreach ($categoryIds as $categoryId) {
             $syncData[$categoryId] = [
                 'is_active' => true,
-                'created_by' => Auth::id(),
-                'updated_by' => Auth::id(),
+                'created_by' => $userId,
+                'updated_by' => $userId,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
@@ -390,12 +392,13 @@ class ChefService
     public function addCategory(int|string $chefId, int $categoryId): void
     {
         $chef = $this->find($chefId);
+        $userId = $chef->user_id ?? (Auth::guard('web')->check() ? Auth::guard('web')->id() : null);
 
         if (!$chef->categories()->where('cuisine_id', $categoryId)->exists()) {
             $chef->categories()->attach($categoryId, [
                 'is_active' => true,
-                'created_by' => Auth::id(),
-                'updated_by' => Auth::id(),
+                'created_by' => $userId,
+                'updated_by' => $userId,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -426,10 +429,11 @@ class ChefService
     public function toggleCategoryStatus(int|string $chefId, int $categoryId, bool $isActive): void
     {
         $chef = $this->find($chefId);
+        $userId = $chef->user_id ?? (Auth::guard('web')->check() ? Auth::guard('web')->id() : null);
 
         $chef->categories()->updateExistingPivot($categoryId, [
             'is_active' => $isActive,
-            'updated_by' => Auth::id(),
+            'updated_by' => $userId,
             'updated_at' => now(),
         ]);
     }

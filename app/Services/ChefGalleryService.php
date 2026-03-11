@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\ChefGalleryRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 use Exception;
@@ -57,21 +58,25 @@ class ChefGalleryService
 
     /**
      * Create multiple gallery images for a chef
+     * @param int|null $userId Chef's user_id (from form) - used for created_by/updated_by
      */
-    public function createMultiple(int $chefId, array $images): Collection
+    public function createMultiple(int $chefId, array $images, ?int $userId = null): Collection
     {
         $createdImages = new Collection();
         
         DB::beginTransaction();
         
         try {
-            foreach ($images as $image) {
+            // created_by/updated_by reference users.id - use chef's user_id or web user
+            $userId = $userId ?? (Auth::guard('web')->check() ? Auth::guard('web')->id() : null);
+
+        foreach ($images as $image) {
                 $imageData = [
                     'chef_id' => $chefId,
                     'image' => $image,
                     'is_active' => true,
-                    'created_by' => auth()->id(),
-                    'updated_by' => auth()->id(),
+                    'created_by' => $userId,
+                    'updated_by' => $userId,
                 ];
                 
                 $createdImage = $this->galleries->create($imageData);
@@ -93,8 +98,9 @@ class ChefGalleryService
 
     /**
      * Update gallery for a chef with new images and deletions
+     * @param int|null $userId Chef's user_id - used for created_by/updated_by on new images
      */
-    public function updateGallery(int $chefId, array $newImages = [], array $deleteIds = []): Collection
+    public function updateGallery(int $chefId, array $newImages = [], array $deleteIds = [], ?int $userId = null): Collection
     {
         DB::beginTransaction();
         
@@ -110,7 +116,7 @@ class ChefGalleryService
             
             // Add new images
             if (!empty($newImages)) {
-                $createdImages = $this->createMultiple($chefId, $newImages);
+                $createdImages = $this->createMultiple($chefId, $newImages, $userId);
                 // Convert to array and create new Collection to ensure proper type
                 $updatedImages = new Collection($createdImages->all());
             }
