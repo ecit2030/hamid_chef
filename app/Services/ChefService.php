@@ -66,11 +66,6 @@ class ChefService
             $attributes['user_id'] = Auth::id();
         }
 
-        // Proactive validation to prevent duplicate chef profiles
-        if (!empty($attributes['user_id'])) {
-            $this->checkUserHasChef($attributes['user_id']);
-        }
-
         $attributes = $this->normalizeFileAttributes($attributes);
 
         // Extract categories and gallery images before creating chef

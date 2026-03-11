@@ -27,7 +27,7 @@ watch(locale, (newLocale) => {
 }, { immediate: true })
 
 // Show flash messages as notifications (e.g. 419 page expired)
-watch(() => page.props.flash, (flash) => {
+watch(() => page.props?.flash, (flash) => {
   if (!flash) return
   if (flash.success) success(flash.success)
   if (flash.error) error(flash.error)

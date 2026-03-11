@@ -1,5 +1,16 @@
 <template>
   <div class="space-y-6">
+    <div
+      v-if="Object.keys(form.errors).length"
+      class="rounded-lg border border-error-200 bg-error-50 p-4 dark:border-error-900 dark:bg-error-500/10"
+    >
+      <p class="text-sm font-medium text-error-600 dark:text-error-500">{{ t('chefs.chefCreationFailed') }}</p>
+      <ul class="mt-2 list-disc list-inside space-y-1 text-sm text-error-600 dark:text-error-500">
+        <li v-for="(err, key) in form.errors" :key="key">
+          {{ Array.isArray(err) ? err[0] : err }}
+        </li>
+      </ul>
+    </div>
     <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
       <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
         <h2 class="text-lg font-medium text-gray-800 dark:text-white">{{ t('chefs.chefInformation') }}</h2>

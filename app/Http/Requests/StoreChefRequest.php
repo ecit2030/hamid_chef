@@ -16,10 +16,14 @@ class StoreChefRequest extends FormRequest
 
     public function rules(): array
     {
+        $isAdmin = $this->routeIs('admin.*');
+
         return [
-            // user_id is set server-side for API requests; do not require it from the client
-            // Add validation to ensure user doesn't already have a chef profile
-            'user_id' => [new UniqueChefForUser()],
+            'user_id' => array_filter([
+                $isAdmin ? 'required' : 'nullable',
+                'exists:users,id',
+                new UniqueChefForUser($this->input('user_id')),
+            ]),
             'name' => 'required|string|max:255',
             'short_description' => 'nullable|string|max:255',
             'long_description' => 'nullable|string|max:2000',
@@ -43,11 +47,15 @@ class StoreChefRequest extends FormRequest
     }
 
     /**
-     * Convert failed validation into our application ValidationException so API
-     * responses keep a consistent JSON shape.
+     * For Inertia: redirect back with errors so the form can display them.
+     * For API: return JSON via AppValidationException.
      */
     protected function failedValidation(Validator $validator)
     {
+        if ($this->header('X-Inertia')) {
+            throw (new \Illuminate\Validation\ValidationException($validator))
+                ->redirectTo($this->getRedirectUrl());
+        }
         throw AppValidationException::withMessages($validator->errors()->toArray());
     }
 }

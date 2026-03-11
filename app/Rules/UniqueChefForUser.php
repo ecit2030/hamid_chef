@@ -18,15 +18,17 @@ class UniqueChefForUser implements ValidationRule
 
     /**
      * Run the validation rule.
+     * Uses $value (from form) when provided, otherwise $this->userId (Auth::id() for API).
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!$this->userId) {
-            return; // If no user is authenticated, skip validation
+        $userIdToCheck = $value ?? $this->userId;
+        if (!$userIdToCheck) {
+            return;
         }
 
         $existingChef = DB::table('chefs')
-            ->where('user_id', $this->userId)
+            ->where('user_id', $userIdToCheck)
             ->whereNull('deleted_at') // Respect soft deletes
             ->exists();
 
