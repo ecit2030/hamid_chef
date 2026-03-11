@@ -38,6 +38,14 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
 
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'error'   => fn () => $request->session()->get('error'),
+                'message' => fn () => $request->session()->get('message'),
+            ],
+
+            'csrf_token' => fn () => csrf_token(),
+
             'locale' => fn () => app()->getLocale(),
             'dir'    => fn () => app()->getLocale() === 'ar' ? 'rtl' : 'ltr',
 

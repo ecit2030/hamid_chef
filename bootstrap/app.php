@@ -7,6 +7,7 @@ use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\Role;
 use App\Http\Middleware\EnsureChefType;
+use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -36,5 +37,10 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->respond(function (Response $response) {
+            if ($response->getStatusCode() === 419) {
+                return redirect()->back()->with('error', __('messages.page_expired'));
+            }
+            return $response;
+        });
     })->create();
