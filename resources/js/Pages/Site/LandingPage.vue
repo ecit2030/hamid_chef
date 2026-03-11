@@ -121,6 +121,16 @@
         class="bg-gray-50 dark:bg-gray-800"
       />
 
+      <!-- Partners Section -->
+      <PartnersSection
+        v-if="sections.partners"
+        id="partners"
+        :section="sections.partners"
+        :current-lang="currentLocale"
+        :is-dark-mode="isDarkMode"
+        class="bg-gray-50 dark:bg-gray-800"
+      />
+
       <!-- CTA Section -->
       <CTASection
         v-if="sections.cta"
@@ -160,6 +170,7 @@ import {
   TopChefsSection,
   CategoriesSection,
   CTASection,
+  PartnersSection,
   SiteNavbar,
   SiteFooter
 } from '@/Components/site'
@@ -184,7 +195,10 @@ const navItems = ref([
   { href: '#features', label_ar: 'المميزات', label_en: 'Features' },
   { href: '#how-it-works', label_ar: 'كيف يعمل', label_en: 'How It Works' },
   { href: '#why-us', label_ar: 'لماذا نحن', label_en: 'Why Us' },
+  { href: '#top-chefs', label_ar: 'أفضل الطهاة', label_en: 'Top Chefs' },
+  { href: '#categories', label_ar: 'التصنيفات', label_en: 'Categories' },
   { href: '#about', label_ar: 'من نحن', label_en: 'About' },
+  { href: '#partners', label_ar: 'الشركاء', label_en: 'Partners' },
   { href: '#contact', label_ar: 'تواصل معنا', label_en: 'Contact' }
 ])
 

@@ -10,6 +10,7 @@ export { default as VisionMissionSection } from './VisionMissionSection.vue';
 export { default as TopChefsSection } from './TopChefsSection.vue';
 export { default as CategoriesSection } from './CategoriesSection.vue';
 export { default as CTASection } from './CTASection.vue';
+export { default as PartnersSection } from './PartnersSection.vue';
 
 // Navigation Components (Keep these as they're still needed)
 export { default as SiteNavbar } from './SiteNavbar.vue';

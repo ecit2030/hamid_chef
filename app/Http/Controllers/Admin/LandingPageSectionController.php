@@ -10,6 +10,7 @@ use App\DTOs\LandingPageSectionDTO;
 use App\Http\Requests\StoreLandingPageSectionRequest;
 use App\Http\Requests\UpdateLandingPageSectionRequest;
 use App\Models\LandingPageSection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class LandingPageSectionController extends Controller
@@ -187,6 +188,9 @@ class LandingPageSectionController extends Controller
         $result = $service->update($landing_page_section->id, $data);
         
         \Log::info('✅ Service update completed', ['result' => $result ? 'success' : 'failed']);
+
+        // Clear any landing page cache so changes reflect immediately
+        Cache::forget('landing_page_sections');
 
         // Stay on the same manage page after saving
         return redirect()->route('admin.landing-page-sections.manage', ['section' => $landing_page_section->section_key])

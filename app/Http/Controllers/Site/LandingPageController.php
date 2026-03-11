@@ -14,8 +14,8 @@ class LandingPageController extends Controller
      */
     public function index(LandingPageSectionService $service): Response
     {
-        // Get all active sections
-        $sections = $service->builder()
+        // Get all active sections - use empty with to avoid loading admin relations on public page
+        $sections = $service->builder([])
             ->where('is_active', true)
             ->orderBy('display_order')
             ->get();
