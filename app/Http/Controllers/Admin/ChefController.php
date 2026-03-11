@@ -58,9 +58,26 @@ class ChefController extends Controller
 
     public function store(StoreChefRequest $request, ChefService $chefService)
     {
-        $data = $request->validated();
-        $chefService->create($data);
-        return redirect()->route('admin.chefs.index');
+        try {
+            $data = $request->validated();
+            $chefService->create($data);
+            return redirect()->route('admin.chefs.index')
+                ->with('success', __('messages.chef_created_successfully'));
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            throw $e;
+        } catch (\App\Exceptions\ValidationException $e) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors($e->validator->errors());
+        } catch (\Exception $e) {
+            \Log::error('Chef creation failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => $e->getMessage() ?: __('messages.something_went_wrong')]);
+        }
     }
 
     public function show(Chef $chef, ChefDetailsService $chefDetailsService)
