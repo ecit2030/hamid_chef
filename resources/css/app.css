@@ -1,43 +1,6 @@
 @import 'tailwindcss';
 @import '../js/assets/main.css';
 
-/* Custom Fonts - Air Strip Arabic and Ahlan */
-/*
- * IMPORTANT: You need to add the font files to use these custom fonts.
- *
- * Steps to add fonts:
- * 1. Create the directory: public/fonts/
- * 2. Add your font files:
- *    - AirStripArabic.woff2 (recommended)
- *    - AirStripArabic.woff (fallback)
- *    - AirStripArabic.ttf (fallback)
- *    - Ahlan.woff2 (recommended)
- *    - Ahlan.woff (fallback)
- *    - Ahlan.ttf (fallback)
- *
- * Until you add the font files, the warnings during build are normal.
- * The site will use fallback fonts (Arial) until the custom fonts are added.
- */
-
-@font-face {
-    font-family: 'Air Strip Arabic';
-    src: url('/fonts/AirStripArabic.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Ahlan';
-    src: url('/fonts/Ahlan.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
-/* Almarai Font for Admin Panel - Primary Arabic Font */
-@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap');
-
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
@@ -45,19 +8,14 @@
 
 @theme {
     --font-sans: 'Almarai', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
-    --font-arabic: 'Almarai', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
-    --font-english: 'Ahlan', 'Arial', sans-serif;
-    --font-cairo: 'Almarai', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
 }
 
-/* Global Font Application */
 body {
     font-family: 'Almarai', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
 }
 
-/* Force Western Arabic numerals (0-9) instead of Eastern Arabic numerals (٠-٩) */
+/* Western Arabic numerals (0-9) */
 body,
-.font-cairo,
 [dir="rtl"],
 [dir="rtl"] * {
     font-feature-settings: "lnum" 1;
@@ -66,10 +24,16 @@ body,
     font-variant-numeric: lining-nums;
 }
 
-/* RTL-specific text rendering improvements */
+/* RTL */
 [dir="rtl"] {
     text-align: right;
     direction: rtl;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    line-height: 1.6;
 }
 
 [dir="rtl"] * {
@@ -77,26 +41,7 @@ body,
     direction: inherit;
 }
 
-/* Prevent text breaking issues in RTL */
-[dir="rtl"] {
-    word-break: keep-all;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-}
-
-/* Improve Arabic text rendering quality */
-[dir="rtl"] {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-}
-
-/* Ensure proper line height for Arabic text */
-[dir="rtl"] {
-    line-height: 1.6;
-}
-
-/* Logical positioning utilities for RTL/LTR agnostic off-canvas */
+/* Logical positioning */
 .inline-start-0 {
     inset-inline-start: 0;
 }
@@ -109,11 +54,7 @@ body,
     transition-property: inset-inline-start;
 }
 
-/* ============================================
-   Modern Typography Hierarchy
-   ============================================ */
-
-/* Heading Styles */
+/* Typography */
 h1, .text-h1 {
     font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 800;
@@ -152,7 +93,6 @@ h6, .text-h6 {
     line-height: 1.5;
 }
 
-/* Body Text */
 .text-body-lg {
     font-size: 1.125rem;
     line-height: 1.75;
@@ -168,30 +108,12 @@ h6, .text-h6 {
     line-height: 1.6;
 }
 
-/* ============================================
-   Dark Mode Styles
-   ============================================ */
-
-.dark {
-    color-scheme: dark;
-}
-
-.dark body {
-    background-color: #0f172a;
-    color: #e2e8f0;
-}
-
-/* Glassmorphism Utilities - For Admin Panel Only */
+/* Glassmorphism */
 .glass {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.dark .glass {
-    background: rgba(30, 41, 59, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .glass-card {
@@ -202,17 +124,7 @@ h6, .text-h6 {
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
 }
 
-.dark .glass-card {
-    background: rgba(30, 41, 59, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-}
-
-/* ============================================
-   Flat Design Utilities - For Landing Page
-   ============================================ */
-
-/* Flat Card - No shadows, simple borders */
+/* Flat Design */
 .flat-card {
     background: white;
     border: 1px solid #e5e7eb;
@@ -220,20 +132,10 @@ h6, .text-h6 {
     transition: border-color 0.2s ease;
 }
 
-.dark .flat-card {
-    background: #1e293b;
-    border-color: #334155;
-}
-
 .flat-card:hover {
     border-color: #083064;
 }
 
-.dark .flat-card:hover {
-    border-color: #CBE4F8;
-}
-
-/* Flat Button - Solid colors, no shadows */
 .flat-btn-primary {
     background: #083064;
     color: white;
@@ -277,17 +179,7 @@ h6, .text-h6 {
     color: white;
 }
 
-.dark .flat-btn-outline {
-    color: #CBE4F8;
-    border-color: #CBE4F8;
-}
-
-.dark .flat-btn-outline:hover {
-    background: #CBE4F8;
-    color: #083064;
-}
-
-/* Glow Effects */
+/* Glow */
 .glow-primary {
     box-shadow: 0 0 20px rgba(8, 48, 100, 0.3);
 }
@@ -312,14 +204,7 @@ h6, .text-h6 {
     background-clip: text;
 }
 
-.dark .gradient-text {
-    background: linear-gradient(135deg, #CBE4F8 0%, #7BBEEE 50%, #CBE4F8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-/* Animated Gradient Background */
+/* Animated Gradient */
 .animated-gradient {
     background: linear-gradient(-45deg, #083064, #335F97, #CBE4F8, #E0EFF9);
     background-size: 400% 400%;
@@ -350,7 +235,7 @@ h6, .text-h6 {
     animation: float 4s ease-in-out infinite;
 }
 
-/* Shimmer Effect for Loading */
+/* Shimmer */
 @keyframes shimmer {
     0% { background-position: -200% 0; }
     100% { background-position: 200% 0; }
@@ -362,12 +247,7 @@ h6, .text-h6 {
     animation: shimmer 1.5s infinite;
 }
 
-.dark .shimmer {
-    background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
-    background-size: 200% 100%;
-}
-
-/* Reduced Motion Support */
+/* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

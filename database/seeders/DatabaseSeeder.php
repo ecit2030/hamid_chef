@@ -57,6 +57,9 @@ class DatabaseSeeder extends Seeder
             
             // 11. Landing Page Sections
             LandingPageSectionSeeder::class,
+
+            // 12. Testimonials
+            TestimonialSeeder::class,
         ]);
     }
 }

@@ -14,6 +14,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Site\LandingPageController;
+use App\Http\Controllers\Site\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,9 @@ use App\Http\Controllers\Site\LandingPageController;
 
 // Landing Page
 Route::get('/', [LandingPageController::class, 'index'])->name('landing');
+
+// Contact Form
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 // Locale Switcher
 Route::post('/locale/switch', function () {

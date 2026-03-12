@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Testimonial;
 use App\Services\LandingPageSectionService;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -23,6 +25,18 @@ class LandingPageController extends Controller
         // Transform sections into a keyed array for easy access
         $sectionsData = [];
         foreach ($sections as $section) {
+            $additionalData = $section->additional_data ?? [];
+
+            // For categories section: inject real categories from database
+            if ($section->section_key === 'categories') {
+                $additionalData['categories'] = $this->getCategoriesForLanding();
+            }
+
+            // For testimonials section: inject real testimonials from database
+            if ($section->section_key === 'testimonials') {
+                $additionalData['testimonials'] = $this->getTestimonialsForLanding();
+            }
+
             $sectionsData[$section->section_key] = [
                 'id' => $section->id,
                 'section_key' => $section->section_key,
@@ -32,7 +46,7 @@ class LandingPageController extends Controller
                 'description_en' => $section->description_en,
                 'image' => $section->image,
                 'display_order' => $section->display_order,
-                'additional_data' => $section->additional_data,
+                'additional_data' => $additionalData,
                 'is_active' => $section->is_active,
             ];
         }
@@ -40,9 +54,65 @@ class LandingPageController extends Controller
         // Get current locale from session or default to 'ar'
         $locale = session('locale', config('app.locale', 'ar'));
 
-        return Inertia::render('Site/LandingPage', [
+        return Inertia::render('Landing/Index', [
             'sections' => $sectionsData,
             'locale' => $locale,
         ]);
+    }
+
+    /**
+     * Get active categories from database for landing page
+     */
+    private function getCategoriesForLanding(): array
+    {
+        $categories = Category::query()
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->get();
+
+        $placeholderImages = [
+            'saudi-cuisine' => 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=80',
+            'gulf-cuisine' => 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80',
+            'levantine-cuisine' => 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400&q=80',
+            'egyptian-cuisine' => 'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=400&q=80',
+            'indian-cuisine' => 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&q=80',
+            'italian-cuisine' => 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&q=80',
+            'grills' => 'https://images.unsplash.com/photo-1558030006-450675393462?w=400&q=80',
+            'desserts' => 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&q=80',
+            'seafood' => 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&q=80',
+            'healthy-food' => 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80',
+        ];
+
+        return $categories->map(function (Category $category) use ($placeholderImages) {
+            return [
+                'id' => $category->id,
+                'name_ar' => $category->name,
+                'name_en' => $category->name,
+                'slug' => $category->slug,
+                'image' => $category->icon_url ?? ($placeholderImages[$category->slug] ?? 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400&q=80'),
+            ];
+        })->values()->all();
+    }
+
+    /**
+     * Get active testimonials from database for landing page
+     */
+    private function getTestimonialsForLanding(): array
+    {
+        return Testimonial::query()
+            ->where('is_active', true)
+            ->orderBy('display_order')
+            ->get()
+            ->map(fn (Testimonial $t) => [
+                'id' => $t->id,
+                'name_ar' => $t->name_ar,
+                'name_en' => $t->name_en,
+                'comment_ar' => $t->comment_ar,
+                'comment_en' => $t->comment_en,
+                'rating' => $t->rating,
+                'avatar' => $t->avatar,
+            ])
+            ->values()
+            ->all();
     }
 }

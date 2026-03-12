@@ -54,6 +54,25 @@ layer(base);
   --color-brand-900: #020A14;
   --color-brand-950: #010509;
 
+  /* Primary (brand) - for Landing */
+  --color-primary-50: #E6EBF2;
+  --color-primary-100: #CCD7E5;
+  --color-primary-200: #99AFCB;
+  --color-primary-300: #6687B1;
+  --color-primary-400: #335F97;
+  --color-primary-500: #083064;
+  --color-primary-600: #062650;
+  --color-primary-700: #051D3C;
+  --color-primary-800: #031328;
+  --color-primary-900: #020A14;
+
+  /* Secondary - for Landing */
+  --color-secondary-100: #E8F4FC;
+  --color-secondary-200: #D1E9F9;
+  --color-secondary-300: #A3D1F3;
+  --color-secondary-400: #7BBEEE;
+  --color-secondary-500: #CBE4F8;
+
   --color-blue-light-25: #f5fbff;
   --color-blue-light-50: #f0f9ff;
   --color-blue-light-100: #e0f2fe;

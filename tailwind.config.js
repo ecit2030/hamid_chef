@@ -11,9 +11,7 @@ module.exports = {
 		extend: {
 			fontFamily: {
 				sans: ['Almarai', 'Arial', 'sans-serif'],
-				arabic: ['Almarai', 'Arial', 'sans-serif'],
-				english: ['Ahlan', 'Arial', 'sans-serif'],
-				cairo: ['Almarai', 'Arial', 'sans-serif'],
+
 			},
 			colors: {
 				primary: {
@@ -41,6 +39,20 @@ module.exports = {
 					700: '#7BBEEE',
 					800: '#53ABE9',
 					900: '#2B98E4',
+				},
+				// Culinary accent - warmth of professional kitchens
+				culinary: {
+					DEFAULT: '#D97706',
+					50: '#FFFBEB',
+					100: '#FEF3C7',
+					200: '#FDE68A',
+					300: '#FCD34D',
+					400: '#FBBF24',
+					500: '#D97706',
+					600: '#B45309',
+					700: '#92400E',
+					800: '#78350F',
+					900: '#451A03',
 				},
 				// Dark mode specific colors
 				dark: {
