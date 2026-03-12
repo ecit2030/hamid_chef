@@ -48,7 +48,7 @@
               <input
                 ref="iconInput"
                 type="file"
-                accept=".svg"
+                accept=".svg,.png,.jpg,.jpeg,.webp,.gif,image/svg+xml,image/png,image/jpeg,image/jpg,image/webp,image/gif"
                 class="hidden"
                 @change="handleIconUpload"
               />
@@ -177,24 +177,24 @@ function triggerFileInput() {
 async function handleIconUpload(event) {
   const file = event.target.files[0]
   if (!file) return
-  
-  // Validate file type
-  if (!file.type.includes('svg')) {
-    error(t('validation.invalidFileType', { name: file.name, types: 'SVG' }))
-    // إعادة تعيين input بدون وميض
+
+  const allowedTypes = ['image/svg+xml', 'image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/gif']
+  const allowedExtensions = ['svg', 'png', 'jpg', 'jpeg', 'webp', 'gif']
+  const ext = file.name.split('.').pop()?.toLowerCase()
+
+  if (!allowedTypes.includes(file.type) && !allowedExtensions.includes(ext)) {
+    error(t('validation.invalidFileType', { name: file.name, types: 'SVG, PNG, JPEG, WebP, GIF' }))
     event.target.value = ''
     return
   }
-  
-  // Validate file size (100KB = 100 * 1024 bytes)
-  if (file.size > 100 * 1024) {
-    error(t('validation.fileTooLarge', { name: file.name, maxSize: '0.1' }))
-    // إعادة تعيين input بدون وميض
+
+  const maxSize = ext === 'svg' ? 100 * 1024 : 2 * 1024 * 1024
+  if (file.size > maxSize) {
+    error(t('validation.fileTooLarge', { name: file.name, maxSize: ext === 'svg' ? '0.1' : '2' }))
     event.target.value = ''
     return
   }
-  
-  // تحديث القيم بشكل متزامن لتجنب الوميض
+
   await nextTick()
   iconFile.value = file
   form.icon = file

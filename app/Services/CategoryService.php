@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\CategoryRepository;
 use App\Models\Category;
 use App\DTOs\CategoryDTO;
+use App\Services\CategoryImageService;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\UploadedFile;
@@ -13,11 +14,13 @@ class CategoryService
 {
     protected CategoryRepository $categories;
     protected SVGIconService $svgIconService;
+    protected CategoryImageService $categoryImageService;
 
-    public function __construct(CategoryRepository $categories, SVGIconService $svgIconService)
+    public function __construct(CategoryRepository $categories, SVGIconService $svgIconService, CategoryImageService $categoryImageService)
     {
         $this->categories = $categories;
         $this->svgIconService = $svgIconService;
+        $this->categoryImageService = $categoryImageService;
     }
 
     public function all(array $with = [])
@@ -99,26 +102,43 @@ class CategoryService
     }
 
     /**
-     * Upload an icon for a category
+     * Upload an icon/image for a category (supports SVG, PNG, JPEG, WebP, GIF)
      */
     public function uploadIcon(int $categoryId, UploadedFile $iconFile): CategoryDTO
     {
         $category = $this->categories->findOrFail($categoryId);
-        
-        // حذف الأيقونة القديمة إن وجدت
+
+        // حذف الأيقونة/الصورة القديمة إن وجدت
         if ($category->icon_path) {
-            $this->svgIconService->deleteIcon($category->icon_path);
+            $this->deleteIconFile($category->icon_path);
         }
-        
-        // رفع الأيقونة الجديدة
-        $iconPath = $this->svgIconService->uploadIcon($iconFile, $categoryId);
-        
+
+        // رفع الملف الجديد (SVG أو صورة)
+        $iconPath = CategoryImageService::isImageFile($iconFile)
+            ? $this->categoryImageService->uploadImage($iconFile, $categoryId)
+            : $this->svgIconService->uploadIcon($iconFile, $categoryId);
+
         // تحديث القسم
         $updatedCategory = $this->categories->update($categoryId, [
-            'icon_path' => $iconPath
+            'icon_path' => $iconPath,
         ]);
-        
+
         return CategoryDTO::fromModel($updatedCategory);
+    }
+
+    /**
+     * Delete icon/image file (handles both SVG and raster images)
+     */
+    private function deleteIconFile(string $path): void
+    {
+        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        $isImage = in_array($extension, ['png', 'jpeg', 'jpg', 'webp', 'gif']);
+
+        if ($isImage) {
+            $this->categoryImageService->deleteImage($path);
+        } else {
+            $this->svgIconService->deleteIcon($path);
+        }
     }
 
     /**
@@ -127,17 +147,17 @@ class CategoryService
     public function removeIcon(int $categoryId): CategoryDTO
     {
         $category = $this->categories->findOrFail($categoryId);
-        
+
         if ($category->icon_path) {
-            $this->svgIconService->deleteIcon($category->icon_path);
-            
+            $this->deleteIconFile($category->icon_path);
+
             $updatedCategory = $this->categories->update($categoryId, [
-                'icon_path' => null
+                'icon_path' => null,
             ]);
-            
+
             return CategoryDTO::fromModel($updatedCategory);
         }
-        
+
         return CategoryDTO::fromModel($category);
     }
 
@@ -147,12 +167,11 @@ class CategoryService
     public function deleteWithIcon($id)
     {
         $category = $this->categories->findOrFail($id);
-        
-        // حذف الأيقونة إن وجدت
+
         if ($category->icon_path) {
-            $this->svgIconService->deleteIcon($category->icon_path);
+            $this->deleteIconFile($category->icon_path);
         }
-        
+
         return $this->categories->delete($id);
     }
 }

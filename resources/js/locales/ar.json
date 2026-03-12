@@ -1,4 +1,4 @@
-﻿{
+{
     "menu": {
         "menu": "القائمة",
         "others": "أخرى",
@@ -647,7 +647,7 @@
         "changeIcon": "تغيير الأيقونة",
         "selectIcon": "اختيار أيقونة",
         "removeIcon": "حذف الأيقونة",
-        "iconRequirements": "يجب أن تكون الأيقونة من نوع SVG وأقل من 100KB",
+        "iconRequirements": "الصيغ المسموحة: SVG, PNG, JPEG, JPG, WebP, GIF. الحد الأقصى: 2MB للصور، 100KB لملفات SVG",
         "iconUploadedSuccessfully": "تم رفع الأيقونة بنجاح",
         "iconUploadFailed": "فشل في رفع الأيقونة",
         "iconRemovedSuccessfully": "تم حذف الأيقونة بنجاح",

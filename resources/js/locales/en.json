@@ -1,4 +1,4 @@
-﻿{
+{
     "messages": {
         "welcomeLoggedIn": "You're logged in!",
         "notificationTitle": "Notifications",
@@ -509,7 +509,20 @@
         "selected": "selected",
         "total": "total",
         "showing": "showing",
-        "clearAll": "Clear All"
+        "clearAll": "Clear All",
+        "icon": "Icon",
+        "iconManagement": "Icon Management",
+        "currentIcon": "Current Icon",
+        "uploadIcon": "Upload Icon",
+        "changeIcon": "Change Icon",
+        "selectIcon": "Select Icon",
+        "removeIcon": "Remove Icon",
+        "iconRequirements": "Allowed formats: SVG, PNG, JPEG, JPG, WebP, GIF. Max size: 2MB for images, 100KB for SVG",
+        "iconUploadedSuccessfully": "Icon uploaded successfully",
+        "iconUploadFailed": "Failed to upload icon",
+        "iconRemovedSuccessfully": "Icon removed successfully",
+        "iconRemovalFailed": "Failed to remove icon",
+        "confirmRemoveIcon": "Are you sure you want to remove the icon?"
     },
     "addresses": {
         "addressInformation": "Address Information",

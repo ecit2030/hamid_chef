@@ -42,7 +42,15 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request, CategoryService $categoryService)
     {
         $data = $request->validated();
-        $categoryService->create($data);
+        $icon = $data['icon'] ?? null;
+        unset($data['icon']);
+
+        $category = $categoryService->create($data);
+
+        if ($icon) {
+            $categoryService->uploadIcon($category->id, $icon);
+        }
+
         return redirect()->route('admin.categories.index');
     }
 

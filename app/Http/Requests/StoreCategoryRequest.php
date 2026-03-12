@@ -25,6 +25,7 @@ class StoreCategoryRequest extends FormRequest
             'name' => 'required|string|max:255|unique:categories,name',
             'slug' => 'nullable|string|max:255|unique:categories,slug',
             'is_active' => 'nullable|boolean',
+            'icon' => 'nullable|file|mimes:svg,png,jpeg,jpg,webp,gif|max:2048',
             'created_by' => 'nullable|exists:users,id',
             'updated_by' => 'nullable|exists:users,id',
         ];

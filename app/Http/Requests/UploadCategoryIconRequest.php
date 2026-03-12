@@ -7,66 +7,64 @@ use Illuminate\Http\UploadedFile;
 
 class UploadCategoryIconRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        // يمكن إضافة منطق التحقق من الصلاحيات هنا
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     */
     public function rules(): array
     {
-        return [
+        $rules = [
             'icon' => [
                 'required',
                 'file',
-                'mimes:svg',
-                'max:100', // 100KB
+                'mimes:svg,png,jpeg,jpg,webp,gif',
+                'max:2048', // 2MB for images
                 function ($attribute, $value, $fail) {
                     if ($value instanceof UploadedFile) {
-                        $this->validateSVGContent($value, $fail);
+                        $ext = strtolower($value->getClientOriginalExtension());
+                        if ($ext === 'svg') {
+                            $this->validateSVGContent($value, $fail);
+                        }
+                        // For PNG/JPEG/etc: max 2MB is already in rule
+                        if (in_array($ext, ['png', 'jpeg', 'jpg', 'webp', 'gif']) && $value->getSize() > 2048000) {
+                            $fail('حجم الملف كبير جداً. الحد الأقصى للمصورات هو 2MB');
+                        }
                     }
-                }
-            ]
+                },
+            ],
         ];
+
+        return $rules;
     }
 
-    /**
-     * Get custom messages for validator errors.
-     */
     public function messages(): array
     {
         return [
-            'icon.required' => 'يجب اختيار ملف الأيقونة',
+            'icon.required' => 'يجب اختيار ملف الصورة/الأيقونة',
             'icon.file' => 'يجب أن يكون الملف المرفوع ملف صالح',
-            'icon.mimes' => 'يجب أن يكون الملف من نوع SVG',
-            'icon.max' => 'حجم الملف كبير جداً. الحد الأقصى المسموح هو 100KB',
+            'icon.mimes' => 'الصيغ المسموحة: SVG, PNG, JPEG, JPG, WebP, GIF',
+            'icon.max' => 'حجم الملف كبير جداً. الحد الأقصى: 2MB للصور، 100KB لملفات SVG',
         ];
     }
 
-    /**
-     * Validate SVG content for security
-     */
     private function validateSVGContent(UploadedFile $file, $fail): void
     {
+        if ($file->getSize() > 102400) {
+            $fail('حجم ملف SVG كبير جداً. الحد الأقصى هو 100KB');
+            return;
+        }
+
         try {
             $content = $file->getContent();
-            
-            // التحقق من أن المحتوى XML صالح
             libxml_use_internal_errors(true);
             $xml = simplexml_load_string($content);
-            
+
             if ($xml === false) {
                 $fail('ملف SVG غير صالح أو تالف');
                 return;
             }
-            
-            // التحقق من عدم وجود JavaScript أو عناصر خطيرة
+
             $dangerousPatterns = [
                 '/<script[^>]*>.*?<\/script>/is',
                 '/javascript:/i',
@@ -75,22 +73,19 @@ class UploadCategoryIconRequest extends FormRequest
                 '/<object[^>]*>/i',
                 '/<embed[^>]*>/i',
                 '/<link[^>]*>/i',
-                '/<meta[^>]*>/i'
+                '/<meta[^>]*>/i',
             ];
-            
+
             foreach ($dangerousPatterns as $pattern) {
                 if (preg_match($pattern, $content)) {
                     $fail('ملف SVG يحتوي على محتوى غير آمن');
                     return;
                 }
             }
-            
-            // التحقق من أن الملف يحتوي على عنصر SVG
+
             if (!preg_match('/<svg[^>]*>/i', $content)) {
                 $fail('الملف لا يحتوي على عنصر SVG صالح');
-                return;
             }
-            
         } catch (\Exception $e) {
             $fail('حدث خطأ أثناء التحقق من الملف');
         }
