@@ -459,6 +459,20 @@ class LandingPageSectionSeeder extends Seeder
                 ],
             ],
 
+            // Banners Section
+            [
+                'section_key' => 'banners',
+                'title_ar' => 'البانرات',
+                'title_en' => 'Banners',
+                'description_ar' => 'صور البانرات المعروضة في التطبيق',
+                'description_en' => 'Banner images displayed in the app',
+                'display_order' => 14,
+                'is_active' => true,
+                'additional_data' => [
+                    'images' => [],
+                ],
+            ],
+
             // Contact Section
             [
                 'section_key' => 'contact',

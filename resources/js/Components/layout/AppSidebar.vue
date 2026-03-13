@@ -520,6 +520,13 @@ const menuGroups = computed(() =>
                             permission: "landing-page-sections.view",
                         },
                         {
+                            name: t("menu.landing_banners"),
+                            path: route("admin.landing-page-sections.manage", {
+                                section: "banners",
+                            }),
+                            permission: "landing-page-sections.view",
+                        },
+                        {
                             name: t("menu.contact_messages"),
                             path: route("admin.contact-messages.index"),
                             permission: "contact-messages.view",

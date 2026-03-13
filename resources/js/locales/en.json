@@ -65,6 +65,7 @@
         "landing_why_us": "Why Us",
         "landing_partners": "Partners",
         "landing_contact": "Contact Us",
+        "landing_banners": "Banners",
         "contact_messages": "Contact Messages",
         "reports": "Reports",
         "my_services": "My Services",
@@ -1053,6 +1054,14 @@
             "stat_number_placeholder": "Example: 500+",
             "stat_label_ar_placeholder": "┘à╪½╪º┘ä: ╪╖╪º┘ç┘è ┘à╪¡╪¬╪▒┘ü",
             "stat_label_en_placeholder": "Example: Professional Chef"
+        },
+        "banners": {
+            "title": "Banners",
+            "description": "Manage banner images displayed in the app",
+            "add": "Add Banner",
+            "add_first": "Add your first banner",
+            "no_banners": "No banners added yet",
+            "select_image": "Select image"
         },
         "contact": {
             "title": "Contact Us",

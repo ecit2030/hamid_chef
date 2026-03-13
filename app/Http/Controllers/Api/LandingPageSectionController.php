@@ -83,7 +83,8 @@ class LandingPageSectionController extends Controller
         $sections = $query->get();
 
         $data = $sections->map(function ($section) {
-            return LandingPageSectionDTO::fromModel($section)->toArray();
+            $arr = LandingPageSectionDTO::fromModel($section)->toArray();
+            return $this->transformBannersForApi($arr);
         });
 
         return $this->successResponse(
@@ -137,9 +138,33 @@ class LandingPageSectionController extends Controller
             ], 404);
         }
 
+        $data = LandingPageSectionDTO::fromModel($section)->toArray();
+        $data = $this->transformBannersForApi($data);
+
         return $this->successResponse(
-            LandingPageSectionDTO::fromModel($section)->toArray(),
+            $data,
             'تم جلب القسم بنجاح'
         );
+    }
+
+    /**
+     * Transform banners section images to include full URLs for API consumers
+     */
+    private function transformBannersForApi(array $sectionData): array
+    {
+        if (($sectionData['section_key'] ?? '') !== 'banners') {
+            return $sectionData;
+        }
+
+        $images = $sectionData['additional_data']['images'] ?? [];
+        $sectionData['additional_data']['images'] = array_map(function ($img) {
+            $path = $img['image'] ?? '';
+            return [
+                'image' => $path,
+                'image_url' => $path ? asset('storage/' . $path) : null,
+            ];
+        }, $images);
+
+        return $sectionData;
     }
 }

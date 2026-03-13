@@ -94,6 +94,8 @@ class UpdateLandingPageSectionRequest extends FormRequest
             'additional_data.working_hours_ar' => 'nullable|string|max:255',
             'additional_data.working_hours_en' => 'nullable|string|max:255',
             'additional_data.whatsapp_url' => 'nullable|string|max:500',
+            'additional_data.images' => 'nullable|array',
+            'additional_data.images.*' => 'nullable|array',
 
             // Hero slider uploads (sent as slide_images[index])
             'slide_images' => 'sometimes|array',
@@ -102,7 +104,11 @@ class UpdateLandingPageSectionRequest extends FormRequest
             // Partner logos uploads (sent as partner_logos[index])
             'partner_logos' => 'sometimes|array',
             'partner_logos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
-            
+
+            // Banner images uploads (sent as banner_images[index])
+            'banner_images' => 'sometimes|array',
+            'banner_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:10240',
+
             'is_active' => 'nullable|boolean',
         ];
     }

@@ -168,6 +168,24 @@ class LandingPageSectionController extends Controller
             $data['additional_data']['partners'] = $partners;
         }
 
+        // Handle banner images sent as banner_images[index] for additional_data.images
+        if (isset($data['additional_data']['images']) && is_array($data['additional_data']['images'])) {
+            $images = $data['additional_data']['images'];
+            $uploadedBanners = $request->file('banner_images', []);
+
+            foreach ($uploadedBanners as $index => $file) {
+                if (!isset($images[$index]) || !$file instanceof \Illuminate\Http\UploadedFile) {
+                    continue;
+                }
+
+                $path = $file->store('banners', 'public');
+                $images[$index]['image'] = $path;
+                unset($images[$index]['has_new_image']);
+            }
+
+            $data['additional_data']['images'] = $images;
+        }
+
         // Handle image uploads - check for files first, then check for removal indicators
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image');
@@ -225,6 +243,7 @@ class LandingPageSectionController extends Controller
             'why_us' => 'Admin/LandingPageSection/WhyUs',
             'partners' => 'Admin/LandingPageSection/Partners',
             'contact' => 'Admin/LandingPageSection/Contact',
+            'banners' => 'Admin/LandingPageSection/Banners',
         ];
 
         if (isset($map[$sectionKey])) {

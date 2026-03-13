@@ -58,6 +58,7 @@
         "landing_why_us": "لماذا نحن",
         "landing_partners": "الشركاء",
         "landing_contact": "تواصل معنا",
+        "landing_banners": "البانرات",
         "contact_messages": "رسائل التواصل",
         "reports": "التقارير",
         "my_services": "خدماتي",
@@ -1175,6 +1176,14 @@
             "stat_number_placeholder": "مثال: 500+",
             "stat_label_ar_placeholder": "مثال: طاهي محترف",
             "stat_label_en_placeholder": "Example: Professional Chef"
+        },
+        "banners": {
+            "title": "البانرات",
+            "description": "إدارة صور البانرات المعروضة في التطبيق",
+            "add": "إضافة بانر",
+            "add_first": "أضف أول بانر",
+            "no_banners": "لم تتم إضافة بانرات بعد",
+            "select_image": "اختر صورة"
         },
         "contact": {
             "title": "تواصل معنا",
