@@ -76,7 +76,7 @@ const dropdownRef = ref(null)
 
 const menuItems = [
   // Keep only profile; hide account settings and support per request
-  { href: '/profile', icon: UserCircleIcon, text: 'user.editProfile' },
+  { href: route('admin.profile'), icon: UserCircleIcon, text: 'user.editProfile' },
 ]
 
 const toggleDropdown = () => {

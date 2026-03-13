@@ -206,8 +206,7 @@ const saveProfile = () => {
     phone_number: form.phone_number,
   }
 
-  // Use direct URL to avoid routing issues
-  form.transform(() => updateData).patch('/profile', {
+  form.transform(() => updateData).patch(route('admin.profile.update'), {
     preserveScroll: true,
     onSuccess: () => {
       isProfileInfoModal.value = false

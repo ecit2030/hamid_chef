@@ -372,7 +372,7 @@ const saveProfile = () => {
     options.forceFormData = true
   }
 
-  // Use direct URL to avoid routing issues
-  form.transform(() => updateData).patch('/profile', options)
+  // Use admin profile update route (UserProfile is only used in admin panel)
+  form.transform(() => updateData).patch(route('admin.profile.update'), options)
 }
 </script>

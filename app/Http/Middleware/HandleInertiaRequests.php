@@ -50,7 +50,7 @@ class HandleInertiaRequests extends Middleware
             'dir'    => fn () => app()->getLocale() === 'ar' ? 'rtl' : 'ltr',
 
             'auth' => [
-                'user' => fn () => $request->user()?->only(['id', 'name', 'email' , 'avatar']),
+                'user' => fn () => $this->resolveAuthUser($request),
                 // Some guards (e.g., web users) don't implement Spatie HasRoles. Guard safely.
                 'permissions' => fn () => ($u = $request->user()) && method_exists($u, 'getAllPermissions')
                     ? $u->getAllPermissions()->pluck('name')->all()
@@ -60,5 +60,32 @@ class HandleInertiaRequests extends Middleware
                     : [],
             ],
         ];
+    }
+
+    /**
+     * Resolve the authenticated user from the appropriate guard (admin, chef, or web).
+     */
+    private function resolveAuthUser(Request $request): ?array
+    {
+        $user = $request->user('admin') ?? $request->user('chef') ?? $request->user();
+
+        if (!$user) {
+            return null;
+        }
+
+        $data = [
+            'id' => $user->id,
+            'email' => $user->email ?? null,
+            'avatar' => $user->avatar ?? null,
+            'name' => $user->name ?? trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? '')) ?: null,
+        ];
+
+        foreach (['first_name', 'last_name', 'phone_number', 'whatsapp_number', 'address'] as $key) {
+            if (isset($user->$key)) {
+                $data[$key] = $user->$key;
+            }
+        }
+
+        return $data;
     }
 }

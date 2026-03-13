@@ -74,9 +74,12 @@ Route::middleware('auth:admin')
             ->middleware(RoutePermissions::can('dashboard.view'));
 
         // Profile
-        Route::get('/profile', fn () => Inertia('Others/UserProfile'))
+        Route::get('/profile', [App\Http\Controllers\Admin\ProfileController::class, 'show'])
             ->name('profile')
             ->middleware(RoutePermissions::can('profile.view'));
+        Route::patch('/profile', [App\Http\Controllers\Admin\ProfileController::class, 'update'])
+            ->name('profile.update')
+            ->middleware(RoutePermissions::can('profile.update'));
 
         // Governorates
         Route::resource('governorates', GovernorateController::class)
