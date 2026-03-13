@@ -183,17 +183,32 @@ class ChefDTO extends BaseDTO
                     ] : null,
                 ];
             })->toArray() : [],
-            // services (if relation loaded)
+            // services (if relation loaded) - includes feature_image and images
             $chef->relationLoaded('services') ? $chef->services->map(function ($service) {
-                return [
+                $item = [
                     'id' => $service->id,
                     'name' => $service->name ?? null,
                     'description' => $service->description ?? null,
                     'service_type' => $service->service_type ?? null,
                     'hourly_rate' => $service->hourly_rate ?? null,
                     'package_price' => $service->package_price ?? null,
+                    'feature_image' => $service->feature_image ?? null,
                     'is_active' => $service->is_active ?? true,
                 ];
+                if ($service->relationLoaded('images')) {
+                    $item['images'] = $service->images->map(function ($img) {
+                        return [
+                            'id' => $img->id,
+                            'image' => $img->image,
+                            'image_url' => $img->image ? asset('storage/' . $img->image) : null,
+                            'is_active' => $img->is_active ?? true,
+                            'created_at' => $img->created_at?->toDateTimeString(),
+                        ];
+                    })->toArray();
+                } else {
+                    $item['images'] = [];
+                }
+                return $item;
             })->toArray() : [],
             // counts
             // bookings_count: prefer preloaded withCount value, otherwise derive from relation or query

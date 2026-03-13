@@ -121,9 +121,12 @@ class ChefController extends Controller
                 'gallery' => function($query) {
                         $query->where('is_active', true)->orderBy('created_at');
                     },
-                    // include active services of the chef
+                // include active services with their images
                 'services' => function($query) {
-                        $query->where('is_active', true)->orderBy('created_at');
+                        $query->where('is_active', true)->orderBy('created_at')
+                            ->with(['images' => function($img) {
+                                $img->where('is_active', true)->orderBy('created_at');
+                            }]);
                     }
             ]);
 
@@ -148,7 +151,10 @@ class ChefController extends Controller
                     $query->where('is_active', true)->orderBy('created_at');
                 },
                 'services' => function($query) {
-                    $query->where('is_active', true)->orderBy('created_at');
+                    $query->where('is_active', true)->orderBy('created_at')
+                        ->with(['images' => function($img) {
+                            $img->where('is_active', true)->orderBy('created_at');
+                        }]);
                 }
             ]);
 
