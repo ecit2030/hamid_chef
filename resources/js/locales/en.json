@@ -65,6 +65,7 @@
         "landing_why_us": "Why Us",
         "landing_partners": "Partners",
         "landing_contact": "Contact Us",
+        "contact_messages": "Contact Messages",
         "reports": "Reports",
         "my_services": "My Services",
         "schedule": "Schedule",
@@ -435,6 +436,19 @@
             "old": "Old values",
             "new": "New values"
         }
+    },
+    "contactMessages": {
+        "title": "Contact Messages",
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "message": "Message",
+        "status": "Status",
+        "date": "Date",
+        "read": "Read",
+        "unread": "Unread",
+        "noMessages": "No messages",
+        "deleteConfirm": "Are you sure you want to delete this message?"
     },
     "roles": {
         "addRole": "Add Role",

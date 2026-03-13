@@ -56,6 +56,7 @@ return [
     'tags'         => ['view', 'create', 'update', 'delete'],
     'categories'   => ['view', 'create', 'update', 'delete'],
     'landing-page-sections' => ['view', 'create', 'update', 'delete'],
+    'contact-messages' => ['view', 'delete'],
     'terms-and-conditions' => ['view', 'create', 'update', 'delete'],
     'discount-codes' => ['view', 'create', 'update', 'delete'],
 
@@ -129,6 +130,7 @@ return [
     'tags'         => ['en' => 'Tags',          'ar' => 'الوسوم'],
     'categories'   => ['en' => 'Categories',    'ar' => 'التصنيفات'],
     'landing-page-sections' => ['en' => 'Landing Pages', 'ar' => 'الصفحات الخارجية'],
+    'contact-messages' => ['en' => 'Contact Messages', 'ar' => 'رسائل التواصل'],
     'terms-and-conditions' => ['en' => 'Terms and Conditions', 'ar' => 'الشروط والأحكام'],
     'discount-codes' => ['en' => 'Discount Codes', 'ar' => 'أكواد الخصم'],
 

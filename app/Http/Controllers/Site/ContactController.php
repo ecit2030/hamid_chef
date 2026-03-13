@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Models\ContactMessage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
@@ -34,12 +34,7 @@ class ContactController extends Controller
             ], 422);
         }
 
-        $data = $validator->validated();
-
-        // Log for now - you can add email sending later
-        Log::info('Contact form submission', $data);
-
-        // TODO: Send email notification, save to database, etc.
+        ContactMessage::create($validator->validated());
 
         return response()->json([
             'message' => __('Your message has been sent successfully. We will contact you soon.'),

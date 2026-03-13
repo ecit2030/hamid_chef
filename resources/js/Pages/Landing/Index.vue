@@ -4,6 +4,8 @@
     :nav-items="navItems"
     :current-lang="currentLocale"
     :dir="currentLocale === 'ar' ? 'rtl' : 'ltr'"
+    :whatsapp-url="whatsappUrl"
+    :show-back-to-top="true"
     @toggle-language="toggleLanguage"
   >
     <Transition name="fade">
@@ -101,7 +103,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { router } from '@inertiajs/vue3'
 import LandingLayout from '@/Layouts/LandingLayout.vue'
 import {
@@ -125,6 +127,15 @@ const props = defineProps({
 
 const currentLocale = ref(props.locale)
 const isLoading = ref(true)
+
+const whatsappUrl = computed(() => {
+  const contact = props.sections?.contact?.additional_data
+  if (!contact) return ''
+  const url = contact.whatsapp_url?.trim()
+  if (url) return url.startsWith('http') ? url : `https://wa.me/${url.replace(/\D/g, '')}`
+  const phone = contact.phone?.replace(/\D/g, '')
+  return phone ? `https://wa.me/${phone}` : ''
+})
 
 const navItems = ref([
   { href: '#hero', label_ar: 'الرئيسية', label_en: 'Home' },

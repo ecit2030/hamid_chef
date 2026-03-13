@@ -58,6 +58,7 @@
         "landing_why_us": "لماذا نحن",
         "landing_partners": "الشركاء",
         "landing_contact": "تواصل معنا",
+        "contact_messages": "رسائل التواصل",
         "reports": "التقارير",
         "my_services": "خدماتي",
         "schedule": "الجدول الزمني",
@@ -449,6 +450,19 @@
             "updated": "تعديل",
             "deleted": "حذف"
         }
+    },
+    "contactMessages": {
+        "title": "رسائل التواصل",
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "phone": "رقم الهاتف",
+        "message": "الرسالة",
+        "status": "الحالة",
+        "date": "التاريخ",
+        "read": "مقروءة",
+        "unread": "غير مقروءة",
+        "noMessages": "لا توجد رسائل",
+        "deleteConfirm": "هل أنت متأكد من حذف هذه الرسالة؟"
     },
     "roles": {
         "roleInformation": "معلومات الدور",

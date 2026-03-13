@@ -1,19 +1,19 @@
 <template>
   <div class="p-6">
-    <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
       <div class="flex items-center justify-between mb-6">
         <div>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
             {{ t('landing_page.partners.title') }}
           </h3>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">
             {{ t('landing_page.partners.description') }}
           </p>
         </div>
         <button
           @click="addPartner"
           type="button"
-          class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+          class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition hover:bg-primary/90"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -27,10 +27,10 @@
         <div
           v-for="(partner, index) in partners"
           :key="index"
-          class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 shadow-sm"
+          class="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl p-5 shadow-sm"
         >
-          <div class="flex items-center justify-between pb-3 border-b border-gray-200 dark:border-gray-700 mb-4">
-            <span class="text-sm font-bold text-gray-800 dark:text-white">
+          <div class="flex items-center justify-between pb-3 border-b border-gray-200 dark:border-gray-600 mb-4">
+            <span class="text-sm font-bold text-gray-900 dark:text-gray-100">
               {{ t('landing_page.partners.partner') }} #{{ index + 1 }}
             </span>
             <button
@@ -45,64 +45,98 @@
           </div>
 
           <div class="space-y-3">
+            <!-- Logo Upload -->
+            <div>
+              <label class="mb-1.5 block text-xs font-medium text-gray-800 dark:text-gray-200">
+                {{ t('landing_page.partners.logo') }}
+              </label>
+              <div class="flex items-center gap-4">
+                <div class="relative w-24 h-24 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-500 overflow-hidden bg-white dark:bg-gray-800 flex items-center justify-center">
+                  <img
+                    v-if="partner.logoPreview || getLogoUrl(partner)"
+                    :src="partner.logoPreview || getLogoUrl(partner)"
+                    :alt="partner.name_ar || partner.name_en"
+                    class="w-full h-full object-contain p-1"
+                  />
+                  <div v-else class="text-center text-gray-400 dark:text-gray-500 p-2">
+                    <svg class="w-8 h-8 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span class="text-xs">{{ t('common.selectImage') || 'اختر صورة' }}</span>
+                  </div>
+                  <button
+                    v-if="partner.logo || partner.logoPreview"
+                    @click="removePartnerLogo(index)"
+                    type="button"
+                    class="absolute top-1 end-1 p-1 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
+                  >
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                <label class="cursor-pointer">
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/gif"
+                    class="hidden"
+                    @change="handleLogoUpload($event, index)"
+                  />
+                  <span class="inline-flex items-center gap-2 rounded-lg border-2 border-primary px-3 py-2 text-sm font-medium text-primary hover:bg-primary/10 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    </svg>
+                    {{ partner.logo || partner.logoPreview ? (t('common.changeImage') || 'تغيير الصورة') : (t('common.uploadImage') || 'رفع صورة') }}
+                  </span>
+                </label>
+              </div>
+            </div>
+
             <!-- Name Arabic -->
             <div>
-              <label class="mb-1.5 block text-xs font-medium text-gray-600 dark:text-gray-400">
+              <label class="mb-1.5 block text-xs font-medium text-gray-800 dark:text-gray-200">
                 {{ t('landing_page.partners.name_ar') }}
               </label>
               <input 
                 v-model="partner.name_ar" 
                 type="text" 
-                class="h-10 w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 text-sm text-gray-800 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" 
+                class="h-10 w-full rounded-lg border border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-800 px-3 text-sm text-gray-900 dark:text-gray-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" 
               />
             </div>
             
             <!-- Name English -->
             <div>
-              <label class="mb-1.5 block text-xs font-medium text-gray-600 dark:text-gray-400">
+              <label class="mb-1.5 block text-xs font-medium text-gray-800 dark:text-gray-200">
                 {{ t('landing_page.partners.name_en') }}
               </label>
               <input 
                 v-model="partner.name_en" 
                 type="text" 
-                class="h-10 w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 text-sm text-gray-800 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" 
-              />
-            </div>
-
-            <!-- Logo URL -->
-            <div>
-              <label class="mb-1.5 block text-xs font-medium text-gray-600 dark:text-gray-400">
-                {{ t('landing_page.partners.logo') }}
-              </label>
-              <input 
-                v-model="partner.logo" 
-                type="text" 
-                placeholder="https://..."
-                class="h-10 w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 text-sm text-gray-800 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" 
+                class="h-10 w-full rounded-lg border border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-800 px-3 text-sm text-gray-900 dark:text-gray-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" 
               />
             </div>
             
             <!-- Description Arabic -->
             <div>
-              <label class="mb-1.5 block text-xs font-medium text-gray-600 dark:text-gray-400">
+              <label class="mb-1.5 block text-xs font-medium text-gray-800 dark:text-gray-200">
                 {{ t('landing_page.common.description_ar') }}
               </label>
               <textarea 
                 v-model="partner.description_ar" 
                 rows="2"
-                class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-800 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none" 
+                class="w-full rounded-lg border border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
               ></textarea>
             </div>
             
             <!-- Description English -->
             <div>
-              <label class="mb-1.5 block text-xs font-medium text-gray-600 dark:text-gray-400">
+              <label class="mb-1.5 block text-xs font-medium text-gray-800 dark:text-gray-200">
                 {{ t('landing_page.common.description_en') }}
               </label>
               <textarea 
                 v-model="partner.description_en" 
                 rows="2"
-                class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-800 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none" 
+                class="w-full rounded-lg border border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
               ></textarea>
             </div>
           </div>
@@ -110,12 +144,12 @@
       </div>
 
       <!-- Save Button -->
-      <div class="flex justify-end">
+      <div class="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-600">
         <button
           @click="savePartners"
           :disabled="saving"
           type="button"
-          class="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium disabled:opacity-50"
+          class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-white transition hover:bg-primary/90 disabled:opacity-50"
         >
           <svg v-if="!saving" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -131,9 +165,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { router } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 import { useNotifications } from '@/composables/useNotifications';
 
 const { t } = useI18n();
@@ -148,8 +182,26 @@ const props = defineProps({
 
 const emit = defineEmits(['refresh']);
 
-const partners = ref(props.section?.additional_data?.partners || []);
+const partners = ref([]);
 const saving = ref(false);
+
+const getLogoUrl = (partner) => {
+  const logo = partner?.logo;
+  if (!logo || logo === 'null' || logo === 'undefined') return null;
+  const path = String(logo).trim();
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  if (path.startsWith('/storage/')) return path;
+  return path.startsWith('storage/') ? `/${path}` : `/storage/${path}`;
+};
+
+watch(() => props.section, (newSection) => {
+  const raw = newSection?.additional_data?.partners || [];
+  partners.value = raw.map((p) => ({
+    ...p,
+    logoPreview: null,
+    logoFile: null
+  }));
+}, { immediate: true });
 
 const addPartner = () => {
   partners.value.push({
@@ -157,7 +209,9 @@ const addPartner = () => {
     name_en: '',
     logo: '',
     description_ar: '',
-    description_en: ''
+    description_en: '',
+    logoPreview: null,
+    logoFile: null
   });
 };
 
@@ -167,25 +221,66 @@ const removePartner = (index) => {
   }
 };
 
+const handleLogoUpload = (event, index) => {
+  const file = event.target.files?.[0];
+  if (!file || !file.type.startsWith('image/')) return;
+  partners.value[index].logoFile = file;
+  partners.value[index].logoPreview = URL.createObjectURL(file);
+  partners.value[index].logo = ''; // Clear old path when uploading new
+};
+
+const removePartnerLogo = (index) => {
+  partners.value[index].logo = '';
+  partners.value[index].logoFile = null;
+  if (partners.value[index].logoPreview) {
+    URL.revokeObjectURL(partners.value[index].logoPreview);
+  }
+  partners.value[index].logoPreview = null;
+};
+
 const savePartners = () => {
   saving.value = true;
-  
-  router.put(route('admin.landing-page-sections.update', props.section.id), {
-    additional_data: {
-      partners: partners.value,
+
+  const partnersData = partners.value.map((p, i) => {
+    const { logoFile, logoPreview, ...rest } = p;
+    const data = { ...rest };
+    if (logoFile) data.has_new_logo = true;
+    else if (p.logo) data.logo = p.logo;
+    return data;
+  });
+
+  const formData = {
+    _method: 'PUT',
+    section_key: props.section.section_key || 'partners',
+    additional_data: JSON.stringify({
+      partners: partnersData,
       partnership_benefits: props.section?.additional_data?.partnership_benefits || []
+    })
+  };
+
+  partners.value.forEach((p, i) => {
+    if (p.logoFile) {
+      formData[`partner_logos[${i}]`] = p.logoFile;
     }
-  }, {
+  });
+
+  const form = useForm(formData);
+
+  form.post(route('admin.landing-page-sections.update', props.section.id), {
+    forceFormData: true,
     preserveScroll: true,
     onSuccess: () => {
       success(t('landing_page.messages.save_success'));
+      saving.value = false;
+      partners.value.forEach((p) => {
+        if (p.logoPreview) URL.revokeObjectURL(p.logoPreview);
+        p.logoPreview = null;
+        p.logoFile = null;
+      });
       emit('refresh');
     },
-    onError: (errors) => {
+    onError: (err) => {
       error(t('landing_page.messages.save_error'));
-      console.error(errors);
-    },
-    onFinish: () => {
       saving.value = false;
     }
   });

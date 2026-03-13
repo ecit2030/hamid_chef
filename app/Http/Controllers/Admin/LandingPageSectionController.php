@@ -150,29 +150,22 @@ class LandingPageSectionController extends Controller
             \Log::info('✅ Hero slides processed successfully');
         }
 
-        // Handle partner logos sent as partner_logos[index]
-        if (isset($data['additional_data']['items']) && is_array($data['additional_data']['items'])) {
-            $items = $data['additional_data']['items'];
+        // Handle partner logos sent as partner_logos[index] for additional_data.partners
+        if (isset($data['additional_data']['partners']) && is_array($data['additional_data']['partners'])) {
+            $partners = $data['additional_data']['partners'];
             $uploadedLogos = $request->file('partner_logos', []);
 
-            \Log::info('🖼️ Processing partner logos:', [
-                'items_count' => count($items),
-                'uploaded_logos_count' => count($uploadedLogos)
-            ]);
-
             foreach ($uploadedLogos as $index => $file) {
-                if (!isset($items[$index]) || !$file instanceof \Illuminate\Http\UploadedFile) {
+                if (!isset($partners[$index]) || !$file instanceof \Illuminate\Http\UploadedFile) {
                     continue;
                 }
 
                 $path = $file->store('partners', 'public');
-                $items[$index]['logo'] = $path;
-                unset($items[$index]['has_new_logo']);
-                \Log::info("📸 Uploaded partner logo {$index}: {$path}");
+                $partners[$index]['logo'] = $path;
+                unset($partners[$index]['has_new_logo']);
             }
 
-            $data['additional_data']['items'] = $items;
-            \Log::info('✅ Partner logos processed successfully');
+            $data['additional_data']['partners'] = $partners;
         }
 
         // Handle image uploads - check for files first, then check for removal indicators

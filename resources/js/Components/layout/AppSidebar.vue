@@ -519,6 +519,11 @@ const menuGroups = computed(() =>
                             }),
                             permission: "landing-page-sections.view",
                         },
+                        {
+                            name: t("menu.contact_messages"),
+                            path: route("admin.contact-messages.index"),
+                            permission: "contact-messages.view",
+                        },
                     ],
                 },
                 {

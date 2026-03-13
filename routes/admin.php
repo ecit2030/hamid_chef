@@ -231,6 +231,12 @@ Route::middleware('auth:admin')
         Route::delete('categories/{id}/icon', [CategoryController::class, 'removeIcon'])
             ->name('categories.removeIcon');
 
+        // Contact Messages (from landing page contact form)
+        Route::resource('contact-messages', App\Http\Controllers\Admin\ContactMessageController::class)
+            ->only(['index', 'show', 'destroy'])
+            ->parameters(['contact-messages' => 'contact_message'])
+            ->names('contact-messages');
+
         // Landing Page Sections
         Route::get('landing-page-sections/{section}/manage', [App\Http\Controllers\Admin\LandingPageSectionController::class, 'manage'])
             ->name('landing-page-sections.manage');
