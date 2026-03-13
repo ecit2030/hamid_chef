@@ -1055,11 +1055,19 @@
             "stat_label_en_placeholder": "Example: Professional Chef"
         },
         "contact": {
+            "title": "Contact Us",
             "email": "Email",
             "phone": "Phone",
             "address": "Address",
+            "address_ar": "Address (Arabic)",
+            "address_en": "Address (English)",
             "working_hours": "Working Hours",
-            "social_links": "Social Links",
+            "working_hours_ar": "Working Hours (Arabic)",
+            "working_hours_en": "Working Hours (English)",
+            "whatsapp_url": "WhatsApp URL (for sharing)",
+            "whatsapp_hint": "Leave empty to use phone number automatically",
+            "social_links": "Social Media Links",
+            "add_social": "Add Link",
             "form_title": "Contact Form",
             "form_description": "Fill out the form and we'll get back to you soon"
         },

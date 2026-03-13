@@ -1177,11 +1177,19 @@
             "stat_label_en_placeholder": "Example: Professional Chef"
         },
         "contact": {
+            "title": "تواصل معنا",
             "email": "البريد الإلكتروني",
             "phone": "رقم الهاتف",
             "address": "العنوان",
+            "address_ar": "العنوان (عربي)",
+            "address_en": "العنوان (إنجليزي)",
             "working_hours": "ساعات العمل",
-            "social_links": "روابط التواصل الاجتماعي",
+            "working_hours_ar": "ساعات العمل (عربي)",
+            "working_hours_en": "ساعات العمل (إنجليزي)",
+            "whatsapp_url": "رابط واتساب (للمشاركة)",
+            "whatsapp_hint": "اتركه فارغاً لاستخدام رقم الهاتف تلقائياً",
+            "social_links": "روابط السوشيال ميديا",
+            "add_social": "إضافة رابط",
             "form_title": "نموذج التواصل",
             "form_description": "املأ النموذج وسنتواصل معك قريباً"
         },

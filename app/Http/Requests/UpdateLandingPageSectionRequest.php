@@ -86,6 +86,14 @@ class UpdateLandingPageSectionRequest extends FormRequest
             'additional_data.partnership_benefits.*' => 'nullable|array',
             'additional_data.social_links' => 'nullable|array',
             'additional_data.social_links.*' => 'nullable|array',
+            // Contact section fields
+            'additional_data.phone' => 'nullable|string|max:50',
+            'additional_data.email' => 'nullable|string|max:255',
+            'additional_data.address_ar' => 'nullable|string|max:500',
+            'additional_data.address_en' => 'nullable|string|max:500',
+            'additional_data.working_hours_ar' => 'nullable|string|max:255',
+            'additional_data.working_hours_en' => 'nullable|string|max:255',
+            'additional_data.whatsapp_url' => 'nullable|string|max:500',
 
             // Hero slider uploads (sent as slide_images[index])
             'slide_images' => 'sometimes|array',
