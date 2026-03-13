@@ -315,6 +315,18 @@ class ChefServiceService
     }
 
     /**
+     * Resolve audit user ID - chef_service_tags.created_by/updated_by reference users table.
+     * When admin is logged in, pass null since admins are not in users table.
+     */
+    protected function auditUserId(): ?int
+    {
+        if (auth('admin')->user()) {
+            return null;
+        }
+        return auth()->user()?->id;
+    }
+
+    /**
      * مزامنة علامات الخدمة
      * 
      * @param Model $service
@@ -323,13 +335,13 @@ class ChefServiceService
      */
     protected function syncServiceTags(Model $service, array $tagIds): void
     {
-        // Prepare sync data with additional pivot data
+        $auditId = $this->auditUserId();
         $syncData = [];
         foreach ($tagIds as $tagId) {
             $syncData[$tagId] = [
                 'is_active' => true,
-                'created_by' => Auth::id(),
-                'updated_by' => Auth::id(),
+                'created_by' => $auditId,
+                'updated_by' => $auditId,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
@@ -349,11 +361,12 @@ class ChefServiceService
     {
         $service = $this->find($serviceId);
         
+        $auditId = $this->auditUserId();
         if (!$service->tags()->where('tag_id', $tagId)->exists()) {
             $service->tags()->attach($tagId, [
                 'is_active' => true,
-                'created_by' => Auth::id(),
-                'updated_by' => Auth::id(),
+                'created_by' => $auditId,
+                'updated_by' => $auditId,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -387,7 +400,7 @@ class ChefServiceService
         
         $service->tags()->updateExistingPivot($tagId, [
             'is_active' => $isActive,
-            'updated_by' => Auth::id(),
+            'updated_by' => $this->auditUserId(),
             'updated_at' => now(),
         ]);
     }

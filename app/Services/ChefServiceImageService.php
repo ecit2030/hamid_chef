@@ -55,24 +55,39 @@ class ChefServiceImageService
     }
 
     /**
+     * Resolve audit user ID - chef_service_images.created_by/updated_by reference users table.
+     * When admin is logged in, pass null since admins are not in users table.
+     */
+    protected function auditUserId(): ?int
+    {
+        $admin = auth('admin')->user();
+        if ($admin) {
+            return null; // Admins table, not users - FK constraint would fail
+        }
+        $user = auth()->user();
+        return $user?->id;
+    }
+
+    /**
      * Create multiple images for a chef service
      */
     public function createMultiple(int $serviceId, array $images): Collection
     {
         $createdImages = new Collection();
-        
+        $auditId = $this->auditUserId();
+
         DB::beginTransaction();
-        
+
         try {
             foreach ($images as $image) {
                 $imageData = [
                     'chef_service_id' => $serviceId,
                     'image' => $image,
                     'is_active' => true,
-                    'created_by' => auth()->id(),
-                    'updated_by' => auth()->id(),
+                    'created_by' => $auditId,
+                    'updated_by' => $auditId,
                 ];
-                
+
                 $createdImage = $this->images->create($imageData);
                 $createdImages->push($createdImage);
             }
