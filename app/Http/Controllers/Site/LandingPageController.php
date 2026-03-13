@@ -32,9 +32,14 @@ class LandingPageController extends Controller
                 $additionalData['categories'] = $this->getCategoriesForLanding();
             }
 
-            // For testimonials section: inject real testimonials from database
+            // For testimonials section: use admin items first, else Testimonial model
             if ($section->section_key === 'testimonials') {
-                $additionalData['testimonials'] = $this->getTestimonialsForLanding();
+                $additionalData['testimonials'] = $this->getTestimonialsForLanding($additionalData);
+            }
+
+            // For vision_mission section: transform items array to vision, mission, goals
+            if ($section->section_key === 'vision_mission') {
+                $additionalData = $this->transformVisionMissionForLanding($additionalData);
             }
 
             $sectionsData[$section->section_key] = [
@@ -95,22 +100,67 @@ class LandingPageController extends Controller
     }
 
     /**
-     * Get active testimonials from database for landing page
+     * Transform vision_mission items array to vision, mission, goals structure for landing
      */
-    private function getTestimonialsForLanding(): array
+    private function transformVisionMissionForLanding(array $additionalData): array
     {
+        $items = $additionalData['items'] ?? [];
+        $vision = [];
+        $mission = [];
+        $goals = [];
+
+        foreach ($items as $item) {
+            $key = $item['key'] ?? null;
+            $block = [
+                'title_ar' => $item['title_ar'] ?? '',
+                'title_en' => $item['title_en'] ?? '',
+                'description_ar' => $item['description_ar'] ?? '',
+                'description_en' => $item['description_en'] ?? '',
+            ];
+            if ($key === 'vision') {
+                $vision = $block;
+            } elseif ($key === 'mission') {
+                $mission = $block;
+            } elseif ($key === 'values') {
+                $goals[] = $block;
+            }
+        }
+
+        $additionalData['vision'] = $vision;
+        $additionalData['mission'] = $mission;
+        $additionalData['goals'] = $goals;
+
+        return $additionalData;
+    }
+
+    /**
+     * Get testimonials for landing: admin items (from landing_page_sections) or Testimonial model
+     */
+    private function getTestimonialsForLanding(array $additionalData): array
+    {
+        $items = $additionalData['items'] ?? [];
+        if (!empty($items)) {
+            $out = [];
+            foreach ($items as $i => $t) {
+                $out[] = [
+                    'id' => $t['id'] ?? 'item-'.$i,
+                    'comment_ar' => $t['content_ar'] ?? $t['comment_ar'] ?? '',
+                    'comment_en' => $t['content_en'] ?? $t['comment_en'] ?? '',
+                    'rating' => (int) ($t['rating'] ?? 5),
+                ];
+            }
+            return $out;
+        }
+
         return Testimonial::query()
             ->where('is_active', true)
             ->orderBy('display_order')
             ->get()
             ->map(fn (Testimonial $t) => [
                 'id' => $t->id,
-                'name_ar' => $t->name_ar,
-                'name_en' => $t->name_en,
                 'comment_ar' => $t->comment_ar,
                 'comment_en' => $t->comment_en,
                 'rating' => $t->rating,
-                'avatar' => $t->avatar,
             ])
             ->values()
             ->all();

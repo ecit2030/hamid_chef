@@ -259,7 +259,6 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { Link, useForm, router } from "@inertiajs/vue3";
-import { route } from "@/route";
 import CommonGridShape from "@/Components/common/CommonGridShape.vue";
 import FullScreenLayout from "@/Components/layout/FullScreenLayout.vue";
 import { useI18n } from "vue-i18n";

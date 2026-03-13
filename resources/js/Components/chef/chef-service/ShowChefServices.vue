@@ -58,7 +58,7 @@
               <div class="mt-1 flex items-center gap-2">
                 <span
                   class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium"
-                  :class="service.service_type === 'hourly' 
+                  :class="service.service_type === 'hourly'
                     ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400'
                     : 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'"
                 >
@@ -193,7 +193,6 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { router } from '@inertiajs/vue3'
-import { route } from '@/route'
 import { useI18n } from 'vue-i18n'
 import DangerAlert from '@/Components/modals/DangerAlert.vue'
 import { useNotifications } from '@/composables/useNotifications'
@@ -226,8 +225,8 @@ function handleEditClick(id) {
 const isDeleteModalOpen = ref(false)
 const serviceToDeleteId = ref(null)
 function openDeleteModal(id) { serviceToDeleteId.value = id; isDeleteModalOpen.value = true }
-function handleDeleteClick(id) { 
-  openDeleteModal(id) 
+function handleDeleteClick(id) {
+  openDeleteModal(id)
 }
 function closeDeleteModal() { isDeleteModalOpen.value = false; serviceToDeleteId.value = null }
 function confirmDelete() {
@@ -251,7 +250,7 @@ const filteredData = computed(() => {
   const searchLower = search.value.toLowerCase()
   return (props.services?.data || [])
     .filter((service) => {
-      return service.name?.toLowerCase().includes(searchLower) || 
+      return service.name?.toLowerCase().includes(searchLower) ||
              (service.chef_name || '').toLowerCase().includes(searchLower) ||
              (service.description || '').toLowerCase().includes(searchLower) ||
              service.service_type?.toLowerCase().includes(searchLower) ||

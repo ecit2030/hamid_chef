@@ -165,7 +165,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(BookingTransactionService::class, fn($app) => new BookingTransactionService($app->make(BookingTransactionRepository::class)));
         $this->app->bind(CategoryService::class, fn($app) => new CategoryService(
             $app->make(CategoryRepository::class),
-            $app->make(\App\Services\SVGIconService::class)
+            $app->make(\App\Services\SVGIconService::class),
+            $app->make(\App\Services\CategoryImageService::class)
         ));
         $this->app->bind(ChefCoreService::class, fn($app) => new ChefCoreService(
             $app->make(ChefRepository::class),

@@ -194,7 +194,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { Link } from '@inertiajs/vue3'
-import { route } from '@/route'
 import ChefLayout from '@/Components/layout/ChefLayout.vue'
 import { useI18n } from 'vue-i18n'
 import { Chart, registerables } from 'chart.js'

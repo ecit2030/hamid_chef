@@ -3,11 +3,11 @@
     <div class="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
       <h2 class="text-lg font-medium text-gray-800 dark:text-white">{{ t('ratings.ratingsAndReviews') }}</h2>
     </div>
-    
+
     <div class="p-4 sm:p-6">
       <div v-if="ratings && ratings.length > 0" class="space-y-4">
-        <div 
-          v-for="rating in ratings" 
+        <div
+          v-for="rating in ratings"
           :key="rating.id"
           class="rounded-lg border border-gray-200 p-4 dark:border-gray-700"
         >
@@ -30,8 +30,8 @@
 
               <!-- Rating Stars -->
               <div class="flex items-center gap-1 mb-2">
-                <StarIcon 
-                  v-for="star in 5" 
+                <StarIcon
+                  v-for="star in 5"
                   :key="star"
                   class="h-4 w-4"
                   :class="star <= rating.rating ? 'text-yellow-400 fill-current' : 'text-gray-300 dark:text-gray-600'"
@@ -58,7 +58,7 @@
             <!-- Actions -->
             <div class="flex items-center gap-2">
               <!-- Status Badge -->
-              <Badge 
+              <Badge
                 :color="rating.is_active ? 'green' : 'red'"
                 :text="rating.is_active ? t('common.active') : t('common.inactive')"
               />
@@ -87,12 +87,12 @@
     </div>
 
     <!-- Delete Modal -->
-    <DangerAlert 
-      :isOpen="isDeleteModalOpen" 
-      :title="t('messages.areYouSure')" 
-      :message="t('ratings.confirmDeleteMessage')" 
-      @close="closeDeleteModal" 
-      @confirm="confirmDelete" 
+    <DangerAlert
+      :isOpen="isDeleteModalOpen"
+      :title="t('messages.areYouSure')"
+      :message="t('ratings.confirmDeleteMessage')"
+      @close="closeDeleteModal"
+      @confirm="confirmDelete"
     />
   </div>
 </template>
@@ -101,11 +101,10 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { router } from '@inertiajs/vue3'
-import { route } from '@/route'
-import { 
-  UserCircleIcon, 
-  StarIcon, 
-  TrashIcon 
+import {
+  UserCircleIcon,
+  StarIcon,
+  TrashIcon
 } from '@/icons'
 import Badge from '@/Components/ui/Badge.vue'
 import DangerAlert from '@/Components/modals/DangerAlert.vue'

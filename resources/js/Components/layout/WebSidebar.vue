@@ -127,7 +127,6 @@ import { useI18n } from 'vue-i18n'
 import { Link } from '@inertiajs/vue3'
 import { ChefIcon, CalenderIcon, TaskIcon, HorizontalDots } from '../../icons'
 import { useSidebar } from '@/composables/useSidebar'
-import { route } from '@/route'
 
 const { t } = useI18n()
 const { isExpanded, isMobileOpen, isHovered, isMobile } = useSidebar()

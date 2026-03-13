@@ -4,10 +4,6 @@
 <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        {{-- لا تستخدم meta csrf-token: يمنع تحديث التوكن تلقائياً ويسبب 419 - Laravel يضيف XSRF-TOKEN في الكوكي تلقائياً --}}
-
-        <!-- Custom fonts are loaded via @font-face in app.css -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
         <title inertia>Mon Chef</title>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg">

@@ -507,7 +507,6 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { router } from '@inertiajs/vue3'
-import { route } from '@/route'
 import { useI18n } from 'vue-i18n'
 import Tooltip from '@/Components/ui/Tooltip.vue'
 import DangerAlert from '@/Components/modals/DangerAlert.vue'

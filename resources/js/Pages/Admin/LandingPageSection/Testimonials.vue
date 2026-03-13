@@ -1,9 +1,9 @@
-﻿<template>
+<template>
   <AdminLayout>
     <PageBreadcrumb :pageTitle="pageTitle" />
     <div class="space-y-5 sm:space-y-6">
       <ComponentCard :title="pageTitle" :desc="t('landingSections.sectionInfo')">
-        <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('landingSections.testimonialsSection') }}</p>
+        <p class="text-sm text-gray-700 dark:text-gray-300">{{ t('landingSections.testimonialsSection') }}</p>
         <Testimonials :section="section" @refresh="refreshSection" />
       </ComponentCard>
     </div>

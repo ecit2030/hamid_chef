@@ -162,7 +162,6 @@ import { ref, computed, watch } from 'vue'
 import Modal from './Modal.vue'
 import { useI18n } from 'vue-i18n'
 import { usePage, useForm, router } from '@inertiajs/vue3'
-import { route } from '@/route'
 
 const { t } = useI18n()
 const page = usePage()
@@ -199,14 +198,14 @@ const saveProfile = () => {
   const nameParts = form.name.trim().split(' ')
   const firstName = nameParts[0] || ''
   const lastName = nameParts.slice(1).join(' ') || ''
-  
+
   const updateData = {
     first_name: firstName,
     last_name: lastName,
     email: form.email,
     phone_number: form.phone_number,
   }
-  
+
   // Use direct URL to avoid routing issues
   form.transform(() => updateData).patch('/profile', {
     preserveScroll: true,

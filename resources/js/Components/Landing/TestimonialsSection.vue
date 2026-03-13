@@ -22,30 +22,16 @@
               <span
                 v-for="n in 5"
                 :key="n"
-                class="text-[#D97706]"
+                class="text-[#D97706] text-lg"
                 :class="n <= (t.rating ?? 5) ? 'opacity-100' : 'opacity-30'"
               >
                 ★
               </span>
             </div>
 
-            <p class="text-gray-700 leading-relaxed mb-6 flex-1 text-[15px]">
+            <p class="text-gray-700 leading-relaxed flex-1 text-[15px]">
               {{ currentLang === 'ar' ? t.comment_ar : t.comment_en }}
             </p>
-
-            <div class="flex items-center gap-4 pt-4 border-t border-gray-100">
-              <div class="relative flex-shrink-0">
-                <img
-                  :src="t.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80'"
-                  :alt="currentLang === 'ar' ? t.name_ar : t.name_en"
-                  class="w-14 h-14 rounded-full object-cover ring-2 ring-[#CBE4F8] ring-offset-2"
-                />
-              </div>
-              <div>
-                <div class="font-bold text-[#051D3C]">{{ currentLang === 'ar' ? t.name_ar : t.name_en }}</div>
-                <div class="text-sm text-gray-500">{{ currentLang === 'ar' ? 'عميل سعيد' : 'Happy Customer' }}</div>
-              </div>
-            </div>
           </div>
         </div>
       </div>

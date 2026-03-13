@@ -1,14 +1,14 @@
 <template>
   <div class="overflow-hidden">
     <div
-      class="flex flex-col gap-2 px-4 py-4 border border-b-0 border-gray-200 rounded-b-none rounded-xl dark:border-gray-800 sm:flex-row sm:items-center sm:justify-between"
+      class="flex flex-col gap-2 px-4 py-4 border border-b-0 border-gray-200 rounded-b-none rounded-xl bg-white dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:items-center sm:justify-between"
     >
       <div class="flex items-center gap-3">
-        <span class="text-gray-500 dark:text-gray-400">{{ t('datatable.show') }}</span>
+        <span class="text-gray-700 dark:text-gray-300">{{ t('datatable.show') }}</span>
         <div class="relative z-20 bg-transparent">
           <select
             v-model="perPage"
-            class="w-full py-2 pl-3 pr-8 text-sm text-gray-800 bg-transparent border border-gray-300 rounded-lg appearance-none dark:bg-dark-900 h-9 bg-none shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
+            class="w-full py-2 pl-3 pr-8 text-sm text-gray-800 bg-white border border-gray-300 rounded-lg appearance-none h-9 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-400"
             :class="{ 'text-gray-500 dark:text-gray-400': perPage !== '' }"
           >
             <option value="10" class="text-gray-500 dark:bg-gray-900 dark:text-gray-400">10</option>
@@ -36,7 +36,7 @@
             </svg>
           </span>
         </div>
-        <span class="text-gray-500 dark:text-gray-400">{{ t('datatable.entries') }}</span>
+        <span class="text-gray-700 dark:text-gray-300">{{ t('datatable.entries') }}</span>
       </div>
 
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -62,7 +62,7 @@
             v-model="search"
             type="text"
             :placeholder="t('datatable.searchPlaceholder')"
-            class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent py-2.5 pl-11 pr-4 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800 xl:w-[300px]"
+            class="h-11 w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-11 pr-4 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-400 xl:w-[300px]"
           />
         </div>
 
@@ -70,7 +70,7 @@
           <button
             :disabled="!canCreate"
             @click="handleCreateClick"
-            class="bg-brand-500 shadow-theme-xs hover:bg-brand-600 inline-flex items-center justify-center gap-2 rounded-lg px-4 py-[11px] text-sm font-medium text-white transition sm:w-auto disabled:bg-brand-300 disabled:hover:bg-brand-300 disabled:text-white/70"
+            class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-theme-xs transition hover:bg-primary/90 sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:hover:bg-gray-400"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -94,10 +94,10 @@
     </div>
 
     <div class="max-w-full overflow-x-auto">
-      <table class="w-full min-w-full">
-        <thead>
+      <table class="w-full min-w-full bg-white dark:bg-gray-900">
+        <thead class="bg-gray-50 dark:bg-gray-800">
           <tr>
-            <th class="px-4 py-3 text-start border border-gray-100 dark:border-gray-800 w-12">
+            <th class="px-4 py-3 text-start border border-gray-200 dark:border-gray-700 w-12">
               <label
                 class="flex items-center text-sm font-medium text-gray-700 cursor-pointer select-none dark:text-gray-400"
               >
@@ -137,50 +137,50 @@
                 </span>
               </label>
             </th>
-            <th class="px-4 py-3 text-start border border-gray-100 dark:border-gray-800">
+            <th class="px-4 py-3 text-start border border-gray-200 dark:border-gray-700">
               <div
                 class="flex items-center justify-between w-full cursor-pointer"
                 @click="sortBy('name')"
               >
-                <p class="font-medium text-gray-700 text-theme-xs dark:text-gray-400">{{ t('categories.name') }}</p>
+                <p class="font-medium text-gray-800 text-theme-xs dark:text-gray-200">{{ t('categories.name') }}</p>
                 <span class="flex flex-col gap-0.5">
                   <svg class="fill-gray-300 dark:fill-gray-700" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.40962 0.585167C4.21057 0.300808 3.78943 0.300807 3.59038 0.585166L1.05071 4.21327C0.81874 4.54466 1.05582 5 1.46033 5H6.53967C6.94418 5 7.18126 4.54466 6.94929 4.21327L4.40962 0.585167Z" fill=""/></svg>
                   <svg class="fill-gray-300 dark:fill-gray-700" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.40962 4.41483C4.21057 4.69919 3.78943 4.69919 3.59038 4.41483L1.05071 0.786732C0.81874 0.455343 1.05582 0 1.46033 0H6.53967C6.94418 0 7.18126 0.455342 6.94929 0.786731L4.40962 4.41483Z" fill=""/></svg>
                 </span>
               </div>
             </th>
-            <th class="px-4 py-3 text-start border border-gray-100 dark:border-gray-800">
-              <p class="font-medium text-gray-700 text-theme-xs dark:text-gray-400">{{ t('categories.icon') }}</p>
+            <th class="px-4 py-3 text-start border border-gray-200 dark:border-gray-700">
+              <p class="font-medium text-gray-800 text-theme-xs dark:text-gray-200">{{ t('categories.icon') }}</p>
             </th>
-            <th class="px-4 py-3 text-start border border-gray-100 dark:border-gray-800">
+            <th class="px-4 py-3 text-start border border-gray-200 dark:border-gray-700">
               <div
                 class="flex items-center justify-between w-full cursor-pointer"
                 @click="sortBy('slug')"
               >
-                <p class="font-medium text-gray-700 text-theme-xs dark:text-gray-400">{{ t('categories.slug') }}</p>
+                <p class="font-medium text-gray-800 text-theme-xs dark:text-gray-200">{{ t('categories.slug') }}</p>
                 <span class="flex flex-col gap-0.5">
                   <svg class="fill-gray-300 dark:fill-gray-700" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.40962 0.585167C4.21057 0.300808 3.78943 0.300807 3.59038 0.585166L1.05071 4.21327C0.81874 4.54466 1.05582 5 1.46033 5H6.53967C6.94418 5 7.18126 4.54466 6.94929 4.21327L4.40962 0.585167Z" fill=""/></svg>
                   <svg class="fill-gray-300 dark:fill-gray-700" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.40962 4.41483C4.21057 4.69919 3.78943 4.69919 3.59038 4.41483L1.05071 0.786732C0.81874 0.455343 1.05582 0 1.46033 0H6.53967C6.94418 0 7.18126 0.455342 6.94929 0.786731L4.40962 4.41483Z" fill=""/></svg>
                 </span>
               </div>
             </th>
-            <th class="px-4 py-3 text-start border border-gray-100 dark:border-gray-800">
+            <th class="px-4 py-3 text-start border border-gray-200 dark:border-gray-700">
               <div
                 class="flex items-center justify-between w-full cursor-pointer"
                 @click="sortBy('is_active')"
               >
-                <p class="font-medium text-gray-700 text-theme-xs dark:text-gray-400">{{ t('common.status') }}</p>
+                <p class="font-medium text-gray-800 text-theme-xs dark:text-gray-200">{{ t('common.status') }}</p>
                 <span class="flex flex-col gap-0.5">
                   <svg class="fill-gray-300 dark:fill-gray-700" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.40962 0.585167C4.21057 0.300808 3.78943 0.300807 3.59038 0.585166L1.05071 4.21327C0.81874 4.54466 1.05582 5 1.46033 5H6.53967C6.94418 5 7.18126 4.54466 6.94929 4.21327L4.40962 0.585167Z" fill=""/></svg>
                   <svg class="fill-gray-300 dark:fill-gray-700" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.40962 4.41483C4.21057 4.69919 3.78943 4.69919 3.59038 4.41483L1.05071 0.786732C0.81874 0.455343 1.05582 0 1.46033 0H6.53967C6.94418 0 7.18126 0.455342 6.94929 0.786731L4.40962 4.41483Z" fill=""/></svg>
                 </span>
               </div>
             </th>
-            <th class="px-4 py-3 text-start border border-gray-100 dark:border-gray-800">
-              <p class="font-medium text-gray-700 text-theme-xs dark:text-gray-400">{{ t('common.toggle') }}</p>
+            <th class="px-4 py-3 text-start border border-gray-200 dark:border-gray-700">
+              <p class="font-medium text-gray-800 text-theme-xs dark:text-gray-200">{{ t('common.toggle') }}</p>
             </th>
-            <th class="px-4 py-3 text-start border border-gray-100 dark:border-gray-800">
-              <p class="font-medium text-gray-700 text-theme-xs dark:text-gray-400">{{ t('common.action') }}</p>
+            <th class="px-4 py-3 text-start border border-gray-200 dark:border-gray-700">
+              <p class="font-medium text-gray-800 text-theme-xs dark:text-gray-200">{{ t('common.action') }}</p>
             </th>
           </tr>
         </thead>
@@ -190,9 +190,9 @@
             :key="category.id"
             :class="{ 'bg-gray-50 dark:bg-gray-900': category.selected }"
           >
-            <td class="px-4 py-3 border border-gray-100 dark:border-gray-800">
+            <td class="px-4 py-3 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
               <label
-                class="flex items-center text-sm font-medium text-gray-700 cursor-pointer select-none dark:text-gray-400"
+                class="flex items-center text-sm font-medium text-gray-800 cursor-pointer select-none dark:text-gray-200"
               >
                 <span class="relative">
                   <input
@@ -230,10 +230,10 @@
                 </span>
               </label>
             </td>
-            <td class="px-4 py-3 border border-gray-100 dark:border-gray-800">
-              <p class="text-gray-700 text-theme-sm dark:text-gray-400">{{ category.name }}</p>
+            <td class="px-4 py-3 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              <p class="text-gray-800 text-theme-sm dark:text-gray-200">{{ category.name }}</p>
             </td>
-            <td class="px-4 py-3 border border-gray-100 dark:border-gray-800">
+            <td class="px-4 py-3 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
               <div class="flex items-center justify-center">
                 <div v-if="category.icon_url" class="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
                   <img :src="category.icon_url" :alt="category.name" class="h-6 w-6 object-contain" />
@@ -245,10 +245,10 @@
                 </div>
               </div>
             </td>
-            <td class="px-4 py-3 border border-gray-100 dark:border-gray-800">
-              <p class="text-gray-700 text-theme-sm dark:text-gray-400">{{ category.slug }}</p>
+            <td class="px-4 py-3 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+              <p class="text-gray-800 text-theme-sm dark:text-gray-200">{{ category.slug }}</p>
             </td>
-            <td class="px-4 py-3 border border-gray-100 dark:border-gray-800">
+            <td class="px-4 py-3 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
               <span
                 class="inline-flex items-center justify-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium"
                 :class="{
@@ -259,7 +259,7 @@
                 {{ category.is_active ? t('common.active') : t('common.inactive') }}
               </span>
             </td>
-            <td class="px-4 py-3 border border-gray-100 dark:border-gray-800">
+            <td class="px-4 py-3 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
               <label :for="'toggle-' + category.id" class="cursor-pointer">
                 <div class="relative">
                   <input
@@ -280,7 +280,7 @@
                 </div>
               </label>
             </td>
-            <td class="px-4 py-3 border border-gray-100 dark:border-gray-800">
+            <td class="px-4 py-3 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
               <div class="flex items-center w-full gap-2">
                 <Tooltip :text="t('messages.notAuthorized')" :show="!canView">
                   <button
@@ -322,11 +322,11 @@
     </div>
 
     <div
-      class="border border-t-0 rounded-b-xl border-gray-100 py-4 pl-[18px] pr-4 dark:border-gray-800"
+      class="border border-t-0 rounded-b-xl border-gray-200 bg-white py-4 pl-[18px] pr-4 dark:border-gray-700 dark:bg-gray-800"
     >
       <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between">
         <p
-          class="pb-3 text-sm font-medium text-center text-gray-500 border-b border-gray-100 dark:border-gray-800 dark:text-gray-400 xl:border-b-0 xl:pb-0 xl:text-left"
+          class="pb-3 text-sm font-medium text-center text-gray-700 border-b border-gray-200 dark:border-gray-600 dark:text-gray-300 xl:border-b-0 xl:pb-0 xl:text-left"
         >
           {{ t('datatable.showing', { start: startEntry, end: endEntry, total: totalEntries }) }}
         </p>
@@ -408,7 +408,6 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { router } from '@inertiajs/vue3'
-import { route } from '@/route'
 import { useI18n } from 'vue-i18n'
 import Tooltip from '@/Components/ui/Tooltip.vue'
 import DangerAlert from '@/Components/modals/DangerAlert.vue'

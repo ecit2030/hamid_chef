@@ -98,10 +98,10 @@
                 </h5>
                 <div class="flex items-center gap-4">
                   <div class="relative w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800 flex items-center justify-center avatar-preview">
-                    <img 
+                    <img
                       ref="avatarPreview"
-                      :src="avatarPreviewUrl || (user?.avatar && rawUser?.avatar ? `/storage/${rawUser.avatar}` : '/images/user/owner.jpg')" 
-                      alt="User" 
+                      :src="avatarPreviewUrl || (user?.avatar && rawUser?.avatar ? `/storage/${rawUser.avatar}` : '/images/user/owner.jpg')"
+                      alt="User"
                       class="w-full h-full object-cover object-center"
                       :key="rawUser?.avatar || avatarPreviewUrl || 'default'"
                     />
@@ -238,7 +238,6 @@ import { ref, computed, watch } from 'vue'
 import Modal from './Modal.vue'
 import { useI18n } from 'vue-i18n'
 import { usePage, useForm, router } from '@inertiajs/vue3'
-import { route } from '@/route'
 
 const { t } = useI18n()
 const page = usePage()
@@ -326,7 +325,7 @@ const handleAvatarChange = (event) => {
 
   // Update form with the file (don't save yet, wait for save button)
   form.avatar = file
-  
+
   // Create preview URL for the selected image
   const reader = new FileReader()
   reader.onload = (e) => {
@@ -340,7 +339,7 @@ const saveProfile = () => {
   const nameParts = form.name.trim().split(' ')
   const firstName = nameParts[0] || ''
   const lastName = nameParts.slice(1).join(' ') || ''
-  
+
   const updateData = {
     first_name: firstName,
     last_name: lastName,
@@ -350,7 +349,7 @@ const saveProfile = () => {
     address: form.address,
     avatar: form.avatar,
   }
-  
+
   // Use patch method directly, and forceFormData if avatar exists
   const options = {
     preserveScroll: true,
@@ -367,12 +366,12 @@ const saveProfile = () => {
       console.error('Profile update errors:', errors)
     },
   }
-  
+
   // If avatar exists, use forceFormData
   if (form.avatar) {
     options.forceFormData = true
   }
-  
+
   // Use direct URL to avoid routing issues
   form.transform(() => updateData).patch('/profile', options)
 }

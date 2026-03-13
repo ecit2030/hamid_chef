@@ -12,6 +12,9 @@
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
           {{ title }}
         </h1>
+          <div>
+              {{ currentUrl ?? 'ds' }}
+          </div>
         <p class="text-xl text-white/90 mb-8 leading-relaxed">
           {{ description }}
         </p>
@@ -48,6 +51,7 @@
 
 <script setup>
 import { computed } from 'vue'
+const currentUrl = window.location.origin
 
 const props = defineProps({
   section: { type: Object, default: () => ({}) },

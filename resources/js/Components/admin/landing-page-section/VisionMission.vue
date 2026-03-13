@@ -1,13 +1,13 @@
 <template>
   <div class="p-6">
     <!-- Vision / Mission / Values Section -->
-    <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
       <div class="flex items-center justify-between mb-6">
         <div>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
             {{ t('landingSections.visionMissionValues') }}
           </h3>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">
             {{ t('landingSections.visionMissionDescription') }}
           </p>
         </div>
@@ -17,14 +17,14 @@
         <div
           v-for="(item, index) in items"
           :key="item.key || index"
-          class="space-y-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 shadow-sm"
+          class="space-y-4 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl p-5 shadow-sm"
         >
           <!-- Item Header with Icon -->
-          <div class="flex items-center gap-3 pb-3 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex items-center gap-3 pb-3 border-b border-gray-200 dark:border-gray-600">
             <div class="w-10 h-10 rounded-lg flex items-center justify-center" :class="getItemColor(item.key)">
               <component :is="getItemIcon(item.key)" class="w-5 h-5 text-white" />
             </div>
-            <span class="text-base font-bold text-gray-800 dark:text-white">
+            <span class="text-base font-bold text-gray-900 dark:text-gray-100">
               {{ getItemLabel(item.key) }}
             </span>
           </div>
@@ -32,53 +32,53 @@
           <div class="space-y-3">
             <!-- Title Arabic -->
             <div>
-              <label class="mb-1.5 block text-xs font-medium text-gray-600 dark:text-gray-400">
+              <label class="mb-1.5 block text-xs font-medium text-gray-800 dark:text-gray-200">
                 {{ t('common.titleAr') }}
               </label>
               <input 
                 v-model="item.title_ar" 
                 type="text" 
                 :placeholder="getItemPlaceholder(item.key, 'title', 'ar')"
-                class="h-10 w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 text-sm text-gray-800 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" 
+                class="h-10 w-full rounded-lg border border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-800 px-3 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" 
               />
             </div>
             
             <!-- Title English -->
             <div>
-              <label class="mb-1.5 block text-xs font-medium text-gray-600 dark:text-gray-400">
+              <label class="mb-1.5 block text-xs font-medium text-gray-800 dark:text-gray-200">
                 {{ t('common.titleEn') }}
               </label>
               <input 
                 v-model="item.title_en" 
                 type="text" 
                 :placeholder="getItemPlaceholder(item.key, 'title', 'en')"
-                class="h-10 w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 text-sm text-gray-800 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" 
+                class="h-10 w-full rounded-lg border border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-800 px-3 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" 
               />
             </div>
             
             <!-- Description Arabic -->
             <div>
-              <label class="mb-1.5 block text-xs font-medium text-gray-600 dark:text-gray-400">
+              <label class="mb-1.5 block text-xs font-medium text-gray-800 dark:text-gray-200">
                 {{ t('common.descriptionAr') }}
               </label>
               <textarea 
                 v-model="item.description_ar" 
                 rows="3" 
                 :placeholder="getItemPlaceholder(item.key, 'description', 'ar')"
-                class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-800 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
+                class="w-full rounded-lg border border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
               ></textarea>
             </div>
             
             <!-- Description English -->
             <div>
-              <label class="mb-1.5 block text-xs font-medium text-gray-600 dark:text-gray-400">
+              <label class="mb-1.5 block text-xs font-medium text-gray-800 dark:text-gray-200">
                 {{ t('common.descriptionEn') }}
               </label>
               <textarea 
                 v-model="item.description_en" 
                 rows="3" 
                 :placeholder="getItemPlaceholder(item.key, 'description', 'en')"
-                class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-800 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
+                class="w-full rounded-lg border border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
               ></textarea>
             </div>
           </div>
@@ -86,12 +86,12 @@
       </div>
 
       <!-- Save Button -->
-      <div class="flex justify-end pt-6 mt-6 border-t border-gray-200 dark:border-gray-700">
+      <div class="flex justify-end pt-6 mt-6 border-t border-gray-200 dark:border-gray-600">
         <button
           type="button"
           :disabled="saving"
           @click="saveItems"
-          class="btn-primary inline-flex items-center justify-center gap-2 rounded-lg px-6 py-2.5 text-sm font-medium transition disabled:opacity-50"
+          class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-white transition hover:bg-primary/90 disabled:opacity-50"
         >
           <svg v-if="!saving" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />

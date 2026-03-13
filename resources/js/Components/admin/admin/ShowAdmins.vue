@@ -599,7 +599,6 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { Link, router } from '@inertiajs/vue3'
-import { route } from '@/route'
 import { useI18n } from 'vue-i18n'
 import { UserCircleIcon } from '@/icons'
 import Tooltip from '@/Components/ui/Tooltip.vue'

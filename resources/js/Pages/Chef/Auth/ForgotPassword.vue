@@ -94,7 +94,6 @@
 
 <script setup lang="ts">
 import { Link, useForm } from '@inertiajs/vue3'
-import { route } from '@/route'
 import CommonGridShape from '@/Components/common/CommonGridShape.vue'
 import FullScreenLayout from '@/Components/layout/FullScreenLayout.vue'
 import { useI18n } from 'vue-i18n'

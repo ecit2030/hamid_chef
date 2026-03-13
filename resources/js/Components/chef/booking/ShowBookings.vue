@@ -569,7 +569,6 @@
 <script setup>
 import { ref, computed, watch, onMounted, nextTick } from "vue";
 import { router } from "@inertiajs/vue3";
-import { route } from "@/route";
 import { useI18n } from "vue-i18n";
 import RejectionReasonModal from "@/Components/modals/RejectionReasonModal.vue";
 import Badge from "@/Components/ui/Badge.vue";

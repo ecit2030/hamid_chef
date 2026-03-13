@@ -1,25 +1,25 @@
 <template>
   <div class="p-6">
     <!-- Testimonials Section -->
-    <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
       <div class="flex items-center justify-between mb-6">
         <div>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
             {{ t('landingSections.testimonials', 'آراء العملاء') }}
           </h3>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p class="text-sm text-gray-700 dark:text-gray-300 mt-1">
             {{ t('landingSections.testimonialsDescription', 'إدارة آراء العملاء المعروضة في الصفحة الرئيسية') }}
           </p>
         </div>
         <button
           @click="addTestimonial"
           type="button"
-          class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+          class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition hover:bg-primary/90 focus:ring-2 focus:ring-primary/20"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
           </svg>
-          {{ t('common.add', 'إضافة') }}
+          {{ t('common.add', 'إضافة رأي') }}
         </button>
       </div>
 
@@ -28,11 +28,11 @@
         <div
           v-for="(testimonial, index) in testimonials"
           :key="index"
-          class="space-y-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 shadow-sm"
+          class="space-y-4 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl p-5 shadow-sm"
         >
           <!-- Header with Delete -->
-          <div class="flex items-center justify-between pb-3 border-b border-gray-200 dark:border-gray-700">
-            <span class="text-sm font-bold text-gray-800 dark:text-white">
+          <div class="flex items-center justify-between pb-3 border-b border-gray-200 dark:border-gray-600">
+            <span class="text-sm font-bold text-gray-900 dark:text-gray-100">
               {{ t('landingSections.testimonialNumber', 'رأي') }} #{{ index + 1 }}
             </span>
             <button
@@ -47,95 +47,43 @@
           </div>
 
           <div class="space-y-3">
-            <!-- Name Arabic -->
+            <!-- Rating -->
             <div>
-              <label class="mb-1.5 block text-xs font-medium text-gray-600 dark:text-gray-400">
-                {{ t('common.nameAr', 'الاسم (عربي)') }}
+              <label class="mb-1.5 block text-xs font-medium text-gray-800 dark:text-gray-200">
+                {{ t('common.rating', 'التقييم (نجوم)') }}
               </label>
-              <input 
-                v-model="testimonial.name_ar" 
-                type="text" 
-                placeholder="د. أحمد محمد"
-                class="h-10 w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 text-sm text-gray-800 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" 
-              />
+              <select
+                v-model.number="testimonial.rating"
+                class="h-10 w-full rounded-lg border border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-800 px-3 text-sm text-gray-900 dark:text-gray-100 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+              >
+                <option v-for="n in 5" :key="n" :value="n">{{ n }} {{ t('common.stars', 'نجوم') }}</option>
+              </select>
             </div>
-            
-            <!-- Name English -->
-            <div>
-              <label class="mb-1.5 block text-xs font-medium text-gray-600 dark:text-gray-400">
-                {{ t('common.nameEn', 'الاسم (إنجليزي)') }}
-              </label>
-              <input 
-                v-model="testimonial.name_en" 
-                type="text" 
-                placeholder="Dr. Ahmed Mohammed"
-                class="h-10 w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 text-sm text-gray-800 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" 
-              />
-            </div>
-            
-            <!-- Role Arabic -->
-            <div>
-              <label class="mb-1.5 block text-xs font-medium text-gray-600 dark:text-gray-400">
-                {{ t('common.roleAr', 'المنصب (عربي)') }}
-              </label>
-              <input 
-                v-model="testimonial.role_ar" 
-                type="text" 
-                placeholder="مدير مستشفى"
-                class="h-10 w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 text-sm text-gray-800 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" 
-              />
-            </div>
-            
-            <!-- Role English -->
-            <div>
-              <label class="mb-1.5 block text-xs font-medium text-gray-600 dark:text-gray-400">
-                {{ t('common.roleEn', 'المنصب (إنجليزي)') }}
-              </label>
-              <input 
-                v-model="testimonial.role_en" 
-                type="text" 
-                placeholder="Hospital Director"
-                class="h-10 w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 text-sm text-gray-800 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" 
-              />
-            </div>
-            
+
             <!-- Content Arabic -->
             <div>
-              <label class="mb-1.5 block text-xs font-medium text-gray-600 dark:text-gray-400">
-                {{ t('common.contentAr', 'المحتوى (عربي)') }}
+              <label class="mb-1.5 block text-xs font-medium text-gray-800 dark:text-gray-200">
+                {{ t('common.contentAr', 'التعليق (عربي)') }}
               </label>
               <textarea 
                 v-model="testimonial.content_ar" 
                 rows="3" 
                 placeholder="منصة رائعة..."
-                class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-800 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
+                class="w-full rounded-lg border border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
               ></textarea>
             </div>
             
             <!-- Content English -->
             <div>
-              <label class="mb-1.5 block text-xs font-medium text-gray-600 dark:text-gray-400">
-                {{ t('common.contentEn', 'المحتوى (إنجليزي)') }}
+              <label class="mb-1.5 block text-xs font-medium text-gray-800 dark:text-gray-200">
+                {{ t('common.contentEn', 'التعليق (إنجليزي)') }}
               </label>
               <textarea 
                 v-model="testimonial.content_en" 
                 rows="3" 
                 placeholder="Amazing platform..."
-                class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-800 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
+                class="w-full rounded-lg border border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
               ></textarea>
-            </div>
-            
-            <!-- Avatar URL -->
-            <div>
-              <label class="mb-1.5 block text-xs font-medium text-gray-600 dark:text-gray-400">
-                {{ t('common.avatarUrl', 'رابط الصورة') }}
-              </label>
-              <input 
-                v-model="testimonial.avatar" 
-                type="text" 
-                placeholder="https://..."
-                class="h-10 w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 text-sm text-gray-800 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" 
-              />
             </div>
           </div>
         </div>
@@ -144,18 +92,18 @@
       <!-- Empty State -->
       <div
         v-if="testimonials.length === 0"
-        class="text-center py-12 bg-white dark:bg-gray-800 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600"
+        class="text-center py-12 bg-gray-50 dark:bg-gray-700 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600"
       >
-        <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-16 h-16 mx-auto text-gray-500 dark:text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
         </svg>
-        <p class="text-gray-600 dark:text-white mb-4">
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
           {{ t('landingSections.noTestimonials', 'لا توجد آراء بعد') }}
         </p>
         <button
           @click="addTestimonial"
           type="button"
-          class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+          class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white transition hover:bg-primary/90 focus:ring-2 focus:ring-primary/20"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -164,13 +112,27 @@
         </button>
       </div>
 
+      <!-- Add another (when there are testimonials) -->
+      <div v-else class="flex justify-center pt-4">
+        <button
+          @click="addTestimonial"
+          type="button"
+          class="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-primary px-4 py-2.5 text-sm font-medium text-primary transition hover:bg-primary/10 focus:ring-2 focus:ring-primary/20"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          {{ t('common.add', 'إضافة رأي') }}
+        </button>
+      </div>
+
       <!-- Save Button -->
-      <div class="flex justify-end pt-6 mt-6 border-t border-gray-200 dark:border-gray-700">
+      <div class="flex justify-end pt-6 mt-6 border-t border-gray-200 dark:border-gray-600">
         <button
           type="button"
           :disabled="saving"
           @click="saveTestimonials"
-          class="btn-primary inline-flex items-center justify-center gap-2 rounded-lg px-6 py-2.5 text-sm font-medium transition disabled:opacity-50"
+          class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-white transition hover:bg-primary/90 focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
         >
           <svg v-if="!saving" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -206,10 +168,15 @@ const emit = defineEmits(['refresh'])
 const testimonials = ref([])
 const saving = ref(false)
 
-// Load testimonials from section
+// Load testimonials from section (normalize to rating + comment only)
 watch(() => props.section, (newSection) => {
   if (newSection?.additional_data?.items) {
-    testimonials.value = JSON.parse(JSON.stringify(newSection.additional_data.items))
+    const raw = newSection.additional_data.items
+    testimonials.value = raw.map((t) => ({
+      content_ar: t.content_ar ?? t.comment_ar ?? '',
+      content_en: t.content_en ?? t.comment_en ?? '',
+      rating: t.rating ?? 5
+    }))
   } else {
     testimonials.value = []
   }
@@ -217,13 +184,9 @@ watch(() => props.section, (newSection) => {
 
 const addTestimonial = () => {
   testimonials.value.push({
-    name_ar: '',
-    name_en: '',
-    role_ar: '',
-    role_en: '',
     content_ar: '',
     content_en: '',
-    avatar: ''
+    rating: 5
   })
 }
 
