@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Services\PermissionsSyncService;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRoleRequest extends FormRequest
@@ -9,6 +10,11 @@ class StoreRoleRequest extends FormRequest
     public function authorize(): bool
     {
         return true; // للسماح مؤقتًا
+    }
+
+    protected function prepareForValidation(): void
+    {
+        PermissionsSyncService::syncFromConfig();
     }
 
     public function rules(): array

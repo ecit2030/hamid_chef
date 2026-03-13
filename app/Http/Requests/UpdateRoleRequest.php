@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Services\PermissionsSyncService;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -10,6 +11,11 @@ class UpdateRoleRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    protected function prepareForValidation(): void
+    {
+        PermissionsSyncService::syncFromConfig();
     }
 
     public function rules(): array
