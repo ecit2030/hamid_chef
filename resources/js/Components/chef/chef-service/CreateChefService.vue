@@ -204,6 +204,7 @@ function create() {
   form.post(route('chef.services.store'), {
     onSuccess: () => success(t('chef_services.serviceCreatedSuccessfully')),
     onError: () => error(t('chef_services.serviceCreationFailed')),
+    forceFormData: true,
   })
 }
 </script>

@@ -220,6 +220,7 @@ function update() {
 		onSuccess: () => success(t('chef_services.serviceUpdatedSuccessfully')),
 		onError: () => error(t('chef_services.serviceUpdateFailed')),
 		preserveScroll: true,
+		forceFormData: true,
 	})
 }
 </script>

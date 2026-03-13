@@ -32,8 +32,7 @@
         <div 
           v-for="(image, index) in images" 
           :key="image.id || index"
-          class="relative rounded-xl overflow-hidden bg-gray-50 dark:bg-gray-800 cursor-pointer shadow-sm border border-gray-200 dark:border-gray-700"
-          @click="openLightbox(index)"
+          class="relative rounded-xl overflow-hidden bg-gray-50 dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700"
         >
           <div class="aspect-square relative">
             <img 
@@ -44,11 +43,7 @@
               @load="onImageLoad"
               @error="onImageError"
             />
-
           </div>
-          
-
-          
           <!-- Image number indicator -->
           <div class="absolute top-3 left-3 bg-black/60 text-white text-sm font-medium px-2 py-1 rounded-full">
             {{ index + 1 }} / {{ images.length }}
@@ -56,60 +51,10 @@
         </div>
       </div>
     </div>
-
-    <!-- Lightbox Modal -->
-    <Teleport to="body">
-      <div 
-        v-if="lightboxOpen" 
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90"
-        @click="closeLightbox"
-      >
-          <button 
-            @click.stop="closeLightbox"
-            class="absolute top-4 right-4 text-white z-10"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-
-          <button 
-            v-if="currentIndex > 0"
-            @click.stop="previousImage"
-            class="absolute left-4 text-white z-10"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-
-          <div class="max-w-7xl max-h-screen p-4" @click.stop>
-            <img 
-              :src="getImageUrl(images[currentIndex].image)" 
-              :alt="`Gallery image ${currentIndex + 1}`"
-              class="max-w-full max-h-[90vh] object-contain mx-auto"
-            />
-            <div class="text-center text-white mt-4">
-              {{ currentIndex + 1 }} / {{ images.length }}
-            </div>
-          </div>
-
-          <button 
-            v-if="currentIndex < images.length - 1"
-            @click.stop="nextImage"
-            class="absolute right-4 text-white z-10"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-      </div>
-    </Teleport>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
@@ -133,51 +78,12 @@ const props = defineProps({
 
 const { t } = useI18n()
 
-const lightboxOpen = ref(false)
-const currentIndex = ref(0)
-
 function getImageUrl(imagePath) {
   if (!imagePath) return ''
   if (imagePath.startsWith('http')) {
     return imagePath
   }
   return `/storage/${imagePath}`
-}
-
-function openLightbox(index) {
-  currentIndex.value = index
-  lightboxOpen.value = true
-  document.body.style.overflow = 'hidden'
-}
-
-function closeLightbox() {
-  lightboxOpen.value = false
-  document.body.style.overflow = ''
-}
-
-function nextImage() {
-  if (currentIndex.value < props.images.length - 1) {
-    currentIndex.value++
-  }
-}
-
-function previousImage() {
-  if (currentIndex.value > 0) {
-    currentIndex.value--
-  }
-}
-
-// Keyboard navigation
-function handleKeydown(event) {
-  if (!lightboxOpen.value) return
-  
-  if (event.key === 'Escape') {
-    closeLightbox()
-  } else if (event.key === 'ArrowRight') {
-    nextImage()
-  } else if (event.key === 'ArrowLeft') {
-    previousImage()
-  }
 }
 
 function onImageLoad(event) {
@@ -187,11 +93,6 @@ function onImageLoad(event) {
 function onImageError(event) {
   event.target.style.opacity = '0.5'
   console.warn('Failed to load image:', event.target.src)
-}
-
-// Add keyboard event listener
-if (typeof window !== 'undefined') {
-  window.addEventListener('keydown', handleKeydown)
 }
 </script>
 

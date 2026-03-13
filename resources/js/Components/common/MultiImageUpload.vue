@@ -63,6 +63,7 @@
                 :src="getPreviewUrl(file)" 
                 :alt="`Preview ${index + 1}`" 
                 class="w-full h-full object-cover"
+                loading="lazy"
               />
 
             </div>
@@ -124,7 +125,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onBeforeUnmount } from 'vue'
+import { ref, computed, watch, onBeforeUnmount, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
@@ -232,7 +233,7 @@ function validateFiles(files) {
   return errors
 }
 
-function addFiles(files) {
+async function addFiles(files) {
   const fileArray = Array.from(files)
   const errors = validateFiles(fileArray)
   
@@ -249,6 +250,8 @@ function addFiles(files) {
   const validFiles = fileArray.filter(file => validateFile(file).length === 0)
   selectedFiles.value.push(...validFiles)
   
+  // Defer heavy operations to prevent UI freeze
+  await nextTick()
   updatePreviewUrls()
   updateModelValue()
   

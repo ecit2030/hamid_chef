@@ -232,6 +232,9 @@ function toggleImageDeletion(image) {
 }
 
 function getImageUrl(imagePath) {
+  if (!imagePath || typeof imagePath !== 'string') {
+    return ''
+  }
   if (imagePath.startsWith('http')) {
     return imagePath
   }
