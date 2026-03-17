@@ -54,18 +54,18 @@
             </div>
           </div>
 
-          <div class="flex gap-3 pt-4">
-            <a
-              v-for="s in socialLinks"
-              :key="s.platform"
-              :href="s.url"
-              target="_blank"
-              rel="noopener"
-              class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#CBE4F8] hover:text-[#083064] transition-all text-white"
-            >
-              <span class="text-lg">{{ getSocialIcon(s.platform) }}</span>
-            </a>
-          </div>
+        <div class="flex gap-3 pt-4">
+          <a
+            v-for="s in socialLinks"
+            :key="s.platform"
+            :href="s.url"
+            target="_blank"
+            rel="noopener"
+            class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#CBE4F8] hover:text-[#083064] transition-all text-white"
+          >
+            <component :is="getSocialIconComponent(s.platform)" class="w-5 h-5" />
+          </a>
+        </div>
         </div>
 
         <div class="lg:col-span-3">
@@ -153,13 +153,18 @@ const title = computed(() => props.currentLang === 'ar' ? props.section?.title_a
 const description = computed(() => props.currentLang === 'ar' ? props.section?.description_ar : props.section?.description_en)
 const contact = computed(() => ({
   email: props.section?.additional_data?.email ?? 'info@monchef.com',
-  phone: props.section?.additional_data?.phone ?? '+967 777 777 777',
-  address_ar: props.section?.additional_data?.address_ar ?? 'صنعاء، اليمن',
-  address_en: props.section?.additional_data?.address_en ?? "Sana'a, Yemen",
-  working_hours_ar: props.section?.additional_data?.working_hours_ar ?? 'السبت - الخميس: 9:00 ص - 9:00 م',
-  working_hours_en: props.section?.additional_data?.working_hours_en ?? 'Saturday - Thursday: 9:00 AM - 9:00 PM',
+  phone: props.section?.additional_data?.phone ?? '0582800034',
+  address_ar: props.section?.additional_data?.address_ar ?? 'الرياض، المملكة العربية السعودية',
+  address_en: props.section?.additional_data?.address_en ?? 'Riyadh, Saudi Arabia',
+  working_hours_ar: props.section?.additional_data?.working_hours_ar ?? 'من 9 صباحاً حتى 5 مساءً',
+  working_hours_en: props.section?.additional_data?.working_hours_en ?? 'From 9 AM to 5 PM',
 }))
-const socialLinks = computed(() => props.section?.additional_data?.social_links ?? [])
+const socialLinks = computed(() => props.section?.additional_data?.social_links ?? [
+  { platform: 'facebook', url: '#' },
+  { platform: 'x', url: '#' },
+  { platform: 'instagram', url: '#' },
+  { platform: 'whatsapp', url: 'https://wa.me/0582800034' },
+])
 
 const form = ref({
   name: '',
@@ -171,9 +176,51 @@ const formLoading = ref(false)
 const formSuccess = ref(false)
 const formError = ref('')
 
-function getSocialIcon(platform) {
-  const icons = { facebook: 'f', instagram: '📷', twitter: '𝕏', whatsapp: '💬' }
-  return icons[platform] ?? '•'
+const IconFacebook = {
+  render() {
+    return h('svg', { class: 'w-5 h-5', fill: 'currentColor', viewBox: '0 0 24 24' }, [
+      h('path', { d: 'M22 12a10 10 0 1 0-11.5 9.87v-6.99H8v-2.88h2.5V9.41c0-2.46 1.47-3.82 3.72-3.82 1.08 0 2.22.19 2.22.19v2.44h-1.25c-1.23 0-1.61.77-1.61 1.56v1.87H18l-.4 2.88h-2.54v6.99A10 10 0 0 0 22 12Z' })
+    ])
+  },
+}
+
+const IconX = {
+  render() {
+    return h('svg', { class: 'w-5 h-5', fill: 'currentColor', viewBox: '0 0 24 24' }, [
+      h('path', { d: 'M18.9 3H21l-4.6 5.26L21.7 21h-4.2l-3.1-7.5L9.6 21H3l4.9-5.62L2.5 3H7l2.8 6.7L18.9 3Z' })
+    ])
+  },
+}
+
+const IconInstagram = {
+  render() {
+    return h('svg', { class: 'w-5 h-5', fill: 'currentColor', viewBox: '0 0 24 24' }, [
+      h('path', {
+        d: 'M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm0 2h10c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3zm10 1a1 1 0 100 2 1 1 0 000-2zM12 7a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6z',
+      }),
+    ])
+  },
+}
+
+const IconWhatsapp = {
+  render() {
+    return h('svg', { class: 'w-5 h-5', fill: 'currentColor', viewBox: '0 0 24 24' }, [
+      h('path', {
+        d: 'M20 4.5A9.8 9.8 0 0012.2 2 10 10 0 002 12.3 9.85 9.85 0 003.7 18L2 22l4.2-1.6A10.2 10.2 0 0012.3 22 10 10 0 0022 11.8 9.8 9.8 0 0020 4.5zm-7.7 15.1a8.3 8.3 0 01-4.2-1.2l-.3-.2-2.5.9.9-2.4-.2-.3a8.1 8.1 0 01-1.2-4.3 8.2 8.2 0 018.3-8.1 8.1 8.1 0 018.1 8.2 8.2 8.2 0 01-8.1 8.1zm4.5-6c-.2-.1-1.3-.6-1.5-.7s-.4-.1-.6.1-.7.7-.8.8-.3.2-.5.1a6.9 6.9 0 01-2-1.2 7.4 7.4 0 01-1.4-1.8c-.1-.2 0-.4.1-.5l.4-.5c.1-.2.1-.3.2-.4a.44.44 0 000-.4C11 9 10.4 7.7 10.2 7.2s-.4-.5-.6-.5h-.5a1 1 0 00-.7.3 2.9 2.9 0 00-.9 2.1 5 5 0 001 2.6 11.5 11.5 0 004.4 4 5 5 0 003.1 1h.6a2.6 2.6 0 001.8-1.2 2.1 2.1 0 00.1-1.1c-.1-.1-.2-.2-.4-.3z',
+      }),
+    ])
+  },
+}
+
+function getSocialIconComponent(platform) {
+  const map = {
+    facebook: IconFacebook,
+    x: IconX,
+    twitter: IconX,
+    instagram: IconInstagram,
+    whatsapp: IconWhatsapp,
+  }
+  return map[platform] ?? IconFacebook
 }
 
 function getCsrfToken() {

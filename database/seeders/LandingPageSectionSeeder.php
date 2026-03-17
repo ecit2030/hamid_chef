@@ -484,7 +484,7 @@ class LandingPageSectionSeeder extends Seeder
                 'is_active' => true,
                 'additional_data' => [
                     'email' => 'info@moonchef.com',
-                    'phone' => '+967 777 777 777',
+                    'phone' => '0582800034',
                     'address_ar' => 'صنعاء، اليمن',
                     'address_en' => 'Sana\'a, Yemen',
                     'working_hours_ar' => 'السبت - الخميس: 9:00 ص - 9:00 م',
