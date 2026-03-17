@@ -45,7 +45,7 @@
                 <tr>
                     <td style="padding:14px 18px;text-align:center;color:#7b8694;font-size:13px;background:transparent;">
                         <div style="max-width:700px;margin:0 auto;">
-                            <div style="padding:12px 0;color:#7b8694;">© {{ date('Y') }} Moon Chef. جميع الحقوق محفوظة.</div>
+                            <div style="padding:12px 0;color:#7b8694;">© {{ date('Y') }} Mon Chef. جميع الحقوق محفوظة.</div>
                         </div>
                     </td>
                 </tr>

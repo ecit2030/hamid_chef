@@ -54,7 +54,7 @@ class LandingPageSectionSeeder extends Seeder
             [
                 'section_key' => 'features',
                 'title_ar' => 'لماذا مون شيف؟',
-                'title_en' => 'Why Moon Chef?',
+                'title_en' => 'Why Mon Chef?',
                 'description_ar' => 'نقدم لك تجربة فريدة تجمع بين الجودة والراحة والاحترافية',
                 'description_en' => 'We offer you a unique experience combining quality, comfort, and professionalism',
                 'display_order' => 1,
@@ -111,7 +111,7 @@ class LandingPageSectionSeeder extends Seeder
             [
                 'section_key' => 'how_it_works',
                 'title_ar' => 'كيف يعمل مون شيف؟',
-                'title_en' => 'How Does Moon Chef Work?',
+                'title_en' => 'How Does Mon Chef Work?',
                 'description_ar' => 'احجز طاهيك في 3 خطوات بسيطة',
                 'description_en' => 'Book your chef in 3 simple steps',
                 'display_order' => 2,
@@ -200,7 +200,7 @@ class LandingPageSectionSeeder extends Seeder
                             'name_en' => 'Fatima Ali',
                             'rating' => 5,
                             'comment_ar' => 'خدمة ممتازة وسهولة في الحجز. أنصح الجميع بتجربة مون شيف',
-                            'comment_en' => 'Excellent service and easy booking. I recommend everyone to try Moon Chef',
+                            'comment_en' => 'Excellent service and easy booking. I recommend everyone to try Mon Chef',
                             'avatar' => 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150'
                         ],
                         [
@@ -221,12 +221,12 @@ class LandingPageSectionSeeder extends Seeder
                 'title_ar' => 'من نحن',
                 'title_en' => 'About Us',
                 'description_ar' => 'مون شيف هي منصة يمنية رائدة تهدف إلى تحويل تجربة الطعام في المنازل من خلال ربط الطهاة المحترفين بالعملاء الباحثين عن تجربة طهي فريدة واحترافية',
-                'description_en' => 'Moon Chef is a leading Yemeni platform aimed at transforming the home dining experience by connecting professional chefs with customers seeking a unique and professional cooking experience',
+                'description_en' => 'Mon Chef is a leading Yemeni platform aimed at transforming the home dining experience by connecting professional chefs with customers seeking a unique and professional cooking experience',
                 'display_order' => 11,
                 'is_active' => true,
                 'additional_data' => [
                     'story_ar' => 'بدأت فكرة مون شيف من رغبتنا في جعل تجربة الطعام الفاخر متاحة للجميع في منازلهم. نؤمن بأن كل مناسبة تستحق طعاماً استثنائياً، ولهذا قمنا بإنشاء منصة تجمع أفضل الطهاة المحترفين في مكان واحد.',
-                    'story_en' => 'The idea of Moon Chef started from our desire to make fine dining accessible to everyone in their homes. We believe every occasion deserves exceptional food, which is why we created a platform that brings together the best professional chefs in one place.',
+                    'story_en' => 'The idea of Mon Chef started from our desire to make fine dining accessible to everyone in their homes. We believe every occasion deserves exceptional food, which is why we created a platform that brings together the best professional chefs in one place.',
                     'values' => [
                         [
                             'title_ar' => 'الجودة',
@@ -307,7 +307,7 @@ class LandingPageSectionSeeder extends Seeder
             [
                 'section_key' => 'why_us',
                 'title_ar' => 'لماذا تختار مون شيف؟',
-                'title_en' => 'Why Choose Moon Chef?',
+                'title_en' => 'Why Choose Mon Chef?',
                 'description_ar' => 'نقدم لك مزايا فريدة تجعلنا الخيار الأمثل لتجربة طهي استثنائية',
                 'description_en' => 'We offer you unique advantages that make us the best choice for an exceptional cooking experience',
                 'display_order' => 13,

@@ -63,7 +63,7 @@
       </div>
 
       <div class="border-t border-white/20 mt-12 pt-8 text-center text-white/80 text-sm">
-        © {{ new Date().getFullYear() }} {{ currentLang === 'ar' ? 'مون شيف - جميع الحقوق محفوظة' : 'Moon Chef - All Rights Reserved' }}
+        © {{ new Date().getFullYear() }} {{ currentLang === 'ar' ? 'مون شيف - جميع الحقوق محفوظة' : 'Mon Chef - All Rights Reserved' }}
       </div>
     </div>
   </footer>
