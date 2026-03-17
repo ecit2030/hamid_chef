@@ -96,16 +96,27 @@ const partnersToShow = computed(() => {
       .trim()
       .toLowerCase()
 
-  const seen = new Set()
-  const out = []
+  // Some data sources duplicate partners (e.g. same name repeated).
+  // For UI, dedupe by partner name only, and keep the richest description.
+  const byName = new Map()
   for (const p of partners.value) {
-    const key = `${normalize(partnerName(p))}__${normalize(partnerDescription(p))}`
-    if (!key || key === '__') continue
-    if (seen.has(key)) continue
-    seen.add(key)
-    out.push(p)
+    const nameKey = normalize(partnerName(p))
+    if (!nameKey) continue
+
+    const existing = byName.get(nameKey)
+    if (!existing) {
+      byName.set(nameKey, p)
+      continue
+    }
+
+    const existingDesc = normalize(partnerDescription(existing))
+    const nextDesc = normalize(partnerDescription(p))
+    if (nextDesc.length > existingDesc.length) {
+      byName.set(nameKey, p)
+    }
   }
-  return out
+
+  return Array.from(byName.values())
 })
 
 const getLogoUrl = (partner) => {
