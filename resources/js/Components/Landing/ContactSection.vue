@@ -141,7 +141,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, h } from 'vue'
 import { router } from '@inertiajs/vue3'
 
 const props = defineProps({
@@ -153,18 +153,40 @@ const title = computed(() => props.currentLang === 'ar' ? props.section?.title_a
 const description = computed(() => props.currentLang === 'ar' ? props.section?.description_ar : props.section?.description_en)
 const contact = computed(() => ({
   email: props.section?.additional_data?.email ?? 'info@monchef.com',
-  phone: props.section?.additional_data?.phone ?? '0582800034',
-  address_ar: props.section?.additional_data?.address_ar ?? 'الرياض، المملكة العربية السعودية',
-  address_en: props.section?.additional_data?.address_en ?? 'Riyadh, Saudi Arabia',
-  working_hours_ar: props.section?.additional_data?.working_hours_ar ?? 'من 9 صباحاً حتى 5 مساءً',
-  working_hours_en: props.section?.additional_data?.working_hours_en ?? 'From 9 AM to 5 PM',
+  // Force these values for consistent public landing UI
+  phone: '0582800034',
+  address_ar: 'الرياض، المملكة العربية السعودية',
+  address_en: 'Riyadh, Saudi Arabia',
+  working_hours_ar: 'من 9 صباحاً حتى 5 مساءً',
+  working_hours_en: 'Are from 9-5',
 }))
-const socialLinks = computed(() => props.section?.additional_data?.social_links ?? [
+
+const DEFAULT_SOCIAL_LINKS = [
   { platform: 'facebook', url: '#' },
   { platform: 'x', url: '#' },
   { platform: 'instagram', url: '#' },
   { platform: 'whatsapp', url: 'https://wa.me/0582800034' },
-])
+]
+
+const socialLinks = computed(() => {
+  const fromApi = Array.isArray(props.section?.additional_data?.social_links)
+    ? props.section.additional_data.social_links
+    : []
+
+  // Always render all icons; fill URLs from API when provided.
+  const byPlatform = new Map(
+    fromApi
+      .filter((s) => s && typeof s === 'object')
+      .map((s) => [String(s.platform ?? '').toLowerCase(), s.url])
+      .filter(([p, url]) => p && typeof url === 'string' && url.trim())
+  )
+
+  return DEFAULT_SOCIAL_LINKS.map((d) => {
+    const p = d.platform.toLowerCase()
+    const url = byPlatform.get(p) ?? d.url
+    return { platform: d.platform, url }
+  })
+})
 
 const form = ref({
   name: '',
