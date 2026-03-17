@@ -82,8 +82,14 @@ const OVERRIDE_EN_NAMES = [
 ]
 
 function testimonialName(t, index) {
-  if (props.currentLang === 'en' && index < OVERRIDE_EN_NAMES.length) {
-    return OVERRIDE_EN_NAMES[index]
+  // Use anonymous/fake names on the landing page (both languages)
+  const overrideIndex = index % OVERRIDE_EN_NAMES.length
+  if (props.currentLang === 'en') {
+    return OVERRIDE_EN_NAMES[overrideIndex]
+  }
+  if (props.currentLang === 'ar') {
+    const OVERRIDE_AR_NAMES = ['أحمد علي', 'فاطمة خالد', 'سارة محمد']
+    return OVERRIDE_AR_NAMES[overrideIndex]
   }
   return (props.currentLang === 'ar' ? (t?.name_ar ?? t?.name_en) : (t?.name_en ?? t?.name_ar) ?? '').trim()
 }
