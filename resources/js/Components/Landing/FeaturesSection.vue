@@ -1,7 +1,7 @@
 <template>
-  <section id="features" class="relative -mt-10 pt-10 pb-16 lg:-mt-16 lg:pt-16 lg:pb-24 bg-white">
+  <section id="features" class="py-16 lg:py-24 bg-white">
     <div class="container mx-auto px-4 lg:px-8">
-      <div class="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
+      <div class="text-center max-w-3xl mx-auto mb-12 lg:mb-16 mt-0 -translate-y-6 lg:-translate-y-10">
         <h2 class="text-3xl lg:text-4xl font-extrabold text-[#051D3C] mb-4">{{ title }}</h2>
         <p class="text-lg text-gray-700">{{ description }}</p>
       </div>
