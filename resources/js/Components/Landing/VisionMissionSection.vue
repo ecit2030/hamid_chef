@@ -10,7 +10,7 @@
         <div class="relative overflow-hidden rounded-2xl border border-[#D9E2F0] bg-white shadow-sm">
           <div class="absolute inset-0 bg-gradient-to-br from-[#083064]/8 via-transparent to-transparent" />
           <div class="relative p-7 lg:p-8">
-            <div class="flex items-start gap-4 flex-row">
+            <div class="flex flex-col items-center gap-4 text-center">
               <div class="shrink-0 w-12 h-12 rounded-2xl bg-[#083064] text-white flex items-center justify-center text-xl">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -18,7 +18,7 @@
                   <circle cx="12" cy="12" r="3" stroke-width="2" />
                 </svg>
               </div>
-              <div class="min-w-0 text-start">
+              <div class="min-w-0">
                 <h3 class="text-xl font-extrabold text-[#051D3C] leading-snug">
                   {{ currentLang === 'ar' ? vision?.title_ar : vision?.title_en }}
                 </h3>
@@ -33,7 +33,7 @@
         <div class="relative overflow-hidden rounded-2xl border border-[#D9E2F0] bg-white shadow-sm">
           <div class="absolute inset-0 bg-gradient-to-br from-[#CBE4F8] via-transparent to-transparent" />
           <div class="relative p-7 lg:p-8">
-            <div class="flex items-start gap-4 flex-row">
+            <div class="flex flex-col items-center gap-4 text-center">
               <div class="shrink-0 w-12 h-12 rounded-2xl bg-[#CBE4F8] text-[#083064] flex items-center justify-center text-xl">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <circle cx="12" cy="12" r="8" stroke-width="2" />
@@ -41,7 +41,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l2 2" />
                 </svg>
               </div>
-              <div class="min-w-0 text-start">
+              <div class="min-w-0">
                 <h3 class="text-xl font-extrabold text-[#051D3C] leading-snug">
                   {{ currentLang === 'ar' ? mission?.title_ar : mission?.title_en }}
                 </h3>

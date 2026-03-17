@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <div v-if="categories.length === 0" class="!text-center w-full py-12 text-gray-500">
+      <div v-if="categories.length === 0" class="!text-center w-full max-w-3xl mx-auto py-12 text-gray-500">
         {{ emptyLabel }}
       </div>
     </div>
