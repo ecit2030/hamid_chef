@@ -12,7 +12,11 @@
           <div class="relative p-7 lg:p-8">
             <div class="flex items-start gap-4 flex-row">
               <div class="shrink-0 w-12 h-12 rounded-2xl bg-[#083064] text-white flex items-center justify-center text-xl">
-                👁️
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  <circle cx="12" cy="12" r="3" stroke-width="2" />
+                </svg>
               </div>
               <div class="min-w-0 text-start">
                 <h3 class="text-xl font-extrabold text-[#051D3C] leading-snug">
@@ -31,7 +35,11 @@
           <div class="relative p-7 lg:p-8">
             <div class="flex items-start gap-4 flex-row">
               <div class="shrink-0 w-12 h-12 rounded-2xl bg-[#CBE4F8] text-[#083064] flex items-center justify-center text-xl">
-                🎯
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="8" stroke-width="2" />
+                  <circle cx="12" cy="12" r="4" stroke-width="2" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l2 2" />
+                </svg>
               </div>
               <div class="min-w-0 text-start">
                 <h3 class="text-xl font-extrabold text-[#051D3C] leading-snug">
