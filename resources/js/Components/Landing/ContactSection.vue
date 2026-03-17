@@ -152,7 +152,7 @@ const props = defineProps({
 const title = computed(() => props.currentLang === 'ar' ? props.section?.title_ar : props.section?.title_en)
 const description = computed(() => props.currentLang === 'ar' ? props.section?.description_ar : props.section?.description_en)
 const contact = computed(() => ({
-  email: props.section?.additional_data?.email ?? 'info@hamidchef.com',
+  email: props.section?.additional_data?.email ?? 'info@monchef.com',
   phone: props.section?.additional_data?.phone ?? '+967 777 777 777',
   address_ar: props.section?.additional_data?.address_ar ?? 'صنعاء، اليمن',
   address_en: props.section?.additional_data?.address_en ?? "Sana'a, Yemen",
