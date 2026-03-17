@@ -14,6 +14,11 @@ body {
     font-family: 'Almarai', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
 }
 
+/* ⚠️ TEMPORARY: force LTR to verify Arabic layout – if it matches English, problem is 100% RTL layout. Remove after testing. */
+* {
+    direction: ltr !important;
+}
+
 /* Western Arabic numerals (0-9) */
 body,
 [dir="rtl"],
