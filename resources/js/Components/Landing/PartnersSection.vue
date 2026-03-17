@@ -1,10 +1,10 @@
 <template>
-  <section id="partners" class="py-16 lg:py-24 bg-gradient-to-b from-[#E6EBF2] to-white overflow-hidden">
+  <section id="partners" class="py-16 lg:py-24 bg-white">
     <div class="container mx-auto px-4 lg:px-8">
       <div class="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
         <span
           v-if="showPill"
-          class="inline-block px-4 py-2 rounded-full bg-[#083064]/10 text-[#083064] font-bold text-sm mb-4"
+          class="inline-block px-4 py-2 rounded-full bg-[#083064]/10 text-[#083064] font-semibold text-sm mb-4"
         >
           {{ currentLang === 'ar' ? 'شركاؤنا' : 'Our Partners' }}
         </span>
@@ -16,33 +16,33 @@
         <div
           v-for="(p, i) in partnersToShow"
           :key="partnerKey(p, i)"
-          class="group relative flex flex-col items-center p-6 lg:p-7 rounded-2xl bg-white border border-[#E6EBF2] shadow-sm hover:shadow-xl hover:shadow-[#062650]/10 hover:border-[#99AFCB]/60 transition-all duration-300"
+          class="group relative flex flex-col p-6 lg:p-7 rounded-2xl bg-white border border-[#E6EBF2] shadow-sm hover:shadow-md transition-shadow duration-300"
         >
-          <div class="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-[#083064]/5 via-transparent to-[#CBE4F8]/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-          <div class="relative flex-1 flex items-center justify-center w-full min-h-[120px] p-4">
+          <div class="flex items-center justify-center w-full h-24 rounded-xl bg-[#F7FAFF] border border-[#E6EBF2]">
             <img
               v-if="getLogoUrl(p)"
               :src="getLogoUrl(p)"
               :alt="partnerName(p)"
-              class="max-h-20 w-full object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+              class="max-h-14 w-[85%] object-contain"
               loading="lazy"
               @error="handleImageError"
             />
             <div
               v-else
-              class="w-20 h-20 rounded-2xl bg-[#F1F5FB] border border-[#E6EBF2] flex items-center justify-center text-2xl text-[#99AFCB]"
+              class="w-full h-full flex items-center justify-center"
             >
-              🤝
+              <div class="w-12 h-12 rounded-full bg-white border border-[#D9E2F0] flex items-center justify-center text-[#083064] font-bold">
+                {{ partnerInitials(p) }}
+              </div>
             </div>
           </div>
 
-          <h3 class="relative mt-4 text-center text-base sm:text-lg font-extrabold text-[#051D3C] leading-tight tracking-tight line-clamp-2">
+          <h3 class="mt-5 text-[#051D3C] text-base sm:text-lg font-bold leading-snug line-clamp-2">
             {{ partnerName(p) }}
           </h3>
           <p
             v-if="partnerDescription(p)"
-            class="relative mt-3 text-center text-sm sm:text-base text-gray-600 leading-relaxed line-clamp-3 max-w-[36ch]"
+            class="mt-2 text-sm sm:text-base text-gray-600 leading-relaxed line-clamp-3"
           >
             {{ partnerDescription(p) }}
           </p>
@@ -83,6 +83,16 @@ function partnerName(p) {
 
 function partnerDescription(p) {
   return (props.currentLang === 'ar' ? (p?.description_ar ?? p?.description_en) : (p?.description_en ?? p?.description_ar) ?? '').trim()
+}
+
+function partnerInitials(p) {
+  const name = partnerName(p)
+  if (!name) return 'P'
+  const parts = name.split(/\s+/).filter(Boolean)
+  const a = parts[0]?.[0] ?? ''
+  const b = parts[1]?.[0] ?? ''
+  const out = `${a}${b}`.toUpperCase()
+  return out || name.slice(0, 2).toUpperCase()
 }
 
 function partnerKey(p, i) {
