@@ -3,7 +3,7 @@
     "name": "Chef Working Hours API",
     "_postman_id": "d2a1b8dc-1c3c-4b69-9bbd-abcdef123456",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "Moon Chef - Manage chef weekly working hours (API only)."
+    "description": "Mon Chef - Manage chef weekly working hours (API only)."
   },
   "variable": [
     { "key": "baseUrl", "value": "http://localhost:8000" },

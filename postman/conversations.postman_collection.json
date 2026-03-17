@@ -3,7 +3,7 @@
     "name": "Conversations API",
     "_postman_id": "c1b2f7a2-1a34-4b44-9f80-123456789abc",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "Moon Chef - Conversations & Messaging API testing collection. Use login to obtain a bearer token, then exercise conversation and message endpoints."
+    "description": "Mon Chef - Conversations & Messaging API testing collection. Use login to obtain a bearer token, then exercise conversation and message endpoints."
   },
   "variable": [
     { "key": "baseUrl", "value": "http://localhost:8000" },

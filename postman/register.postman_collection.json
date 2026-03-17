@@ -1,6 +1,6 @@
 {
   "info": {
-    "name": "Register API - Moon Chef",
+    "name": "Register API - Mon Chef",
     "_postman_id": "a1b2c3d4-register-collection",
     "description": "Collection to test user registration endpoint",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
