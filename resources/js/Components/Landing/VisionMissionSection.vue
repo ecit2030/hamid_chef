@@ -116,16 +116,10 @@ const mission = computed(() => props.section?.additional_data?.mission ?? {})
 const goals = computed(() => props.section?.additional_data?.goals ?? [])
 const coreValuesLabel = computed(() => getLandingLabels(props.currentLang).coreValues)
 
+// When there is exactly one goal, show English-style layout: title + single paragraph (no box)
 const coreValuesBlurb = computed(() => {
-  // If content is stored as a single "goal" item with a long description,
-  // render it as a centered paragraph instead of repeating the title as a card.
   if (!Array.isArray(goals.value) || goals.value.length !== 1) return ''
   const g = goals.value[0] ?? {}
-  const t = String(props.currentLang === 'ar' ? (g.title_ar ?? '') : (g.title_en ?? '')).trim().toLowerCase()
-  const isCoreValuesTitle =
-    (props.currentLang === 'en' && t === 'our core values') ||
-    (props.currentLang === 'ar' && t === 'قيمنا الأساسية')
-  if (!isCoreValuesTitle) return ''
   return String(props.currentLang === 'ar' ? (g.description_ar ?? '') : (g.description_en ?? '')).trim()
 })
 </script>
