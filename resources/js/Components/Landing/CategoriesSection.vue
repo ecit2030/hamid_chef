@@ -34,7 +34,7 @@
 <script setup>
 import { computed } from 'vue'
 
-const CATEGORY_NAME_EN = {
+const CATEGORY_NAME_EN_BY_SLUG = {
   'saudi-cuisine': 'Saudi Cuisine',
   'gulf-cuisine': 'Gulf Cuisine',
   'levantine-cuisine': 'Levantine Cuisine',
@@ -45,6 +45,19 @@ const CATEGORY_NAME_EN = {
   'desserts': 'Desserts',
   'seafood': 'Seafood',
   'healthy-food': 'Healthy Food',
+}
+
+const CATEGORY_NAME_EN_BY_AR = {
+  'المطبخ السعودي': 'Saudi Cuisine',
+  'المطبخ الخليجي': 'Gulf Cuisine',
+  'المطبخ الشامي': 'Levantine Cuisine',
+  'المطبخ المصري': 'Egyptian Cuisine',
+  'المطبخ الهندي': 'Indian Cuisine',
+  'المطبخ الإيطالي': 'Italian Cuisine',
+  'المشويات': 'Grills',
+  'الحلويات': 'Desserts',
+  'المأكولات البحرية': 'Seafood',
+  'الأكل الصحي': 'Healthy Food',
 }
 
 const props = defineProps({
@@ -58,8 +71,13 @@ const categories = computed(() => props.section?.additional_data?.categories ?? 
 
 function categoryDisplayName(cat) {
   if (props.currentLang === 'ar') {
-    return cat.name_ar ?? cat.name_en ?? ''
+    return cat.name_ar ?? cat.name_en ?? cat.name ?? ''
   }
-  return (cat.slug && CATEGORY_NAME_EN[cat.slug]) ? CATEGORY_NAME_EN[cat.slug] : (cat.name_en ?? cat.name_ar ?? '')
+  const bySlug = cat.slug && CATEGORY_NAME_EN_BY_SLUG[cat.slug]
+  if (bySlug) return bySlug
+  const nameAr = (cat.name_ar ?? cat.name ?? '').trim()
+  const byAr = nameAr && CATEGORY_NAME_EN_BY_AR[nameAr]
+  if (byAr) return byAr
+  return cat.name_en ?? cat.name_ar ?? cat.name ?? ''
 }
 </script>
