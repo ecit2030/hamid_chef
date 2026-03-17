@@ -12,11 +12,11 @@
         <p class="text-lg text-gray-700">{{ description }}</p>
       </div>
 
-      <div v-if="partnersToShow.length > 0" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 lg:gap-8">
+      <div v-if="partnersToShow.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 lg:gap-8">
         <div
           v-for="(p, i) in partnersToShow"
           :key="partnerKey(p, i)"
-          class="group flex flex-col items-center p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#99AFCB]/50 transition-all duration-300"
+          class="group flex flex-col items-center p-6 lg:p-7 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#99AFCB]/50 transition-all duration-300"
         >
           <div class="flex-1 flex items-center justify-center w-full min-h-[120px] p-4">
             <img
@@ -34,12 +34,12 @@
               🤝
             </div>
           </div>
-          <h3 class="mt-4 text-center text-[13px] sm:text-sm font-extrabold text-[#051D3C] leading-snug">
+          <h3 class="mt-4 text-center text-base sm:text-lg font-extrabold text-[#051D3C] leading-tight tracking-tight">
             {{ partnerName(p) }}
           </h3>
           <p
             v-if="partnerDescription(p)"
-            class="mt-2 text-center text-xs sm:text-sm text-gray-600 leading-relaxed line-clamp-3"
+            class="mt-3 text-center text-sm sm:text-base text-gray-600 leading-relaxed line-clamp-3 max-w-[34ch]"
           >
             {{ partnerDescription(p) }}
           </p>
