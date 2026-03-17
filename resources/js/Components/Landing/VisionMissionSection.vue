@@ -10,11 +10,11 @@
         <div class="relative overflow-hidden rounded-2xl border border-[#D9E2F0] bg-white shadow-sm">
           <div class="absolute inset-0 bg-gradient-to-br from-[#083064]/8 via-transparent to-transparent" />
           <div class="relative p-7 lg:p-8">
-            <div class="flex items-start gap-4">
+            <div class="flex items-start gap-4 flex-row">
               <div class="shrink-0 w-12 h-12 rounded-2xl bg-[#083064] text-white flex items-center justify-center text-xl">
                 👁️
               </div>
-              <div class="min-w-0">
+              <div class="min-w-0 text-start">
                 <h3 class="text-xl font-extrabold text-[#051D3C] leading-snug">
                   {{ currentLang === 'ar' ? vision?.title_ar : vision?.title_en }}
                 </h3>
@@ -29,11 +29,11 @@
         <div class="relative overflow-hidden rounded-2xl border border-[#D9E2F0] bg-white shadow-sm">
           <div class="absolute inset-0 bg-gradient-to-br from-[#CBE4F8] via-transparent to-transparent" />
           <div class="relative p-7 lg:p-8">
-            <div class="flex items-start gap-4">
+            <div class="flex items-start gap-4 flex-row">
               <div class="shrink-0 w-12 h-12 rounded-2xl bg-[#CBE4F8] text-[#083064] flex items-center justify-center text-xl">
                 🎯
               </div>
-              <div class="min-w-0">
+              <div class="min-w-0 text-start">
                 <h3 class="text-xl font-extrabold text-[#051D3C] leading-snug">
                   {{ currentLang === 'ar' ? mission?.title_ar : mission?.title_en }}
                 </h3>
@@ -63,10 +63,10 @@
           <div
             v-for="(g, i) in goals"
             :key="i"
-            class="rounded-xl bg-white border border-[#E6EBF2] p-5 lg:p-6 shadow-sm"
+            class="rounded-xl bg-white border border-[#E6EBF2] p-5 lg:p-6 shadow-sm text-start"
           >
-            <div class="flex items-start gap-3">
-              <div class="mt-1 w-2.5 h-2.5 rounded-full bg-[#083064]" />
+            <div class="flex items-start gap-3 flex-row">
+              <div class="mt-1 w-2.5 h-2.5 rounded-full bg-[#083064] shrink-0" />
               <div class="min-w-0">
                 <h5 class="font-extrabold text-[#062650] leading-snug">
                   {{ currentLang === 'ar' ? g.title_ar : g.title_en }}

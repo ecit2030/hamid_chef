@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    <div class="pointer-events-none absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent via-white/70 to-white" />
+    <div class="pointer-events-none absolute bottom-0 inset-x-0 h-32 bg-gradient-to-b from-transparent via-white/70 to-white" />
   </section>
 </template>
 
