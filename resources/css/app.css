@@ -41,6 +41,11 @@ body,
     direction: inherit;
 }
 
+/* Keep section headings and centered blocks in the middle on RTL (match English layout) */
+[dir="rtl"] section [class*="text-center"] {
+    text-align: center !important;
+}
+
 /* Logical positioning */
 .inline-start-0 {
     inset-inline-start: 0;

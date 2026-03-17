@@ -1,7 +1,7 @@
 <template>
   <section id="partners" class="py-16 lg:py-24 bg-white">
     <div class="container mx-auto px-4 lg:px-8 flex flex-col items-center">
-      <div class="text-center max-w-3xl w-full mb-12 lg:mb-16">
+      <div class="!text-center max-w-3xl w-full mb-12 lg:mb-16 mx-auto">
         <span
           v-if="showPill"
           class="inline-block px-4 py-2 rounded-full bg-[#083064]/10 text-[#083064] font-semibold text-sm mb-4"
@@ -12,7 +12,7 @@
         <p class="text-lg text-gray-700">{{ description }}</p>
       </div>
 
-      <div v-if="partnersToShow.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 lg:gap-8 w-full max-w-7xl">
+      <div v-if="partnersToShow.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 lg:gap-8 w-full max-w-7xl mx-auto">
         <div
           v-for="(p, i) in partnersToShow"
           :key="partnerKey(p, i)"

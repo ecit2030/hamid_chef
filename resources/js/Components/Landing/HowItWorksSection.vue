@@ -1,12 +1,12 @@
 <template>
   <section id="how-it-works" class="py-16 lg:py-24 bg-gray-50">
     <div class="container mx-auto px-4 lg:px-8 flex flex-col items-center">
-      <div class="text-center max-w-3xl w-full mb-12 lg:mb-16">
+      <div class="!text-center max-w-3xl w-full mb-12 lg:mb-16 mx-auto">
         <h2 class="text-3xl lg:text-4xl font-extrabold text-[#051D3C] mb-4">{{ title }}</h2>
         <p class="text-lg text-gray-700">{{ description }}</p>
       </div>
 
-      <div class="flex flex-col md:flex-row md:items-start gap-8 lg:gap-4 w-full max-w-5xl">
+      <div class="flex flex-col md:flex-row md:items-start gap-8 lg:gap-4 w-full max-w-5xl mx-auto">
         <template v-for="(step, i) in steps" :key="i">
           <div class="flex-1 flex flex-col items-center text-center">
             <div class="flex justify-center mb-6">

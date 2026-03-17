@@ -1,7 +1,7 @@
 <template>
   <section id="about" class="py-16 lg:py-24 bg-gray-50">
     <div class="container mx-auto px-4 lg:px-8 flex flex-col items-center">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center w-full max-w-6xl">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center w-full max-w-6xl mx-auto">
         <div class="text-center">
           <h2 class="text-3xl lg:text-4xl font-extrabold text-[#051D3C] mb-4">{{ title }}</h2>
           <p class="text-lg text-gray-700 mb-6">{{ description }}</p>

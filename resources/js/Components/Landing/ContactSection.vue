@@ -1,12 +1,12 @@
 <template>
   <section id="contact" class="py-16 lg:py-24 bg-[#020A14] text-white">
     <div class="container mx-auto px-4 lg:px-8 flex flex-col items-center">
-      <div class="text-center max-w-3xl w-full mb-12 lg:mb-16">
+      <div class="!text-center max-w-3xl w-full mb-12 lg:mb-16 mx-auto">
         <h2 class="text-3xl lg:text-4xl font-extrabold text-white mb-4">{{ title }}</h2>
         <p class="text-white/90 text-lg">{{ description }}</p>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 w-full max-w-6xl">
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 w-full max-w-6xl mx-auto">
         <div class="lg:col-span-2 space-y-8 text-center lg:text-start">
           <div class="flex items-center justify-center lg:justify-start gap-4">
             <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">

@@ -1,12 +1,12 @@
 <template>
   <section id="vision-mission" class="py-16 lg:py-24 bg-white">
     <div class="container mx-auto px-4 lg:px-8 flex flex-col items-center">
-      <div class="text-center max-w-3xl w-full mb-12 lg:mb-16">
+      <div class="!text-center max-w-3xl w-full mb-12 lg:mb-16 mx-auto">
         <h2 class="text-3xl lg:text-4xl font-extrabold text-[#051D3C] mb-4">{{ title }}</h2>
         <p class="text-lg text-gray-700">{{ description }}</p>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-12 w-full max-w-6xl">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-12 w-full max-w-6xl mx-auto">
         <div class="relative overflow-hidden rounded-2xl border border-[#D9E2F0] bg-white shadow-sm">
           <div class="absolute inset-0 bg-gradient-to-br from-[#083064]/8 via-transparent to-transparent" />
           <div class="relative p-7 lg:p-8">
