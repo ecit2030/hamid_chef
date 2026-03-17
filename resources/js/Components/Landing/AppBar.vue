@@ -4,7 +4,7 @@
     :class="[
       transparent && !scrolled
         ? 'bg-transparent text-white'
-        : 'bg-white shadow-md text-[#083064]',
+        : 'bg-[#062650]/95 text-white shadow-lg shadow-[#062650]/25 backdrop-blur supports-[backdrop-filter]:bg-[#062650]/85',
     ]"
   >
     <nav class="container mx-auto px-4 lg:px-8">
@@ -23,7 +23,7 @@
             <a
               :href="item.href"
               class="px-4 py-2 rounded-lg font-medium transition-colors"
-              :class="transparent && !scrolled ? 'text-white hover:bg-white/10' : 'text-[#083064] hover:bg-[#E6EBF2] hover:text-[#062650]'"
+              :class="transparent && !scrolled ? 'text-white hover:bg-white/10' : 'text-white/90 hover:bg-white/10 hover:text-white'"
             >
               {{ currentLang === 'ar' ? item.label_ar : item.label_en }}
             </a>
@@ -37,7 +37,7 @@
             :class="
               transparent && !scrolled
                 ? 'border-white/30 hover:bg-white/10 text-white'
-                : 'border-[#99AFCB] text-[#062650] hover:bg-[#E6EBF2]'
+                : 'border-white/25 text-white hover:bg-white/10'
             "
             @click="$emit('toggle-language')"
           >
@@ -47,7 +47,7 @@
           <button
             type="button"
             class="lg:hidden p-2 rounded-lg"
-            :class="transparent && !scrolled ? 'text-white hover:bg-white/10' : 'text-[#083064] hover:bg-[#E6EBF2]'"
+            :class="transparent && !scrolled ? 'text-white hover:bg-white/10' : 'text-white hover:bg-white/10'"
             aria-label="Menu"
             @click="mobileOpen = !mobileOpen"
           >
@@ -62,13 +62,13 @@
       <Transition name="slide">
         <div
           v-show="mobileOpen"
-          class="lg:hidden absolute top-full start-0 end-0 bg-white shadow-lg border-t border-gray-100 py-4"
+          class="lg:hidden absolute top-full start-0 end-0 bg-[#062650]/95 backdrop-blur supports-[backdrop-filter]:bg-[#062650]/85 shadow-lg shadow-[#062650]/25 border-t border-white/10 py-4"
         >
           <ul class="flex flex-col px-4">
             <li v-for="item in navItems" :key="item.href">
               <a
                 :href="item.href"
-                class="block px-4 py-3 rounded-lg font-medium text-[#062650] hover:bg-[#E6EBF2]"
+                class="block px-4 py-3 rounded-lg font-medium text-white/90 hover:bg-white/10 hover:text-white"
                 @click="mobileOpen = false"
               >
                 {{ currentLang === 'ar' ? item.label_ar : item.label_en }}
