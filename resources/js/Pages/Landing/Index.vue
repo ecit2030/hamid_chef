@@ -105,6 +105,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { router } from '@inertiajs/vue3'
+import { setHtmlDirection } from '@/i18n'
 import LandingLayout from '@/Layouts/LandingLayout.vue'
 import {
   HeroSection,
@@ -150,6 +151,7 @@ const navItems = ref([
 
 onMounted(() => {
   document.documentElement.classList.remove('dark')
+  setHtmlDirection(props.locale)
   setTimeout(() => {
     isLoading.value = false
   }, 500)

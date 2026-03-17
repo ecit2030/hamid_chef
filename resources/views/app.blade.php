@@ -1,5 +1,10 @@
+@php
+  $locale = session('locale', config('app.locale', 'ar'));
+  $dir = $locale === 'ar' ? 'rtl' : 'ltr';
+  $langAttr = $locale === 'ar' ? 'ar' : 'en';
+@endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ $langAttr }}" dir="{{ $dir }}">
 
 <head>
         <meta charset="utf-8">
