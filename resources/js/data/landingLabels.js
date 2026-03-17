@@ -54,6 +54,10 @@ export const landingLabels = {
       ctaDiscover: 'اكتشف الطهاة',
       ctaHowItWorks: 'كيف يعمل',
     },
+    aria: {
+      backToTop: 'العودة للأعلى',
+      whatsapp: 'تواصل عبر واتساب',
+    },
   },
   en: {
     pageTitle: 'Mon Chef',
@@ -106,8 +110,20 @@ export const landingLabels = {
       ctaDiscover: 'Discover Chefs',
       ctaHowItWorks: 'How It Works',
     },
+    aria: {
+      backToTop: 'Back to top',
+      whatsapp: 'Contact via WhatsApp',
+    },
   },
 }
+
+/** Default hero stats (same structure for both locales; component picks label_ar vs label_en by locale). */
+export const heroDefaultStats = [
+  { number: '500+', label_ar: 'طاهي محترف', label_en: 'Professional Chefs' },
+  { number: '10,000+', label_ar: 'عميل سعيد', label_en: 'Happy Customers' },
+  { number: '15,000+', label_ar: 'حجز ناجح', label_en: 'Successful Bookings' },
+  { number: '4.9/5', label_ar: 'تقييم العملاء', label_en: 'Customer Rating' },
+]
 
 /**
  * @param {'ar'|'en'} locale

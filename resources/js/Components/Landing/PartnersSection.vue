@@ -74,10 +74,8 @@ const emptyLabel = computed(() => getLandingLabels(props.currentLang).empty.part
 
 const showPill = computed(() => {
   const t = String(title.value ?? '').trim().toLowerCase()
-  // Avoid showing "Our Partners" twice (pill + title)
-  if (props.currentLang === 'en') return t !== 'our partners'
-  if (props.currentLang === 'ar') return t !== 'شركاؤنا'
-  return true
+  const pill = String(partnersPillLabel.value ?? '').trim().toLowerCase()
+  return t !== pill
 })
 
 function partnerName(p) {

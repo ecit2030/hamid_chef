@@ -48,7 +48,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import { getLandingLabels } from '@/data/landingLabels'
+import { getLandingLabels, heroDefaultStats } from '@/data/landingLabels'
 
 const props = defineProps({
   section: { type: Object, default: () => ({}) },
@@ -59,10 +59,5 @@ const heroLabels = computed(() => getLandingLabels(props.currentLang).hero)
 
 const title = computed(() => props.currentLang === 'ar' ? props.section?.title_ar : props.section?.title_en)
 const description = computed(() => props.currentLang === 'ar' ? props.section?.description_ar : props.section?.description_en)
-const stats = computed(() => props.section?.additional_data?.stats ?? [
-  { number: '500+', label_ar: 'طاهي محترف', label_en: 'Professional Chefs' },
-  { number: '10,000+', label_ar: 'عميل سعيد', label_en: 'Happy Customers' },
-  { number: '15,000+', label_ar: 'حجز ناجح', label_en: 'Successful Bookings' },
-  { number: '4.9/5', label_ar: 'تقييم العملاء', label_en: 'Customer Rating' },
-])
+const stats = computed(() => props.section?.additional_data?.stats ?? heroDefaultStats)
 </script>
