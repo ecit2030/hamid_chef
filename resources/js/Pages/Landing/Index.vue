@@ -4,7 +4,6 @@
     :transparent="true"
     :nav-items="navItems"
     :current-lang="currentLocale"
-    :dir="currentLocale === 'ar' ? 'rtl' : 'ltr'"
     :whatsapp-url="whatsappUrl"
     :show-back-to-top="true"
     @toggle-language="toggleLanguage"

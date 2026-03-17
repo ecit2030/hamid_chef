@@ -1,7 +1,9 @@
 <template>
+  <!-- Always LTR layout so structure matches English; RTL applied to text only via .landing-layout-ar -->
   <div
     class="min-h-screen bg-white"
-    :dir="dir"
+    dir="ltr"
+    :class="{ 'landing-layout-ar': currentLang === 'ar' }"
   >
     <LandingAppBar
       :transparent="transparent"
@@ -31,7 +33,6 @@ defineProps({
   transparent: { type: Boolean, default: false },
   navItems: { type: Array, default: () => [] },
   currentLang: { type: String, default: 'ar' },
-  dir: { type: String, default: 'rtl' },
   whatsappUrl: { type: String, default: '' },
   showBackToTop: { type: Boolean, default: true },
 })

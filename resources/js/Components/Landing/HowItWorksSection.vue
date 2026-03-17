@@ -21,7 +21,7 @@
             v-if="i < steps.length - 1"
             class="hidden md:flex flex-shrink-0 items-center justify-center w-12 lg:w-16 py-10"
           >
-            <svg class="w-8 h-8 text-[#99AFCB] rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-8 h-8 text-[#99AFCB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </div>

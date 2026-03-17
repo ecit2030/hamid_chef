@@ -46,6 +46,34 @@ body,
     text-align: center !important;
 }
 
+/* Landing: LTR layout always; RTL for Arabic text only (alignment + direction). No flex/grid reversal. */
+.landing-layout-ar h1,
+.landing-layout-ar h2,
+.landing-layout-ar h3,
+.landing-layout-ar h4,
+.landing-layout-ar h5,
+.landing-layout-ar h6,
+.landing-layout-ar p,
+.landing-layout-ar li,
+.landing-layout-ar label,
+.landing-layout-ar a,
+.landing-layout-ar span,
+.landing-layout-ar input,
+.landing-layout-ar textarea,
+.landing-layout-ar button,
+.landing-layout-ar td,
+.landing-layout-ar th {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Preserve centered text in Arabic landing (headings, descriptions) */
+.landing-layout-ar section [class*="text-center"],
+.landing-layout-ar .text-center {
+    text-align: center !important;
+    direction: rtl;
+}
+
 /* Logical positioning */
 .inline-start-0 {
     inset-inline-start: 0;
