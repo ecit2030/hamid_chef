@@ -54,20 +54,28 @@
         </div>
       </div>
 
-      <div v-if="goals.length" class="rounded-2xl border border-[#E6EBF2] bg-[#F7FAFF] p-6 lg:p-8 w-full max-w-6xl">
-        <div class="text-center mb-6">
-          <h4 class="text-lg lg:text-xl font-extrabold text-[#051D3C]">
-            {{ coreValuesLabel }}
-          </h4>
-        </div>
+      <!-- Our Core Values: match English layout – centered title + single centered paragraph, no box -->
+      <div v-if="goals.length" class="w-full max-w-6xl">
+        <template v-if="coreValuesBlurb">
+          <div class="text-center mb-6">
+            <h4 class="text-lg lg:text-xl font-extrabold text-[#051D3C]">
+              {{ coreValuesLabel }}
+            </h4>
+          </div>
+          <div class="max-w-3xl mx-auto text-center">
+            <p class="text-base lg:text-lg text-gray-700 leading-relaxed">
+              {{ coreValuesBlurb }}
+            </p>
+          </div>
+        </template>
 
-        <div v-if="coreValuesBlurb" class="max-w-3xl mx-auto text-center">
-          <p class="text-base lg:text-lg text-gray-700 leading-relaxed">
-            {{ coreValuesBlurb }}
-          </p>
-        </div>
-
-        <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+        <div v-else class="rounded-2xl border border-[#E6EBF2] bg-[#F7FAFF] p-6 lg:p-8">
+          <div class="text-center mb-6">
+            <h4 class="text-lg lg:text-xl font-extrabold text-[#051D3C]">
+              {{ coreValuesLabel }}
+            </h4>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
           <div
             v-for="(g, i) in goals"
             :key="i"
@@ -84,6 +92,7 @@
                 </p>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>
