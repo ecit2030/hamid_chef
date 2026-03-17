@@ -47,13 +47,19 @@
       </div>
 
       <div v-if="goals.length" class="rounded-2xl border border-[#E6EBF2] bg-[#F7FAFF] p-6 lg:p-8">
-        <div class="flex items-center justify-between gap-4 mb-6">
+        <div class="text-center mb-6">
           <h4 class="text-lg lg:text-xl font-extrabold text-[#051D3C]">
             {{ currentLang === 'ar' ? 'قيمنا الأساسية' : 'Our Core Values' }}
           </h4>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+        <div v-if="coreValuesBlurb" class="max-w-3xl mx-auto text-center">
+          <p class="text-base lg:text-lg text-gray-700 leading-relaxed">
+            {{ coreValuesBlurb }}
+          </p>
+        </div>
+
+        <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
           <div
             v-for="(g, i) in goals"
             :key="i"
@@ -90,4 +96,17 @@ const description = computed(() => props.currentLang === 'ar' ? props.section?.d
 const vision = computed(() => props.section?.additional_data?.vision ?? {})
 const mission = computed(() => props.section?.additional_data?.mission ?? {})
 const goals = computed(() => props.section?.additional_data?.goals ?? [])
+
+const coreValuesBlurb = computed(() => {
+  // If content is stored as a single "goal" item with a long description,
+  // render it as a centered paragraph instead of repeating the title as a card.
+  if (!Array.isArray(goals.value) || goals.value.length !== 1) return ''
+  const g = goals.value[0] ?? {}
+  const t = String(props.currentLang === 'ar' ? (g.title_ar ?? '') : (g.title_en ?? '')).trim().toLowerCase()
+  const isCoreValuesTitle =
+    (props.currentLang === 'en' && t === 'our core values') ||
+    (props.currentLang === 'ar' && t === 'قيمنا الأساسية')
+  if (!isCoreValuesTitle) return ''
+  return String(props.currentLang === 'ar' ? (g.description_ar ?? '') : (g.description_en ?? '')).trim()
+})
 </script>
