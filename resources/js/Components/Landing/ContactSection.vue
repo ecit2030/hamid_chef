@@ -158,7 +158,7 @@ const contact = computed(() => ({
   address_ar: 'الرياض، المملكة العربية السعودية',
   address_en: 'Riyadh, Saudi Arabia',
   working_hours_ar: 'من 9 صباحاً حتى 5 مساءً',
-  working_hours_en: 'Are from 9-5',
+  working_hours_en: '9 AM to 5 PM',
 }))
 
 const DEFAULT_SOCIAL_LINKS = [
