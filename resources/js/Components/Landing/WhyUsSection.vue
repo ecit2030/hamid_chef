@@ -1,12 +1,12 @@
 <template>
   <section id="why-us" class="py-16 lg:py-24 bg-gray-50">
-    <div class="container mx-auto px-4 lg:px-8">
-      <div class="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
+    <div class="container mx-auto px-4 lg:px-8 flex flex-col items-center">
+      <div class="text-center max-w-3xl w-full mb-12 lg:mb-16">
         <h2 class="text-3xl lg:text-4xl font-extrabold text-[#051D3C] mb-4">{{ title }}</h2>
         <p class="text-lg text-gray-700">{{ description }}</p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 w-full max-w-6xl">
         <div
           v-for="(r, i) in reasons"
           :key="i"
@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-5xl">
         <div v-for="(s, i) in stats" :key="i" class="text-center p-6 rounded-2xl bg-[#083064] text-white flex flex-col items-center justify-center">
           <div class="text-2xl lg:text-3xl font-bold">{{ s.number }}</div>
           <div class="text-sm text-white/90 mt-1">{{ currentLang === 'ar' ? s.label_ar : s.label_en }}</div>
