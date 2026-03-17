@@ -12,9 +12,6 @@
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
           {{ title }}
         </h1>
-          <div>
-              {{ currentUrl ?? 'ds' }}
-          </div>
         <p class="text-xl text-white/90 mb-8 leading-relaxed">
           {{ description }}
         </p>
@@ -45,13 +42,12 @@
       </div>
     </div>
 
-    <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent" />
+    <div class="pointer-events-none absolute bottom-0 left-0 right-0 h-44 bg-gradient-to-t from-white via-white/80 to-transparent" />
   </section>
 </template>
 
 <script setup>
 import { computed } from 'vue'
-const currentUrl = window.location.origin
 
 const props = defineProps({
   section: { type: Object, default: () => ({}) },
