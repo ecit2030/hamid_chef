@@ -16,30 +16,33 @@
         <div
           v-for="(p, i) in partnersToShow"
           :key="partnerKey(p, i)"
-          class="group flex flex-col items-center p-6 lg:p-7 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#99AFCB]/50 transition-all duration-300"
+          class="group relative flex flex-col items-center p-6 lg:p-7 rounded-2xl bg-white border border-[#E6EBF2] shadow-sm hover:shadow-xl hover:shadow-[#062650]/10 hover:border-[#99AFCB]/60 transition-all duration-300"
         >
-          <div class="flex-1 flex items-center justify-center w-full min-h-[120px] p-4">
+          <div class="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-[#083064]/5 via-transparent to-[#CBE4F8]/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+          <div class="relative flex-1 flex items-center justify-center w-full min-h-[120px] p-4">
             <img
               v-if="getLogoUrl(p)"
               :src="getLogoUrl(p)"
               :alt="partnerName(p)"
-              class="max-h-20 w-full object-contain grayscale opacity-75 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+              class="max-h-20 w-full object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
               loading="lazy"
               @error="handleImageError"
             />
             <div
               v-else
-              class="w-20 h-20 rounded-xl bg-[#E6EBF2] flex items-center justify-center text-2xl text-[#99AFCB]"
+              class="w-20 h-20 rounded-2xl bg-[#F1F5FB] border border-[#E6EBF2] flex items-center justify-center text-2xl text-[#99AFCB]"
             >
               🤝
             </div>
           </div>
-          <h3 class="mt-4 text-center text-base sm:text-lg font-extrabold text-[#051D3C] leading-tight tracking-tight">
+
+          <h3 class="relative mt-4 text-center text-base sm:text-lg font-extrabold text-[#051D3C] leading-tight tracking-tight line-clamp-2">
             {{ partnerName(p) }}
           </h3>
           <p
             v-if="partnerDescription(p)"
-            class="mt-3 text-center text-sm sm:text-base text-gray-600 leading-relaxed line-clamp-3 max-w-[34ch]"
+            class="relative mt-3 text-center text-sm sm:text-base text-gray-600 leading-relaxed line-clamp-3 max-w-[36ch]"
           >
             {{ partnerDescription(p) }}
           </p>
@@ -87,10 +90,16 @@ function partnerKey(p, i) {
 }
 
 const partnersToShow = computed(() => {
+  const normalize = (s) =>
+    String(s ?? '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toLowerCase()
+
   const seen = new Set()
   const out = []
   for (const p of partners.value) {
-    const key = `${partnerName(p)}__${partnerDescription(p)}`
+    const key = `${normalize(partnerName(p))}__${normalize(partnerDescription(p))}`
     if (!key || key === '__') continue
     if (seen.has(key)) continue
     seen.add(key)
