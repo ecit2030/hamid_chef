@@ -16,7 +16,6 @@
           class="group relative"
         >
           <div class="h-full p-6 lg:p-8 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#99AFCB]/50 transition-all duration-300 flex flex-col">
-            <div class="absolute top-6 start-6 text-6xl text-[#CBE4F8]/40 font-serif leading-none select-none">"</div>
 
             <div class="flex gap-1 mb-4 mt-4">
               <span
