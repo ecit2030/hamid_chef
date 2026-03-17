@@ -2,24 +2,27 @@
   <section id="partners" class="py-16 lg:py-24 bg-gradient-to-b from-[#E6EBF2] to-white overflow-hidden">
     <div class="container mx-auto px-4 lg:px-8">
       <div class="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
-        <span class="inline-block px-4 py-2 rounded-full bg-[#083064]/10 text-[#083064] font-bold text-sm mb-4">
+        <span
+          v-if="showPill"
+          class="inline-block px-4 py-2 rounded-full bg-[#083064]/10 text-[#083064] font-bold text-sm mb-4"
+        >
           {{ currentLang === 'ar' ? 'شركاؤنا' : 'Our Partners' }}
         </span>
         <h2 class="text-3xl lg:text-4xl font-extrabold text-[#051D3C] mb-4">{{ title }}</h2>
         <p class="text-lg text-gray-700">{{ description }}</p>
       </div>
 
-      <div v-if="partners.length > 0" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 lg:gap-8">
+      <div v-if="partnersToShow.length > 0" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 lg:gap-8">
         <div
-          v-for="(p, i) in partners"
-          :key="i"
+          v-for="(p, i) in partnersToShow"
+          :key="partnerKey(p, i)"
           class="group flex flex-col items-center p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#99AFCB]/50 transition-all duration-300"
         >
           <div class="flex-1 flex items-center justify-center w-full min-h-[120px] p-4">
             <img
               v-if="getLogoUrl(p)"
               :src="getLogoUrl(p)"
-              :alt="currentLang === 'ar' ? p.name_ar : p.name_en"
+              :alt="partnerName(p)"
               class="max-h-20 w-full object-contain grayscale opacity-75 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
               loading="lazy"
               @error="handleImageError"
@@ -31,12 +34,14 @@
               🤝
             </div>
           </div>
-          <h3 class="font-bold text-[#051D3C] mt-4 text-center text-sm">{{ currentLang === 'ar' ? p.name_ar : p.name_en }}</h3>
+          <h3 class="mt-4 text-center text-[13px] sm:text-sm font-extrabold text-[#051D3C] leading-snug">
+            {{ partnerName(p) }}
+          </h3>
           <p
-            v-if="(currentLang === 'ar' ? p.description_ar : p.description_en)"
-            class="text-xs text-gray-600 mt-1 text-center line-clamp-2"
+            v-if="partnerDescription(p)"
+            class="mt-2 text-center text-xs sm:text-sm text-gray-600 leading-relaxed line-clamp-3"
           >
-            {{ currentLang === 'ar' ? p.description_ar : p.description_en }}
+            {{ partnerDescription(p) }}
           </p>
         </div>
       </div>
@@ -60,6 +65,39 @@ const props = defineProps({
 const title = computed(() => props.currentLang === 'ar' ? props.section?.title_ar : props.section?.title_en)
 const description = computed(() => props.currentLang === 'ar' ? props.section?.description_ar : props.section?.description_en)
 const partners = computed(() => props.section?.additional_data?.partners ?? [])
+
+const showPill = computed(() => {
+  const t = String(title.value ?? '').trim().toLowerCase()
+  // Avoid showing "Our Partners" twice (pill + title)
+  if (props.currentLang === 'en') return t !== 'our partners'
+  if (props.currentLang === 'ar') return t !== 'شركاؤنا'
+  return true
+})
+
+function partnerName(p) {
+  return (props.currentLang === 'ar' ? (p?.name_ar ?? p?.name_en) : (p?.name_en ?? p?.name_ar) ?? '').trim()
+}
+
+function partnerDescription(p) {
+  return (props.currentLang === 'ar' ? (p?.description_ar ?? p?.description_en) : (p?.description_en ?? p?.description_ar) ?? '').trim()
+}
+
+function partnerKey(p, i) {
+  return `${partnerName(p)}__${partnerDescription(p)}__${i}`
+}
+
+const partnersToShow = computed(() => {
+  const seen = new Set()
+  const out = []
+  for (const p of partners.value) {
+    const key = `${partnerName(p)}__${partnerDescription(p)}`
+    if (!key || key === '__') continue
+    if (seen.has(key)) continue
+    seen.add(key)
+    out.push(p)
+  }
+  return out
+})
 
 const getLogoUrl = (partner) => {
   const logo = partner?.logo
