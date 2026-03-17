@@ -10,11 +10,11 @@
         <div
           v-for="(r, i) in reasons"
           :key="i"
-          class="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg hover:border-primary-200 transition-all text-center flex flex-col items-center"
+          class="p-6 rounded-2xl bg-white border border-gray-100 hover:shadow-lg hover:border-primary-200 transition-all text-center flex flex-col items-center justify-center"
         >
           <div class="w-12 h-12 rounded-xl bg-[#CCD7E5] text-[#083064] flex items-center justify-center mb-4 text-xl">✓</div>
-          <h3 class="font-bold text-[#051D3C] mb-2">{{ currentLang === 'ar' ? r.title_ar : r.title_en }}</h3>
-          <p class="text-gray-700 text-sm">{{ currentLang === 'ar' ? r.description_ar : r.description_en }}</p>
+          <h3 class="font-bold text-[#051D3C] mb-2 w-full">{{ currentLang === 'ar' ? r.title_ar : r.title_en }}</h3>
+          <p class="text-gray-700 text-sm w-full text-center">{{ currentLang === 'ar' ? r.description_ar : r.description_en }}</p>
         </div>
       </div>
 

@@ -10,13 +10,13 @@
         <div
           v-for="(feature, i) in features"
           :key="i"
-          class="group p-6 lg:p-8 rounded-2xl border-2 border-gray-200 hover:border-[#99AFCB] hover:shadow-lg hover:shadow-[#E6EBF2] transition-all duration-300"
+          class="group p-6 lg:p-8 rounded-2xl border-2 border-gray-200 hover:border-[#99AFCB] hover:shadow-lg hover:shadow-[#E6EBF2] transition-all duration-300 text-center flex flex-col items-center"
         >
           <div class="w-14 h-14 rounded-xl bg-[#CCD7E5] text-[#083064] flex items-center justify-center mb-4 group-hover:bg-[#083064] group-hover:text-white transition-colors">
             <span class="text-2xl">{{ getIcon(feature.icon) }}</span>
           </div>
           <h3 class="text-xl font-bold text-[#051D3C] mb-2">{{ currentLang === 'ar' ? feature.title_ar : feature.title_en }}</h3>
-          <p class="text-gray-700">{{ currentLang === 'ar' ? feature.description_ar : feature.description_en }}</p>
+          <p class="text-gray-700 text-center">{{ currentLang === 'ar' ? feature.description_ar : feature.description_en }}</p>
         </div>
       </div>
     </div>
