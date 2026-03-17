@@ -32,6 +32,26 @@
             <p class="text-gray-700 leading-relaxed flex-1 text-[15px]">
               {{ currentLang === 'ar' ? t.comment_ar : t.comment_en }}
             </p>
+
+            <div v-if="testimonialName(t) || t.avatar" class="mt-6 pt-5 border-t border-gray-100 flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-[#E6EBF2] overflow-hidden flex items-center justify-center shrink-0">
+                <img
+                  v-if="t.avatar"
+                  :src="t.avatar"
+                  :alt="testimonialName(t)"
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
+                <span v-else class="text-[#083064] font-bold">
+                  {{ (testimonialName(t) || 'U').slice(0, 1).toUpperCase() }}
+                </span>
+              </div>
+              <div class="min-w-0">
+                <div class="font-bold text-[#051D3C] leading-snug truncate">
+                  {{ testimonialName(t) }}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -55,4 +75,8 @@ const props = defineProps({
 const title = computed(() => props.currentLang === 'ar' ? props.section?.title_ar : props.section?.title_en)
 const description = computed(() => props.currentLang === 'ar' ? props.section?.description_ar : props.section?.description_en)
 const testimonials = computed(() => props.section?.additional_data?.testimonials ?? [])
+
+function testimonialName(t) {
+  return (props.currentLang === 'ar' ? (t?.name_ar ?? t?.name_en) : (t?.name_en ?? t?.name_ar) ?? '').trim()
+}
 </script>
