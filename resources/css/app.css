@@ -46,7 +46,12 @@ body,
     text-align: center !important;
 }
 
-/* Landing: LTR layout always; RTL for Arabic text only (alignment + direction). No flex/grid reversal. */
+/* Landing: LTR layout always; RTL only for text (script direction), not for layout. No row-reverse, no order swap. */
+.landing-layout-ar {
+    direction: ltr;
+    text-align: left;
+}
+
 .landing-layout-ar h1,
 .landing-layout-ar h2,
 .landing-layout-ar h3,

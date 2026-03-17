@@ -79,8 +79,8 @@
           <div
             v-for="(g, i) in goals"
             :key="i"
-            class="rounded-xl bg-white border border-[#E6EBF2] p-5 lg:p-6 shadow-sm text-start"
-          >
+class="rounded-xl bg-white border border-[#E6EBF2] p-5 lg:p-6 shadow-sm text-left"
+            >
             <div class="flex items-start gap-3 flex-row">
               <div class="mt-1 w-2.5 h-2.5 rounded-full bg-[#083064] shrink-0" />
               <div class="min-w-0">
