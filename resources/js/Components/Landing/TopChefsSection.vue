@@ -10,19 +10,19 @@
         <div
           v-for="(chef, i) in chefs"
           :key="i"
-          class="group rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all duration-300"
+          class="group rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl hover:border-primary-200 transition-all duration-300 text-center flex flex-col items-center"
         >
-          <div class="aspect-square bg-primary-100 overflow-hidden">
+          <div class="aspect-square w-full bg-primary-100 overflow-hidden">
             <img
               :src="chef.image || `https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=400&q=80`"
               :alt="currentLang === 'ar' ? chef.name_ar : chef.name_en"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
           </div>
-          <div class="p-4">
+          <div class="p-4 w-full text-center">
             <h3 class="font-bold text-[#051D3C]">{{ currentLang === 'ar' ? chef.name_ar : chef.name_en }}</h3>
             <p class="text-sm text-gray-500">{{ currentLang === 'ar' ? chef.specialty_ar : chef.specialty_en }}</p>
-            <div class="flex items-center gap-1 mt-2">
+            <div class="flex items-center justify-center gap-1 mt-2">
               <span class="text-culinary-500">★</span>
               <span class="text-sm font-medium">{{ chef.rating || '4.9' }}</span>
             </div>

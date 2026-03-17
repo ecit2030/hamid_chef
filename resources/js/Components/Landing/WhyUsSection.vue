@@ -19,7 +19,7 @@
       </div>
 
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
-        <div v-for="(s, i) in stats" :key="i" class="text-center p-6 rounded-2xl bg-[#083064] text-white">
+        <div v-for="(s, i) in stats" :key="i" class="text-center p-6 rounded-2xl bg-[#083064] text-white flex flex-col items-center justify-center">
           <div class="text-2xl lg:text-3xl font-bold">{{ s.number }}</div>
           <div class="text-sm text-white/90 mt-1">{{ currentLang === 'ar' ? s.label_ar : s.label_en }}</div>
         </div>

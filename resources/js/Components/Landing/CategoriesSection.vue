@@ -18,7 +18,7 @@
             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
           <div class="absolute inset-0 bg-gradient-to-t from-primary-900/80 to-transparent" />
-          <div class="absolute bottom-0 start-0 end-0 p-4">
+          <div class="absolute bottom-0 start-0 end-0 p-4 text-center">
             <h3 class="font-bold text-white text-lg">{{ categoryDisplayName(cat) }}</h3>
           </div>
         </div>
