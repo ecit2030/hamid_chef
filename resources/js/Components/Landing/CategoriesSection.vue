@@ -14,12 +14,12 @@
         >
           <img
             :src="cat.image || `https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400&q=80`"
-            :alt="currentLang === 'ar' ? cat.name_ar : cat.name_en"
+            :alt="categoryDisplayName(cat)"
             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
           <div class="absolute inset-0 bg-gradient-to-t from-primary-900/80 to-transparent" />
           <div class="absolute bottom-0 start-0 end-0 p-4">
-            <h3 class="font-bold text-white text-lg">{{ currentLang === 'ar' ? cat.name_ar : cat.name_en }}</h3>
+            <h3 class="font-bold text-white text-lg">{{ categoryDisplayName(cat) }}</h3>
           </div>
         </div>
       </div>
@@ -34,6 +34,19 @@
 <script setup>
 import { computed } from 'vue'
 
+const CATEGORY_NAME_EN = {
+  'saudi-cuisine': 'Saudi Cuisine',
+  'gulf-cuisine': 'Gulf Cuisine',
+  'levantine-cuisine': 'Levantine Cuisine',
+  'egyptian-cuisine': 'Egyptian Cuisine',
+  'indian-cuisine': 'Indian Cuisine',
+  'italian-cuisine': 'Italian Cuisine',
+  'grills': 'Grills',
+  'desserts': 'Desserts',
+  'seafood': 'Seafood',
+  'healthy-food': 'Healthy Food',
+}
+
 const props = defineProps({
   section: { type: Object, default: () => ({}) },
   currentLang: { type: String, default: 'ar' },
@@ -42,4 +55,11 @@ const props = defineProps({
 const title = computed(() => props.currentLang === 'ar' ? props.section?.title_ar : props.section?.title_en)
 const description = computed(() => props.currentLang === 'ar' ? props.section?.description_ar : props.section?.description_en)
 const categories = computed(() => props.section?.additional_data?.categories ?? [])
+
+function categoryDisplayName(cat) {
+  if (props.currentLang === 'ar') {
+    return cat.name_ar ?? cat.name_en ?? ''
+  }
+  return (cat.slug && CATEGORY_NAME_EN[cat.slug]) ? CATEGORY_NAME_EN[cat.slug] : (cat.name_en ?? cat.name_ar ?? '')
+}
 </script>
