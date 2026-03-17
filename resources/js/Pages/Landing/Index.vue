@@ -25,79 +25,79 @@
     </Transition>
 
     <HeroSection
-      v-if="sections.hero"
+      v-if="sanitizedSections.hero"
       id="hero"
-      :section="sections.hero"
+      :section="sanitizedSections.hero"
       :current-lang="currentLocale"
     />
 
     <FeaturesSection
-      v-if="sections.features"
+      v-if="sanitizedSections.features"
       id="features"
-      :section="sections.features"
+      :section="sanitizedSections.features"
       :current-lang="currentLocale"
     />
 
     <HowItWorksSection
-      v-if="sections.how_it_works"
+      v-if="sanitizedSections.how_it_works"
       id="how-it-works"
-      :section="sections.how_it_works"
+      :section="sanitizedSections.how_it_works"
       :current-lang="currentLocale"
     />
 
     <TopChefsSection
-      v-if="sections.top_chefs"
+      v-if="sanitizedSections.top_chefs"
       id="top-chefs"
-      :section="sections.top_chefs"
+      :section="sanitizedSections.top_chefs"
       :current-lang="currentLocale"
     />
 
     <CategoriesSection
-      v-if="sections.categories"
+      v-if="sanitizedSections.categories"
       id="categories"
-      :section="sections.categories"
+      :section="sanitizedSections.categories"
       :current-lang="currentLocale"
     />
 
     <TestimonialsSection
-      v-if="sections.testimonials"
+      v-if="sanitizedSections.testimonials"
       id="testimonials"
-      :section="sections.testimonials"
+      :section="sanitizedSections.testimonials"
       :current-lang="currentLocale"
     />
 
     <AboutUsSection
-      v-if="sections.about_us"
+      v-if="sanitizedSections.about_us"
       id="about"
-      :section="sections.about_us"
+      :section="sanitizedSections.about_us"
       :current-lang="currentLocale"
     />
 
     <VisionMissionSection
-      v-if="sections.vision_mission"
+      v-if="sanitizedSections.vision_mission"
       id="vision-mission"
-      :section="sections.vision_mission"
+      :section="sanitizedSections.vision_mission"
       :current-lang="currentLocale"
     />
 
     <WhyUsSection
-      v-if="sections.why_us"
+      v-if="sanitizedSections.why_us"
       id="why-us"
-      :section="sections.why_us"
+      :section="sanitizedSections.why_us"
       :current-lang="currentLocale"
     />
 
     <PartnersSection
-      v-if="sections.partners"
+      v-if="sanitizedSections.partners"
       id="partners"
-      :section="sections.partners"
+      :section="sanitizedSections.partners"
       :current-lang="currentLocale"
     />
 
     <ContactSection
-      v-if="sections.contact"
+      v-if="sanitizedSections.contact"
       id="contact"
-      :section="sections.contact"
+      :section="sanitizedSections.contact"
       :current-lang="currentLocale"
     />
   </LandingLayout>
@@ -132,8 +132,28 @@ const isLoading = ref(true)
 
 const pageTitle = computed(() => currentLocale.value === 'ar' ? 'مون شيف' : 'Mon Chef')
 
+function sanitizeBrandText(value) {
+  if (typeof value !== 'string') return value
+  return value.replace(/Moon Chef/gi, 'Mon Chef')
+}
+
+function deepSanitize(value) {
+  if (typeof value === 'string') return sanitizeBrandText(value)
+  if (Array.isArray(value)) return value.map(deepSanitize)
+  if (value && typeof value === 'object') {
+    const out = {}
+    for (const [k, v] of Object.entries(value)) {
+      out[k] = deepSanitize(v)
+    }
+    return out
+  }
+  return value
+}
+
+const sanitizedSections = computed(() => deepSanitize(props.sections ?? {}))
+
 const whatsappUrl = computed(() => {
-  const contact = props.sections?.contact?.additional_data
+  const contact = sanitizedSections.value?.contact?.additional_data
   if (!contact) return ''
   const url = contact.whatsapp_url?.trim()
   if (url) return url.startsWith('http') ? url : `https://wa.me/${url.replace(/\D/g, '')}`
