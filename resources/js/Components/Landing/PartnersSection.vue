@@ -16,7 +16,7 @@
         <div
           v-for="(p, i) in partnersToShow"
           :key="partnerKey(p, i)"
-          class="group relative flex flex-col items-center p-6 lg:p-7 rounded-2xl bg-white border border-[#E6EBF2] shadow-sm hover:shadow-md transition-shadow duration-300"
+          class="group relative flex flex-col items-center text-center p-6 lg:p-7 rounded-2xl bg-white border border-[#E6EBF2] shadow-sm hover:shadow-md transition-shadow duration-300"
         >
           <div class="flex items-center justify-center w-full h-24 rounded-xl bg-[#F7FAFF] border border-[#E6EBF2]">
             <img
@@ -37,12 +37,12 @@
             </div>
           </div>
 
-          <h3 class="mt-5 text-center text-[#051D3C] text-base sm:text-lg font-bold leading-snug line-clamp-2">
+          <h3 class="mt-5 text-[#051D3C] text-base sm:text-lg font-bold leading-snug line-clamp-2">
             {{ partnerName(p) }}
           </h3>
           <p
             v-if="partnerDescription(p)"
-            class="mt-2 text-center text-sm sm:text-base text-gray-600 leading-relaxed line-clamp-3"
+            class="mt-2 text-sm sm:text-base text-gray-600 leading-relaxed line-clamp-3 mx-auto"
           >
             {{ partnerDescription(p) }}
           </p>
