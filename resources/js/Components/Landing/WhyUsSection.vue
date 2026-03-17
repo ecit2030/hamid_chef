@@ -3,7 +3,7 @@
     <div class="container mx-auto px-4 lg:px-8 flex flex-col items-center">
       <div class="text-center max-w-3xl mx-auto mb-12 lg:mb-16 w-full">
         <h2 class="text-3xl lg:text-4xl font-extrabold text-[#051D3C] mb-4">{{ title }}</h2>
-        <p class="text-lg text-gray-700">{{ description }}</p>
+        <p class="text-lg text-gray-700 max-w-2xl mx-auto">{{ description }}</p>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 w-full max-w-6xl mx-auto justify-center">
