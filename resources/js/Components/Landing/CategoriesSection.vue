@@ -1,12 +1,12 @@
 <template>
   <section id="categories" class="py-16 lg:py-24 bg-gray-50">
-    <div class="container mx-auto px-4 lg:px-8">
-      <div class="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
+    <div class="container mx-auto px-4 lg:px-8 flex flex-col items-center">
+      <div class="text-center max-w-3xl w-full mb-12 lg:mb-16">
         <h2 class="text-3xl lg:text-4xl font-extrabold text-[#051D3C] mb-4">{{ title }}</h2>
         <p class="text-lg text-gray-700">{{ description }}</p>
       </div>
 
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 w-full max-w-6xl">
         <div
           v-for="(cat, i) in categories"
           :key="cat.id ?? i"
@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <div v-if="categories.length === 0" class="text-center py-12 text-gray-500">
+      <div v-if="categories.length === 0" class="text-center w-full py-12 text-gray-500">
         {{ currentLang === 'ar' ? 'سيتم عرض التصنيفات قريباً' : 'Categories will be displayed soon' }}
       </div>
     </div>

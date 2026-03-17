@@ -1,7 +1,7 @@
 <template>
   <section id="testimonials" class="py-16 lg:py-24 bg-gradient-to-b from-[#E6EBF2] to-white overflow-hidden">
-    <div class="container mx-auto px-4 lg:px-8">
-      <div class="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
+    <div class="container mx-auto px-4 lg:px-8 flex flex-col items-center">
+      <div class="text-center max-w-3xl w-full mb-12 lg:mb-16">
         <span class="inline-block px-4 py-2 rounded-full bg-[#083064]/10 text-[#083064] font-bold text-sm mb-4">
           {{ currentLang === 'ar' ? 'آراء العملاء' : 'Customer Reviews' }}
         </span>
@@ -9,7 +9,7 @@
         <p class="text-lg text-gray-700">{{ description }}</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 w-full max-w-6xl">
         <div
           v-for="(t, i) in testimonials"
           :key="t.id ?? i"
@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <div v-if="testimonials.length === 0" class="text-center py-16 px-6 rounded-2xl bg-white border-2 border-dashed border-gray-200">
+      <div v-if="testimonials.length === 0" class="text-center w-full max-w-2xl py-16 px-6 rounded-2xl bg-white border-2 border-dashed border-gray-200">
         <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[#E6EBF2] flex items-center justify-center text-3xl">💬</div>
         <p class="text-gray-600 text-lg">{{ currentLang === 'ar' ? 'سيتم عرض آراء العملاء قريباً' : 'Customer reviews will be displayed soon' }}</p>
       </div>
