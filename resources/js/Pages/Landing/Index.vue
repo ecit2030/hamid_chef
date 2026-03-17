@@ -1,4 +1,5 @@
 <template>
+  <Head :title="pageTitle" />
   <LandingLayout
     :transparent="true"
     :nav-items="navItems"
@@ -104,7 +105,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { router } from '@inertiajs/vue3'
+import { Head, router } from '@inertiajs/vue3'
 import { setHtmlDirection } from '@/i18n'
 import LandingLayout from '@/Layouts/LandingLayout.vue'
 import {
@@ -128,6 +129,8 @@ const props = defineProps({
 
 const currentLocale = ref(props.locale)
 const isLoading = ref(true)
+
+const pageTitle = computed(() => currentLocale.value === 'ar' ? 'مون شيف' : 'Mon Chef')
 
 const whatsappUrl = computed(() => {
   const contact = props.sections?.contact?.additional_data
