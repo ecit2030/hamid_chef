@@ -3,7 +3,7 @@
     <div class="container mx-auto px-4 lg:px-8 flex flex-col items-center">
       <div class="!text-center max-w-3xl w-full mb-12 lg:mb-16 mx-auto">
         <span class="inline-block px-4 py-2 rounded-full bg-[#083064]/10 text-[#083064] font-bold text-sm mb-4">
-          {{ currentLang === 'ar' ? 'آراء العملاء' : 'Customer Reviews' }}
+          {{ testimonialsPillLabel }}
         </span>
         <h2 class="text-3xl lg:text-4xl font-extrabold text-[#051D3C] mb-4">{{ title }}</h2>
         <p class="text-lg text-gray-700">{{ description }}</p>
@@ -57,7 +57,7 @@
 
       <div v-if="testimonials.length === 0" class="text-center w-full max-w-2xl py-16 px-6 rounded-2xl bg-white border-2 border-dashed border-gray-200">
         <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[#E6EBF2] flex items-center justify-center text-3xl">💬</div>
-        <p class="text-gray-600 text-lg">{{ currentLang === 'ar' ? 'سيتم عرض آراء العملاء قريباً' : 'Customer reviews will be displayed soon' }}</p>
+        <p class="text-gray-600 text-lg">{{ emptyLabel }}</p>
       </div>
     </div>
   </section>
@@ -65,6 +65,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { getLandingLabels } from '@/data/landingLabels'
 
 const props = defineProps({
   section: { type: Object, default: () => ({}) },
@@ -74,6 +75,8 @@ const props = defineProps({
 const title = computed(() => props.currentLang === 'ar' ? props.section?.title_ar : props.section?.title_en)
 const description = computed(() => props.currentLang === 'ar' ? props.section?.description_ar : props.section?.description_en)
 const testimonials = computed(() => props.section?.additional_data?.testimonials ?? [])
+const testimonialsPillLabel = computed(() => getLandingLabels(props.currentLang).testimonialsPill)
+const emptyLabel = computed(() => getLandingLabels(props.currentLang).empty.testimonials)
 
 const OVERRIDE_EN_NAMES = [
   'Emily Johnson',

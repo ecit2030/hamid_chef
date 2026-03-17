@@ -20,7 +20,7 @@
             href="#top-chefs"
             class="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold bg-[#CBE4F8] text-[#083064] hover:bg-[#A3D1F3] transition-colors shadow-lg"
           >
-            {{ currentLang === 'ar' ? 'اكتشف الطهاة' : 'Discover Chefs' }}
+            {{ heroLabels.ctaDiscover }}
             <svg class="w-5 h-5 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
@@ -29,7 +29,7 @@
             href="#how-it-works"
             class="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold border-2 border-white/50 text-white hover:bg-white/10 transition-colors"
           >
-            {{ currentLang === 'ar' ? 'كيف يعمل' : 'How It Works' }}
+            {{ heroLabels.ctaHowItWorks }}
           </a>
         </div>
 
@@ -48,11 +48,14 @@
 
 <script setup>
 import { computed } from 'vue'
+import { getLandingLabels } from '@/data/landingLabels'
 
 const props = defineProps({
   section: { type: Object, default: () => ({}) },
   currentLang: { type: String, default: 'ar' },
 })
+
+const heroLabels = computed(() => getLandingLabels(props.currentLang).hero)
 
 const title = computed(() => props.currentLang === 'ar' ? props.section?.title_ar : props.section?.title_en)
 const description = computed(() => props.currentLang === 'ar' ? props.section?.description_ar : props.section?.description_en)

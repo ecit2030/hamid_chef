@@ -31,7 +31,7 @@
       </div>
 
       <div v-if="chefs.length === 0" class="!text-center max-w-3xl w-full py-12 text-gray-500 mx-auto">
-        {{ currentLang === 'ar' ? 'سيتم عرض أفضل الطهاة قريباً' : 'Top chefs will be displayed soon' }}
+        {{ emptyLabel }}
       </div>
     </div>
   </section>
@@ -39,6 +39,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { getLandingLabels } from '@/data/landingLabels'
 
 const props = defineProps({
   section: { type: Object, default: () => ({}) },
@@ -48,4 +49,5 @@ const props = defineProps({
 const title = computed(() => props.currentLang === 'ar' ? props.section?.title_ar : props.section?.title_en)
 const description = computed(() => props.currentLang === 'ar' ? props.section?.description_ar : props.section?.description_en)
 const chefs = computed(() => props.section?.additional_data?.chefs ?? [])
+const emptyLabel = computed(() => getLandingLabels(props.currentLang).empty.topChefs)
 </script>

@@ -15,7 +15,7 @@
               </svg>
             </div>
             <div>
-              <h4 class="font-bold text-white mb-1">{{ currentLang === 'ar' ? 'البريد الإلكتروني' : 'Email' }}</h4>
+              <h4 class="font-bold text-white mb-1">{{ contactLabels.email }}</h4>
               <a :href="`mailto:${contact.email}`" class="text-white/90 hover:text-white transition-colors">{{ contact.email }}</a>
             </div>
           </div>
@@ -26,7 +26,7 @@
               </svg>
             </div>
             <div>
-              <h4 class="font-bold text-white mb-1">{{ currentLang === 'ar' ? 'الهاتف' : 'Phone' }}</h4>
+              <h4 class="font-bold text-white mb-1">{{ contactLabels.phone }}</h4>
               <a :href="`tel:${contact.phone}`" class="text-white/90 hover:text-white transition-colors">{{ contact.phone }}</a>
             </div>
           </div>
@@ -38,7 +38,7 @@
               </svg>
             </div>
             <div>
-              <h4 class="font-bold text-white mb-1">{{ currentLang === 'ar' ? 'العنوان' : 'Address' }}</h4>
+              <h4 class="font-bold text-white mb-1">{{ contactLabels.address }}</h4>
               <p class="text-white/90">{{ currentLang === 'ar' ? contact.address_ar : contact.address_en }}</p>
             </div>
           </div>
@@ -49,7 +49,7 @@
               </svg>
             </div>
             <div>
-              <h4 class="font-bold text-white mb-1">{{ currentLang === 'ar' ? 'ساعات العمل' : 'Working Hours' }}</h4>
+              <h4 class="font-bold text-white mb-1">{{ contactLabels.workingHours }}</h4>
               <p class="text-white/90">{{ currentLang === 'ar' ? contact.working_hours_ar : contact.working_hours_en }}</p>
             </div>
           </div>
@@ -73,49 +73,49 @@
             class="p-8 lg:p-10 rounded-2xl bg-white/5 border border-white/10"
             @submit.prevent="submitForm"
           >
-            <h3 class="text-xl font-bold text-white mb-6">{{ currentLang === 'ar' ? 'أرسل لنا رسالة' : 'Send us a message' }}</h3>
+            <h3 class="text-xl font-bold text-white mb-6">{{ contactLabels.sendUsMessage }}</h3>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
               <div>
-                <label class="block text-sm font-medium text-white/90 mb-2">{{ currentLang === 'ar' ? 'الاسم' : 'Name' }}</label>
+                <label class="block text-sm font-medium text-white/90 mb-2">{{ contactLabels.name }}</label>
                 <input
                   v-model="form.name"
                   type="text"
                   required
                   class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CBE4F8] focus:border-transparent transition-all"
-                  :placeholder="currentLang === 'ar' ? 'أدخل اسمك' : 'Enter your name'"
+                  :placeholder="contactLabels.namePlaceholder"
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-white/90 mb-2">{{ currentLang === 'ar' ? 'البريد الإلكتروني' : 'Email' }}</label>
+                <label class="block text-sm font-medium text-white/90 mb-2">{{ contactLabels.email }}</label>
                 <input
                   v-model="form.email"
                   type="email"
                   required
                   class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CBE4F8] focus:border-transparent transition-all"
-                  :placeholder="currentLang === 'ar' ? 'أدخل بريدك الإلكتروني' : 'Enter your email'"
+                  :placeholder="contactLabels.emailPlaceholder"
                 />
               </div>
             </div>
 
             <div class="mb-6">
-              <label class="block text-sm font-medium text-white/90 mb-2">{{ currentLang === 'ar' ? 'رقم الهاتف' : 'Phone' }}</label>
+              <label class="block text-sm font-medium text-white/90 mb-2">{{ contactLabels.phone }}</label>
               <input
                 v-model="form.phone"
                 type="tel"
                 class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CBE4F8] focus:border-transparent transition-all"
-                :placeholder="currentLang === 'ar' ? 'أدخل رقم هاتفك' : 'Enter your phone number'"
+                :placeholder="contactLabels.phonePlaceholder"
               />
             </div>
 
             <div class="mb-6">
-              <label class="block text-sm font-medium text-white/90 mb-2">{{ currentLang === 'ar' ? 'الرسالة' : 'Message' }}</label>
+              <label class="block text-sm font-medium text-white/90 mb-2">{{ contactLabels.message }}</label>
               <textarea
                 v-model="form.message"
                 required
                 rows="4"
                 class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CBE4F8] focus:border-transparent transition-all resize-none"
-                :placeholder="currentLang === 'ar' ? 'اكتب رسالتك هنا...' : 'Write your message here...'"
+                :placeholder="contactLabels.messagePlaceholder"
               />
             </div>
 
@@ -124,14 +124,14 @@
               :disabled="formLoading"
               class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold bg-[#CBE4F8] text-[#083064] hover:bg-[#A3D1F3] disabled:opacity-50 transition-colors"
             >
-              <span v-if="formLoading">{{ currentLang === 'ar' ? 'جاري الإرسال...' : 'Sending...' }}</span>
-              <span v-else>{{ currentLang === 'ar' ? 'إرسال الرسالة' : 'Send Message' }}</span>
+              <span v-if="formLoading">{{ contactLabels.sendMessageLoading }}</span>
+              <span v-else>{{ contactLabels.sendMessage }}</span>
               <svg v-if="!formLoading" class="w-5 h-5 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </button>
 
-            <p v-if="formSuccess" class="mt-4 text-green-400 text-sm">{{ currentLang === 'ar' ? 'تم إرسال رسالتك بنجاح!' : 'Your message has been sent successfully!' }}</p>
+            <p v-if="formSuccess" class="mt-4 text-green-400 text-sm">{{ contactLabels.success }}</p>
             <p v-if="formError" class="mt-4 text-red-400 text-sm">{{ formError }}</p>
           </form>
         </div>
@@ -143,6 +143,7 @@
 <script setup>
 import { ref, computed, h } from 'vue'
 import { router } from '@inertiajs/vue3'
+import { getLandingLabels } from '@/data/landingLabels'
 
 const props = defineProps({
   section: { type: Object, default: () => ({}) },
@@ -151,6 +152,7 @@ const props = defineProps({
 
 const title = computed(() => props.currentLang === 'ar' ? props.section?.title_ar : props.section?.title_en)
 const description = computed(() => props.currentLang === 'ar' ? props.section?.description_ar : props.section?.description_en)
+const contactLabels = computed(() => getLandingLabels(props.currentLang).contact)
 const contact = computed(() => ({
   email: props.section?.additional_data?.email ?? 'info@monchef.com',
   // Force these values for consistent public landing UI
@@ -272,10 +274,10 @@ async function submitForm() {
       form.value = { name: '', email: '', phone: '', message: '' }
     } else {
       const data = await response.json().catch(() => ({}))
-      formError.value = data.message || (props.currentLang === 'ar' ? 'حدث خطأ، حاول مرة أخرى' : 'An error occurred, please try again')
+      formError.value = data.message || contactLabels.value.error
     }
   } catch {
-    formError.value = props.currentLang === 'ar' ? 'حدث خطأ في الاتصال، حاول مرة أخرى' : 'Connection error, please try again'
+    formError.value = contactLabels.value.errorConnection
   } finally {
     formLoading.value = false
   }

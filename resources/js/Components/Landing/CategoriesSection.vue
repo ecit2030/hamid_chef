@@ -25,7 +25,7 @@
       </div>
 
       <div v-if="categories.length === 0" class="!text-center w-full py-12 text-gray-500">
-        {{ currentLang === 'ar' ? 'سيتم عرض التصنيفات قريباً' : 'Categories will be displayed soon' }}
+        {{ emptyLabel }}
       </div>
     </div>
   </section>
@@ -33,6 +33,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { getLandingLabels } from '@/data/landingLabels'
 
 const CATEGORY_NAME_EN_BY_SLUG = {
   'saudi-cuisine': 'Saudi Cuisine',
@@ -68,6 +69,7 @@ const props = defineProps({
 const title = computed(() => props.currentLang === 'ar' ? props.section?.title_ar : props.section?.title_en)
 const description = computed(() => props.currentLang === 'ar' ? props.section?.description_ar : props.section?.description_en)
 const categories = computed(() => props.section?.additional_data?.categories ?? [])
+const emptyLabel = computed(() => getLandingLabels(props.currentLang).empty.categories)
 
 function categoryDisplayName(cat) {
   if (props.currentLang === 'ar') {

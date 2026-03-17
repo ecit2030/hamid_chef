@@ -7,26 +7,26 @@
             <img src="/images/logo/logo.svg" alt="Logo" class="h-12 w-auto brightness-0 invert" />
           </Link>
           <p class="text-white/90 text-sm leading-relaxed max-w-xs">
-            {{ currentLang === 'ar' ? 'منصة تربط الطهاة المحترفين بالعملاء لتقديم تجربة طهي استثنائية في منزلك' : 'A platform connecting professional chefs with customers for an exceptional cooking experience at your home' }}
+            {{ labels.footer.tagline }}
           </p>
         </div>
 
         <div class="flex flex-col items-center md:items-start">
           <h4 class="font-bold text-lg mb-4 text-white">
-            {{ currentLang === 'ar' ? 'روابط سريعة' : 'Quick Links' }}
+            {{ labels.footer.quickLinks }}
           </h4>
           <ul class="space-y-2">
-            <li><a href="#hero" class="text-white/90 hover:text-white transition-colors">{{ currentLang === 'ar' ? 'الرئيسية' : 'Home' }}</a></li>
-            <li><a href="#features" class="text-white/90 hover:text-white transition-colors">{{ currentLang === 'ar' ? 'المميزات' : 'Features' }}</a></li>
-            <li><a href="#how-it-works" class="text-white/90 hover:text-white transition-colors">{{ currentLang === 'ar' ? 'كيف يعمل' : 'How It Works' }}</a></li>
-            <li><a href="#top-chefs" class="text-white/90 hover:text-white transition-colors">{{ currentLang === 'ar' ? 'أفضل الطهاة' : 'Top Chefs' }}</a></li>
-            <li><a href="#contact" class="text-white/90 hover:text-white transition-colors">{{ currentLang === 'ar' ? 'تواصل معنا' : 'Contact' }}</a></li>
+            <li><a href="#hero" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.home }}</a></li>
+            <li><a href="#features" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.features }}</a></li>
+            <li><a href="#how-it-works" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.howItWorks }}</a></li>
+            <li><a href="#top-chefs" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.topChefs }}</a></li>
+            <li><a href="#contact" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.contact }}</a></li>
           </ul>
         </div>
 
         <div class="flex flex-col items-center md:items-start">
           <h4 class="font-bold text-lg mb-4 text-white">
-            {{ currentLang === 'ar' ? 'تواصل معنا' : 'Contact Us' }}
+            {{ labels.footer.contactUs }}
           </h4>
           <ul class="space-y-3 text-white/90">
             <li class="flex items-center gap-2">
@@ -46,7 +46,7 @@
 
         <div class="flex flex-col items-center md:items-start">
           <h4 class="font-bold text-lg mb-4 text-white">
-            {{ currentLang === 'ar' ? 'تابعنا' : 'Follow Us' }}
+            {{ labels.footer.followUs }}
           </h4>
           <div class="flex gap-3 justify-center md:justify-start">
             <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-white">
@@ -63,16 +63,20 @@
       </div>
 
       <div class="border-t border-white/20 mt-12 pt-8 text-center text-white/80 text-sm">
-        © {{ new Date().getFullYear() }} {{ currentLang === 'ar' ? 'مون شيف - جميع الحقوق محفوظة' : 'Mon Chef - All Rights Reserved' }}
+        © {{ new Date().getFullYear() }} {{ labels.footer.copyright }}
       </div>
     </div>
   </footer>
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { Link } from '@inertiajs/vue3'
+import { getLandingLabels } from '@/data/landingLabels'
 
-defineProps({
+const props = defineProps({
   currentLang: { type: String, default: 'ar' },
 })
+
+const labels = computed(() => getLandingLabels(props.currentLang))
 </script>

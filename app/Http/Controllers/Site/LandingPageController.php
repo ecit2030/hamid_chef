@@ -12,7 +12,8 @@ use Inertia\Response;
 class LandingPageController extends Controller
 {
     /**
-     * Display the public landing page with all active sections
+     * Display the public landing page with all active sections.
+     * Single route and Inertia page for both Arabic and English; only locale and section content (title_ar/title_en, etc.) change.
      */
     public function index(LandingPageSectionService $service): Response
     {

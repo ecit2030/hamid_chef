@@ -57,7 +57,7 @@
       <div v-if="goals.length" class="rounded-2xl border border-[#E6EBF2] bg-[#F7FAFF] p-6 lg:p-8 w-full max-w-6xl">
         <div class="text-center mb-6">
           <h4 class="text-lg lg:text-xl font-extrabold text-[#051D3C]">
-            {{ currentLang === 'ar' ? 'قيمنا الأساسية' : 'Our Core Values' }}
+            {{ coreValuesLabel }}
           </h4>
         </div>
 
@@ -93,6 +93,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { getLandingLabels } from '@/data/landingLabels'
 
 const props = defineProps({
   section: { type: Object, default: () => ({}) },
@@ -104,6 +105,7 @@ const description = computed(() => props.currentLang === 'ar' ? props.section?.d
 const vision = computed(() => props.section?.additional_data?.vision ?? {})
 const mission = computed(() => props.section?.additional_data?.mission ?? {})
 const goals = computed(() => props.section?.additional_data?.goals ?? [])
+const coreValuesLabel = computed(() => getLandingLabels(props.currentLang).coreValues)
 
 const coreValuesBlurb = computed(() => {
   // If content is stored as a single "goal" item with a long description,

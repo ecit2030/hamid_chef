@@ -1,4 +1,5 @@
 @php
+  // Single Blade for the app; landing page uses same Vue components, text varies by locale
   $locale = session('locale', config('app.locale', 'ar'));
   $dir = $locale === 'ar' ? 'rtl' : 'ltr';
   $langAttr = $locale === 'ar' ? 'ar' : 'en';

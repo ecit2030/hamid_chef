@@ -25,7 +25,7 @@
               class="px-4 py-2 rounded-lg font-medium transition-colors"
               :class="transparent && !scrolled ? 'text-white hover:bg-white/10' : 'text-white/90 hover:bg-white/10 hover:text-white'"
             >
-              {{ currentLang === 'ar' ? item.label_ar : item.label_en }}
+              {{ item.label }}
             </a>
           </li>
         </ul>
@@ -41,7 +41,7 @@
             "
             @click="$emit('toggle-language')"
           >
-            {{ currentLang === 'ar' ? 'EN' : 'عربي' }}
+            {{ langSwitchLabel }}
           </button>
 
           <button
@@ -71,7 +71,7 @@
                 class="block px-4 py-3 rounded-lg font-medium text-white/90 hover:bg-white/10 hover:text-white"
                 @click="mobileOpen = false"
               >
-                {{ currentLang === 'ar' ? item.label_ar : item.label_en }}
+                {{ item.label }}
               </a>
             </li>
           </ul>
@@ -82,14 +82,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { Link } from '@inertiajs/vue3'
+import { getLandingLabels } from '@/data/landingLabels'
 
-defineProps({
+const props = defineProps({
   transparent: { type: Boolean, default: false },
   navItems: { type: Array, default: () => [] },
   currentLang: { type: String, default: 'ar' },
 })
+
+const langSwitchLabel = computed(() => getLandingLabels(props.currentLang).langSwitch)
 
 defineEmits(['toggle-language'])
 

@@ -121,6 +121,7 @@ import {
   PartnersSection,
   ContactSection,
 } from '@/Components/Landing'
+import { getLandingLabels } from '@/data/landingLabels'
 
 const props = defineProps({
   sections: { type: Object, default: () => ({}) },
@@ -130,7 +131,7 @@ const props = defineProps({
 const currentLocale = ref(props.locale)
 const isLoading = ref(true)
 
-const pageTitle = computed(() => currentLocale.value === 'ar' ? 'مون شيف' : 'Mon Chef')
+const pageTitle = computed(() => getLandingLabels(currentLocale.value).pageTitle)
 
 function sanitizeBrandText(value) {
   if (typeof value !== 'string') return value
@@ -161,16 +162,19 @@ const whatsappUrl = computed(() => {
   return phone ? `https://wa.me/${phone}` : ''
 })
 
-const navItems = ref([
-  { href: '#hero', label_ar: 'الرئيسية', label_en: 'Home' },
-  { href: '#features', label_ar: 'المميزات', label_en: 'Features' },
-  { href: '#how-it-works', label_ar: 'كيف يعمل', label_en: 'How It Works' },
-  { href: '#top-chefs', label_ar: 'أفضل الطهاة', label_en: 'Top Chefs' },
-  { href: '#categories', label_ar: 'التصنيفات', label_en: 'Categories' },
-  { href: '#about', label_ar: 'من نحن', label_en: 'About' },
-  { href: '#why-us', label_ar: 'لماذا نحن', label_en: 'Why Us' },
-  { href: '#contact', label_ar: 'تواصل معنا', label_en: 'Contact' },
-])
+const navItems = computed(() => {
+  const labels = getLandingLabels(currentLocale.value).nav
+  return [
+    { href: '#hero', label: labels.home },
+    { href: '#features', label: labels.features },
+    { href: '#how-it-works', label: labels.howItWorks },
+    { href: '#top-chefs', label: labels.topChefs },
+    { href: '#categories', label: labels.categories },
+    { href: '#about', label: labels.about },
+    { href: '#why-us', label: labels.whyUs },
+    { href: '#contact', label: labels.contact },
+  ]
+})
 
 onMounted(() => {
   document.documentElement.classList.remove('dark')
