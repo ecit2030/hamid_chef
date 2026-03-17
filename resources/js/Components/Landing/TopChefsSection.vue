@@ -1,12 +1,12 @@
 <template>
   <section id="top-chefs" class="py-16 lg:py-24 bg-white">
-    <div class="container mx-auto px-4 lg:px-8">
-      <div class="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
+    <div class="container mx-auto px-4 lg:px-8 flex flex-col items-center">
+      <div class="text-center max-w-3xl w-full mb-12 lg:mb-16">
         <h2 class="text-3xl lg:text-4xl font-extrabold text-[#051D3C] mb-4">{{ title }}</h2>
         <p class="text-lg text-gray-700">{{ description }}</p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl">
         <div
           v-for="(chef, i) in chefs"
           :key="i"
@@ -30,7 +30,7 @@
         </div>
       </div>
 
-      <div v-if="chefs.length === 0" class="text-center py-12 text-gray-500">
+      <div v-if="chefs.length === 0" class="text-center py-12 text-gray-500 w-full">
         {{ currentLang === 'ar' ? 'سيتم عرض أفضل الطهاة قريباً' : 'Top chefs will be displayed soon' }}
       </div>
     </div>
