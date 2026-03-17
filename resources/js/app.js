@@ -13,7 +13,7 @@ import VueApexCharts from 'vue3-apexcharts'
 import { i18n, setHtmlDirection } from './i18n'
 import { useGlobalLoading } from './composables/useGlobalLoading'
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'Mon Chef';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

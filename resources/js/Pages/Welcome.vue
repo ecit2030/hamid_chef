@@ -31,8 +31,8 @@ function handleImageError() {
     <div class="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
         <img
             id="background"
-            class="absolute -left-20 top-0 max-w-[877px]"
-            src="https://laravel.com/assets/img/welcome/background.svg"
+            class="absolute -left-20 top-0 max-w-[877px] opacity-0 pointer-events-none"
+            alt=""
         />
         <div
             class="relative flex min-h-screen flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white"
@@ -95,13 +95,13 @@ function handleImageError() {
                             >
                                 <img
                                     src="https://laravel.com/assets/img/welcome/docs-light.svg"
-                                    alt="Laravel documentation screenshot"
+                                    alt="Documentation screenshot"
                                     class="aspect-video h-full w-full flex-1 rounded-[10px] object-cover object-top drop-shadow-[0px_4px_34px_rgba(0,0,0,0.06)] dark:hidden"
                                     @error="handleImageError"
                                 />
                                 <img
                                     src="https://laravel.com/assets/img/welcome/docs-dark.svg"
-                                    alt="Laravel documentation screenshot"
+                                    alt="Documentation screenshot"
                                     class="hidden aspect-video h-full w-full flex-1 rounded-[10px] object-cover object-top drop-shadow-[0px_4px_34px_rgba(0,0,0,0.25)] dark:block"
                                 />
                                 <div
@@ -144,11 +144,11 @@ function handleImageError() {
                                         </h2>
 
                                         <p class="mt-4 text-sm/relaxed">
-                                            Laravel has wonderful documentation
+                                            Mon Chef has clear documentation
                                             covering every aspect of the
-                                            framework. Whether you are a
+                                            platform. Whether you are a
                                             newcomer or have prior experience
-                                            with Laravel, we recommend reading
+                                            with Mon Chef, we recommend reading
                                             our documentation from beginning to
                                             end.
                                         </p>
@@ -201,7 +201,7 @@ function handleImageError() {
 
                                 <p class="mt-4 text-sm/relaxed">
                                     Laracasts offers thousands of video
-                                    tutorials on Laravel, PHP, and JavaScript
+                                    tutorials on PHP and JavaScript
                                     development. Check them out, see for
                                     yourself, and massively level up your
                                     development skills in the process.
@@ -254,15 +254,14 @@ function handleImageError() {
                                 <h2
                                     class="text-xl font-semibold text-black dark:text-white"
                                 >
-                                    Laravel News
+                                    Product Updates
                                 </h2>
 
                                 <p class="mt-4 text-sm/relaxed">
-                                    Laravel News is a community driven portal
+                                    Product updates is a community driven portal
                                     and newsletter aggregating all of the latest
-                                    and most important news in the Laravel
-                                    ecosystem, including new package releases
-                                    and tutorials.
+                                    and most important news in the ecosystem,
+                                    including new releases and tutorials.
                                 </p>
                             </div>
 
@@ -309,7 +308,7 @@ function handleImageError() {
                                 </h2>
 
                                 <p class="mt-4 text-sm/relaxed">
-                                    Laravel's robust library of first-party
+                                    A robust library of first-party
                                     tools and libraries, such as
                                     <a
                                         href="https://forge.laravel.com"
@@ -378,7 +377,7 @@ function handleImageError() {
                 <footer
                     class="py-16 text-center text-sm text-black dark:text-white/70"
                 >
-                    Laravel v{{ laravelVersion }} (PHP v{{ phpVersion }})
+                    Mon Chef (PHP v{{ phpVersion }})
                 </footer>
             </div>
         </div>
