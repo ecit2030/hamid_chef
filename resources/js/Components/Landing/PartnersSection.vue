@@ -37,12 +37,12 @@
             </div>
           </div>
 
-          <h3 class="mt-5 text-[#051D3C] text-base sm:text-lg font-bold leading-snug line-clamp-2">
+          <h3 class="mt-5 text-[#051D3C] text-base sm:text-lg font-bold leading-snug">
             {{ partnerName(p) }}
           </h3>
           <p
             v-if="partnerDescription(p)"
-            class="mt-2 text-sm sm:text-base text-gray-600 leading-relaxed line-clamp-3 mx-auto"
+            class="mt-2 text-sm sm:text-base text-gray-600 leading-relaxed mx-auto"
           >
             {{ partnerDescription(p) }}
           </p>
