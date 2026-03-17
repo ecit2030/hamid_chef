@@ -6,7 +6,7 @@
         <p class="text-lg text-gray-700">{{ description }}</p>
       </div>
 
-      <div class="flex flex-col md:flex-row md:items-start gap-8 lg:gap-4 w-full max-w-5xl mx-auto">
+      <div class="flex flex-col md:flex-row md:items-center gap-8 lg:gap-4 w-full max-w-5xl mx-auto">
         <template v-for="(step, i) in steps" :key="i">
           <div class="flex-1 flex flex-col items-center text-center">
             <div class="flex justify-center mb-6">

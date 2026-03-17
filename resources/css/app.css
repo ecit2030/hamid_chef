@@ -14,11 +14,6 @@ body {
     font-family: 'Almarai', 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
 }
 
-/* ⚠️ TEMPORARY: force LTR to verify Arabic layout – if it matches English, problem is 100% RTL layout. Remove after testing. */
-* {
-    direction: ltr !important;
-}
-
 /* Western Arabic numerals (0-9) */
 body,
 [dir="rtl"],
@@ -51,10 +46,10 @@ body,
     text-align: center !important;
 }
 
-/* Landing: LTR layout always; RTL only for text (script direction), not for layout. No row-reverse, no order swap. */
+/* Landing: LTR layout; everything centered (no right/left). RTL only for text script direction. */
 .landing-layout-ar {
     direction: ltr;
-    text-align: left;
+    text-align: center;
 }
 
 .landing-layout-ar h1,
@@ -74,10 +69,9 @@ body,
 .landing-layout-ar td,
 .landing-layout-ar th {
     direction: rtl;
-    text-align: right;
+    text-align: center;
 }
 
-/* Preserve centered text in Arabic landing (headings, descriptions) */
 .landing-layout-ar section [class*="text-center"],
 .landing-layout-ar .text-center {
     text-align: center !important;
