@@ -164,14 +164,14 @@ const whatsappUrl = computed(() => {
 const navItems = computed(() => {
   const labels = getLandingLabels(currentLocale.value).nav
   return [
-    { href: '#hero', label: labels.home },
-    { href: '#features', label: labels.features },
-    { href: '#how-it-works', label: labels.howItWorks },
-    { href: '#top-chefs', label: labels.topChefs },
-    { href: '#categories', label: labels.categories },
-    { href: '#about', label: labels.about },
-    { href: '#why-us', label: labels.whyUs },
     { href: '#contact', label: labels.contact },
+    { href: '#why-us', label: labels.whyUs },
+    { href: '#about', label: labels.about },
+    { href: '#categories', label: labels.categories },
+    { href: '#top-chefs', label: labels.topChefs },
+    { href: '#how-it-works', label: labels.howItWorks },
+    { href: '#features', label: labels.features },
+    { href: '#hero', label: labels.home },
   ]
 })
 

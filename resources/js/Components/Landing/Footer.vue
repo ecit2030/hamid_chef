@@ -16,14 +16,14 @@
             {{ labels.footer.quickLinks }}
           </h4>
           <ul class="space-y-2">
-            <li><a href="#hero" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.home }}</a></li>
-            <li><a href="#features" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.features }}</a></li>
-            <li><a href="#how-it-works" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.howItWorks }}</a></li>
-            <li><a href="#top-chefs" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.topChefs }}</a></li>
-            <li><a href="#categories" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.categories }}</a></li>
-            <li><a href="#about" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.about }}</a></li>
-            <li><a href="#why-us" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.whyUs }}</a></li>
             <li><a href="#contact" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.contact }}</a></li>
+            <li><a href="#why-us" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.whyUs }}</a></li>
+            <li><a href="#about" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.about }}</a></li>
+            <li><a href="#categories" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.categories }}</a></li>
+            <li><a href="#top-chefs" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.topChefs }}</a></li>
+            <li><a href="#how-it-works" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.howItWorks }}</a></li>
+            <li><a href="#features" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.features }}</a></li>
+            <li><a href="#hero" class="text-white/90 hover:text-white transition-colors">{{ labels.nav.home }}</a></li>
           </ul>
         </div>
 
