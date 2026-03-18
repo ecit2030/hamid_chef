@@ -9,7 +9,11 @@
   >
     <nav class="container mx-auto px-4 lg:px-8">
       <div class="flex items-center justify-between h-16 lg:h-20">
-        <Link href="/" class="flex items-center gap-2">
+        <Link
+          href="/"
+          class="flex items-center gap-2"
+          :class="currentLang === 'ar' ? 'order-3' : ''"
+        >
           <img
             src="/images/logo/logo.svg"
             alt="Logo"
@@ -18,7 +22,7 @@
           />
         </Link>
 
-        <ul class="hidden lg:flex items-center gap-2">
+        <ul class="hidden lg:flex items-center gap-2" :class="currentLang === 'ar' ? 'order-2' : ''">
           <li v-for="item in navItems" :key="item.href">
             <a
               :href="item.href"
@@ -30,7 +34,7 @@
           </li>
         </ul>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2" :class="currentLang === 'ar' ? 'order-1' : ''">
           <button
             type="button"
             class="px-4 py-2 rounded-lg font-medium transition-colors border"
