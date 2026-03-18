@@ -1,86 +1,60 @@
 <template>
   <section id="contact" class="py-16 lg:py-24 bg-[#020A14] text-white">
     <div class="container mx-auto px-4 lg:px-8 flex flex-col items-center">
-      <div
-        class="max-w-3xl w-full mb-12 lg:mb-16 mx-auto"
-        :class="currentLang === 'ar' ? 'text-right' : '!text-center'"
-      >
+      <div class="!text-center max-w-3xl w-full mb-12 lg:mb-16 mx-auto">
         <h2 class="text-3xl lg:text-4xl font-extrabold text-white mb-4">{{ title }}</h2>
         <p class="text-white/90 text-lg">{{ description }}</p>
       </div>
 
-      <div
-        class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 w-full max-w-6xl mx-auto items-start"
-        :dir="currentLang === 'ar' ? 'rtl' : 'ltr'"
-      >
-        <div class="lg:col-span-2">
-          <div
-            class="rounded-2xl border border-white/10 bg-white/[0.06] p-6 lg:p-8 shadow-lg shadow-black/20"
-          >
-            <div class="divide-y divide-white/10">
-              <div
-                class="flex gap-4 py-5 first:pt-0"
-                :class="currentLang === 'ar' ? 'flex-row-reverse text-right' : 'flex-row text-left'"
-              >
-                <div class="w-11 h-11 rounded-xl bg-[#CBE4F8]/15 flex items-center justify-center flex-shrink-0 text-[#CBE4F8]">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <div class="min-w-0 flex-1">
-                  <p class="text-xs font-semibold uppercase tracking-wide text-white/50 mb-1">{{ contactLabels.email }}</p>
-                  <a :href="`mailto:${contact.email}`" class="text-base font-medium text-white hover:text-[#CBE4F8] transition-colors break-all">{{ contact.email }}</a>
-                </div>
-              </div>
-              <div
-                class="flex gap-4 py-5"
-                :class="currentLang === 'ar' ? 'flex-row-reverse text-right' : 'flex-row text-left'"
-              >
-                <div class="w-11 h-11 rounded-xl bg-[#CBE4F8]/15 flex items-center justify-center flex-shrink-0 text-[#CBE4F8]">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
-                </div>
-                <div class="min-w-0 flex-1">
-                  <p class="text-xs font-semibold uppercase tracking-wide text-white/50 mb-1">{{ contactLabels.phone }}</p>
-                  <a :href="`tel:${contact.phone}`" class="text-base font-medium text-white hover:text-[#CBE4F8] transition-colors">{{ contact.phone }}</a>
-                </div>
-              </div>
-              <div
-                class="flex gap-4 py-5"
-                :class="currentLang === 'ar' ? 'flex-row-reverse text-right' : 'flex-row text-left'"
-              >
-                <div class="w-11 h-11 rounded-xl bg-[#CBE4F8]/15 flex items-center justify-center flex-shrink-0 text-[#CBE4F8]">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                </div>
-                <div class="min-w-0 flex-1">
-                  <p class="text-xs font-semibold uppercase tracking-wide text-white/50 mb-1">{{ contactLabels.address }}</p>
-                  <p class="text-base font-medium text-white/95 leading-relaxed">{{ currentLang === 'ar' ? contact.address_ar : contact.address_en }}</p>
-                </div>
-              </div>
-              <div
-                class="flex gap-4 py-5 last:pb-0"
-                :class="currentLang === 'ar' ? 'flex-row-reverse text-right' : 'flex-row text-left'"
-              >
-                <div class="w-11 h-11 rounded-xl bg-[#CBE4F8]/15 flex items-center justify-center flex-shrink-0 text-[#CBE4F8]">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <div class="min-w-0 flex-1">
-                  <p class="text-xs font-semibold uppercase tracking-wide text-white/50 mb-1">{{ contactLabels.workingHours }}</p>
-                  <p class="text-base font-medium text-white/95">{{ currentLang === 'ar' ? contact.working_hours_ar : contact.working_hours_en }}</p>
-                </div>
-              </div>
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 w-full max-w-6xl mx-auto">
+        <div class="lg:col-span-2 space-y-8 text-center">
+          <div class="flex items-center justify-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+              <svg class="w-6 h-6 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
             </div>
+            <div>
+              <h4 class="font-bold text-white mb-1">{{ contactLabels.email }}</h4>
+              <a :href="`mailto:${contact.email}`" class="text-white/90 hover:text-white transition-colors">{{ contact.email }}</a>
+            </div>
+          </div>
+          <div class="flex items-center justify-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+              <svg class="w-6 h-6 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-bold text-white mb-1">{{ contactLabels.phone }}</h4>
+              <a :href="`tel:${contact.phone}`" class="text-white/90 hover:text-white transition-colors">{{ contact.phone }}</a>
+            </div>
+          </div>
+          <div class="flex items-center justify-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+              <svg class="w-6 h-6 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-bold text-white mb-1">{{ contactLabels.address }}</h4>
+              <p class="text-white/90">{{ currentLang === 'ar' ? contact.address_ar : contact.address_en }}</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+              <svg class="w-6 h-6 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-bold text-white mb-1">{{ contactLabels.workingHours }}</h4>
+              <p class="text-white/90">{{ currentLang === 'ar' ? contact.working_hours_ar : contact.working_hours_en }}</p>
+            </div>
+          </div>
 
-            <div
-              class="flex gap-3 pt-6 mt-6 border-t border-white/10"
-              :class="currentLang === 'ar' ? 'justify-end' : 'justify-start'"
-            >
+        <div class="flex gap-3 pt-4 justify-center">
           <a
             v-for="s in socialLinks"
             :key="s.platform"
@@ -91,99 +65,65 @@
           >
             <component :is="getSocialIconComponent(s.platform)" class="w-5 h-5" />
           </a>
-            </div>
-          </div>
+        </div>
         </div>
 
         <div class="lg:col-span-3">
           <form
-            class="p-8 lg:p-10 rounded-2xl bg-white/[0.07] border border-white/10 shadow-lg shadow-black/25"
+            class="p-8 lg:p-10 rounded-2xl bg-white/5 border border-white/10"
             @submit.prevent="submitForm"
           >
-            <h3
-              class="text-xl font-bold text-white mb-6"
-              :class="currentLang === 'ar' ? 'text-right' : 'text-left'"
-            >
-              {{ contactLabels.sendUsMessage }}
-            </h3>
+            <h3 class="text-xl font-bold text-white mb-6">{{ contactLabels.sendUsMessage }}</h3>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
               <div>
-                <label
-                  class="block text-sm font-medium text-white/90 mb-2"
-                  :class="currentLang === 'ar' ? 'text-right' : 'text-left'"
-                >
-                  {{ contactLabels.name }}
-                </label>
+                <label class="block text-sm font-medium text-white/90 mb-2">{{ contactLabels.name }}</label>
                 <input
                   v-model="form.name"
                   type="text"
                   required
                   class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CBE4F8] focus:border-transparent transition-all"
-                  :class="currentLang === 'ar' ? 'text-right' : 'text-left'"
                   :placeholder="contactLabels.namePlaceholder"
                 />
               </div>
               <div>
-                <label
-                  class="block text-sm font-medium text-white/90 mb-2"
-                  :class="currentLang === 'ar' ? 'text-right' : 'text-left'"
-                >
-                  {{ contactLabels.email }}
-                </label>
+                <label class="block text-sm font-medium text-white/90 mb-2">{{ contactLabels.email }}</label>
                 <input
                   v-model="form.email"
                   type="email"
                   required
-                  dir="ltr"
-                  class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CBE4F8] focus:border-transparent transition-all text-left"
+                  class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CBE4F8] focus:border-transparent transition-all"
                   :placeholder="contactLabels.emailPlaceholder"
                 />
               </div>
             </div>
 
             <div class="mb-6">
-              <label
-                class="block text-sm font-medium text-white/90 mb-2"
-                :class="currentLang === 'ar' ? 'text-right' : 'text-left'"
-              >
-                {{ contactLabels.phone }}
-              </label>
+              <label class="block text-sm font-medium text-white/90 mb-2">{{ contactLabels.phone }}</label>
               <input
                 v-model="form.phone"
                 type="tel"
-                dir="ltr"
-                class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CBE4F8] focus:border-transparent transition-all text-left"
+                class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CBE4F8] focus:border-transparent transition-all"
                 :placeholder="contactLabels.phonePlaceholder"
               />
             </div>
 
             <div class="mb-6">
-              <label
-                class="block text-sm font-medium text-white/90 mb-2"
-                :class="currentLang === 'ar' ? 'text-right' : 'text-left'"
-              >
-                {{ contactLabels.message }}
-              </label>
+              <label class="block text-sm font-medium text-white/90 mb-2">{{ contactLabels.message }}</label>
               <textarea
                 v-model="form.message"
                 required
                 rows="4"
                 class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#CBE4F8] focus:border-transparent transition-all resize-none"
-                :class="currentLang === 'ar' ? 'text-right' : 'text-left'"
                 :placeholder="contactLabels.messagePlaceholder"
               />
             </div>
 
-            <div
-              class="flex flex-col"
-              :class="currentLang === 'ar' ? 'items-end' : 'items-center sm:items-start'"
-            >
+            <div class="flex flex-col items-center">
               <button
                 type="submit"
                 :disabled="formLoading"
                 class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold bg-[#CBE4F8] text-[#083064] hover:bg-[#A3D1F3] disabled:opacity-50 transition-colors"
-                :class="currentLang === 'ar' ? 'flex-row-reverse' : ''"
               >
                 <span v-if="formLoading">{{ contactLabels.sendMessageLoading }}</span>
                 <span v-else>{{ contactLabels.sendMessage }}</span>
@@ -191,20 +131,8 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </button>
-              <p
-                v-if="formSuccess"
-                class="mt-4 text-green-400 text-sm"
-                :class="currentLang === 'ar' ? 'text-right w-full' : 'text-center'"
-              >
-                {{ contactLabels.success }}
-              </p>
-              <p
-                v-if="formError"
-                class="mt-4 text-red-400 text-sm"
-                :class="currentLang === 'ar' ? 'text-right w-full' : 'text-center'"
-              >
-                {{ formError }}
-              </p>
+              <p v-if="formSuccess" class="mt-4 text-green-400 text-sm text-center">{{ contactLabels.success }}</p>
+              <p v-if="formError" class="mt-4 text-red-400 text-sm text-center">{{ formError }}</p>
             </div>
           </form>
         </div>
@@ -227,7 +155,7 @@ const title = computed(() => props.currentLang === 'ar' ? props.section?.title_a
 const description = computed(() => props.currentLang === 'ar' ? props.section?.description_ar : props.section?.description_en)
 const contactLabels = computed(() => getLandingLabels(props.currentLang).contact)
 const contact = computed(() => ({
-  email: props.section?.additional_data?.email ?? 'info@mon-chef.com',
+  email: props.section?.additional_data?.email ?? 'info@monchef.com',
   // Force these values for consistent public landing UI
   phone: '0582800034',
   address_ar: 'الرياض، المملكة العربية السعودية',
