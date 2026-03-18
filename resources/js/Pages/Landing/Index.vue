@@ -154,11 +154,12 @@ const sanitizedSections = computed(() => deepSanitize(props.sections ?? {}))
 
 const whatsappUrl = computed(() => {
   const contact = sanitizedSections.value?.contact?.additional_data
-  if (!contact) return ''
+  if (!contact) return 'https://wa.me/966582800034'
   const url = contact.whatsapp_url?.trim()
   if (url) return url.startsWith('http') ? url : `https://wa.me/${url.replace(/\D/g, '')}`
-  const phone = contact.phone?.replace(/\D/g, '')
-  return phone ? `https://wa.me/${phone}` : ''
+  let phone = contact.phone?.replace(/\D/g, '') || ''
+  if (phone.startsWith('0') && phone.length >= 9) phone = '966' + phone.slice(1)
+  return phone ? `https://wa.me/${phone}` : 'https://wa.me/966582800034'
 })
 
 const navItems = computed(() => {

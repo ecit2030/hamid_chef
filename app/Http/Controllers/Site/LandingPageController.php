@@ -43,6 +43,14 @@ class LandingPageController extends Controller
                 $additionalData = $this->transformVisionMissionForLanding($additionalData);
             }
 
+            // Public contact block: always show canonical copy (DB may still hold old seed data)
+            if ($section->section_key === 'contact') {
+                $canonical = config('landing.contact', []);
+                if ($canonical !== []) {
+                    $additionalData = array_merge(is_array($additionalData) ? $additionalData : [], $canonical);
+                }
+            }
+
             $sectionsData[$section->section_key] = [
                 'id' => $section->id,
                 'section_key' => $section->section_key,
