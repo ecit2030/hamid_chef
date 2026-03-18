@@ -181,9 +181,9 @@ const props = defineProps({
 const title = computed(() => props.currentLang === 'ar' ? props.section?.title_ar : props.section?.title_en)
 const description = computed(() => props.currentLang === 'ar' ? props.section?.description_ar : props.section?.description_en)
 const contactLabels = computed(() => getLandingLabels(props.currentLang).contact)
+// Public landing copy (matches site contact block)
 const contact = computed(() => ({
-  email: props.section?.additional_data?.email ?? 'info@monchef.com',
-  // Force these values for consistent public landing UI
+  email: 'info@mon-chef.com',
   phone: '0582800034',
   address_ar: 'الرياض، المملكة العربية السعودية',
   address_en: 'Riyadh, Saudi Arabia',
@@ -195,7 +195,7 @@ const DEFAULT_SOCIAL_LINKS = [
   { platform: 'facebook', url: '#' },
   { platform: 'x', url: '#' },
   { platform: 'instagram', url: '#' },
-  { platform: 'whatsapp', url: 'https://wa.me/0582800034' },
+  { platform: 'whatsapp', url: 'https://wa.me/966582800034' },
 ]
 
 const socialLinks = computed(() => {
