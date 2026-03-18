@@ -1,7 +1,7 @@
 <template>
   <section id="contact" class="py-16 lg:py-24 bg-[#020A14] text-white">
     <div class="container mx-auto px-4 lg:px-8 flex flex-col items-center">
-      <div class="section-header !text-center max-w-3xl w-full mb-12 lg:mb-16 mx-auto" :dir="currentLang === 'ar' ? 'rtl' : 'ltr'">
+      <div class="!text-center max-w-3xl w-full mb-12 lg:mb-16 mx-auto">
         <h2 class="text-3xl lg:text-4xl font-extrabold text-white mb-4">{{ title }}</h2>
         <p class="text-white/90 text-lg">{{ description }}</p>
       </div>
