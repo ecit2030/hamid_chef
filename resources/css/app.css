@@ -92,6 +92,25 @@ body,
     direction: rtl !important;
 }
 
+/* Contact: Arabic lines next to icons — override global .landing-layout-ar center on h4/p/a */
+.landing-layout-ar #contact .landing-contact-ar-text,
+.landing-layout-ar #contact .landing-contact-ar-text h4,
+.landing-layout-ar #contact .landing-contact-ar-text p,
+.landing-layout-ar #contact .landing-contact-ar-text a {
+    text-align: right !important;
+    direction: rtl !important;
+}
+
+.landing-layout-ar #contact .landing-contact-ar-text a[dir="ltr"] {
+    direction: ltr !important;
+    unicode-bidi: embed;
+    text-align: right !important;
+}
+
+.landing-layout-ar #contact .landing-contact-social {
+    justify-content: flex-end !important;
+}
+
 /* Logical positioning */
 .inline-start-0 {
     inset-inline-start: 0;

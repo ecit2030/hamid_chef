@@ -22,7 +22,10 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
-              <div class="min-w-0 flex-1" :class="currentLang === 'ar' ? 'text-right' : 'text-left'">
+              <div
+                class="min-w-0 flex-1"
+                :class="currentLang === 'ar' ? 'text-right landing-contact-ar-text' : 'text-left'"
+              >
                 <h4 class="font-bold text-white mb-1 leading-tight">{{ contactLabels.email }}</h4>
                 <a
                   :href="`mailto:${contact.email}`"
@@ -42,7 +45,10 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
               </div>
-              <div class="min-w-0 flex-1" :class="currentLang === 'ar' ? 'text-right' : 'text-left'">
+              <div
+                class="min-w-0 flex-1"
+                :class="currentLang === 'ar' ? 'text-right landing-contact-ar-text' : 'text-left'"
+              >
                 <h4 class="font-bold text-white mb-1 leading-tight">{{ contactLabels.phone }}</h4>
                 <a :href="`tel:${contact.phone}`" class="text-white/90 hover:text-white transition-colors block" dir="ltr">{{ contact.phone }}</a>
               </div>
@@ -57,7 +63,10 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
-              <div class="min-w-0 flex-1" :class="currentLang === 'ar' ? 'text-right' : 'text-left'">
+              <div
+                class="min-w-0 flex-1"
+                :class="currentLang === 'ar' ? 'text-right landing-contact-ar-text' : 'text-left'"
+              >
                 <h4 class="font-bold text-white mb-1 leading-tight">{{ contactLabels.address }}</h4>
                 <p class="text-white/90">{{ currentLang === 'ar' ? contact.address_ar : contact.address_en }}</p>
               </div>
@@ -71,7 +80,10 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <div class="min-w-0 flex-1" :class="currentLang === 'ar' ? 'text-right' : 'text-left'">
+              <div
+                class="min-w-0 flex-1"
+                :class="currentLang === 'ar' ? 'text-right landing-contact-ar-text' : 'text-left'"
+              >
                 <h4 class="font-bold text-white mb-1 leading-tight">{{ contactLabels.workingHours }}</h4>
                 <p class="text-white/90">{{ currentLang === 'ar' ? contact.working_hours_ar : contact.working_hours_en }}</p>
               </div>
@@ -80,7 +92,7 @@
 
           <div
             class="flex gap-3 pt-10 max-w-md"
-            :class="currentLang === 'ar' ? 'ml-auto justify-end' : 'mr-auto justify-start'"
+            :class="currentLang === 'ar' ? 'ml-auto justify-end landing-contact-social' : 'mr-auto justify-start'"
           >
           <a
             v-for="s in socialLinks"
