@@ -2,12 +2,7 @@
   <section id="about" class="py-16 lg:py-24 bg-gray-50">
     <div class="container mx-auto px-4 lg:px-8 flex flex-col items-center">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center w-full max-w-6xl mx-auto">
-        <div class="text-center">
-          <h2 class="text-3xl lg:text-4xl font-extrabold text-[#051D3C] mb-4">{{ title }}</h2>
-          <p class="text-lg text-gray-700 mb-6">{{ description }}</p>
-          <p class="text-gray-700">{{ currentLang === 'ar' ? story_ar : story_en }}</p>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 order-2 lg:order-1">
           <div
             v-for="(v, i) in values"
             :key="i"
@@ -16,6 +11,11 @@
             <h3 class="font-bold text-[#062650] mb-2">{{ currentLang === 'ar' ? v.title_ar : v.title_en }}</h3>
             <p class="text-sm text-gray-700 text-center">{{ currentLang === 'ar' ? v.description_ar : v.description_en }}</p>
           </div>
+        </div>
+        <div class="text-center order-1 lg:order-2">
+          <h2 class="text-3xl lg:text-4xl font-extrabold text-[#051D3C] mb-4">{{ title }}</h2>
+          <p class="text-lg text-gray-700 mb-6">{{ description }}</p>
+          <p class="text-gray-700">{{ currentLang === 'ar' ? story_ar : story_en }}</p>
         </div>
       </div>
     </div>
