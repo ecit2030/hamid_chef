@@ -8,59 +8,80 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 w-full max-w-6xl mx-auto">
         <div class="lg:col-span-2">
-          <!-- Same row structure for every item: fixed icon column + text (aligned, no offset tricks) -->
+          <!-- EN: icon + text, tight gap, block on the left (mr-auto). AR: same spacing, mirrored — icon right, text beside it, whole block on the right (ml-auto). -->
           <div
-            class="flex flex-col gap-8 w-full max-w-md mx-auto"
-            :dir="currentLang === 'ar' ? 'rtl' : 'ltr'"
+            class="flex flex-col gap-8 w-full max-w-md"
+            :class="currentLang === 'ar' ? 'ml-auto' : 'mr-auto'"
           >
-            <div class="grid grid-cols-[3rem_1fr] gap-4 items-start">
-              <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0 mt-0.5">
+            <div
+              class="flex w-full items-center gap-2"
+              :class="currentLang === 'ar' ? 'flex-row-reverse' : 'flex-row'"
+            >
+              <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
                 <svg class="w-6 h-6 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
-              <div class="text-start min-w-0">
+              <div class="min-w-0 flex-1" :class="currentLang === 'ar' ? 'text-right' : 'text-left'">
                 <h4 class="font-bold text-white mb-1 leading-tight">{{ contactLabels.email }}</h4>
-                <a :href="`mailto:${contact.email}`" class="text-white/90 hover:text-white transition-colors block">{{ contact.email }}</a>
+                <a
+                  :href="`mailto:${contact.email}`"
+                  class="text-white/90 hover:text-white transition-colors block break-all"
+                  dir="ltr"
+                >
+                  {{ contact.email }}
+                </a>
               </div>
             </div>
-            <div class="grid grid-cols-[3rem_1fr] gap-4 items-start">
-              <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0 mt-0.5">
+            <div
+              class="flex w-full items-center gap-2"
+              :class="currentLang === 'ar' ? 'flex-row-reverse' : 'flex-row'"
+            >
+              <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
                 <svg class="w-6 h-6 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
               </div>
-              <div class="text-start min-w-0">
+              <div class="min-w-0 flex-1" :class="currentLang === 'ar' ? 'text-right' : 'text-left'">
                 <h4 class="font-bold text-white mb-1 leading-tight">{{ contactLabels.phone }}</h4>
-                <a :href="`tel:${contact.phone}`" class="text-white/90 hover:text-white transition-colors block">{{ contact.phone }}</a>
+                <a :href="`tel:${contact.phone}`" class="text-white/90 hover:text-white transition-colors block" dir="ltr">{{ contact.phone }}</a>
               </div>
             </div>
-            <div class="grid grid-cols-[3rem_1fr] gap-4 items-start">
-              <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0 mt-0.5">
+            <div
+              class="flex w-full items-center gap-2"
+              :class="currentLang === 'ar' ? 'flex-row-reverse' : 'flex-row'"
+            >
+              <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
                 <svg class="w-6 h-6 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
-              <div class="text-start min-w-0">
+              <div class="min-w-0 flex-1" :class="currentLang === 'ar' ? 'text-right' : 'text-left'">
                 <h4 class="font-bold text-white mb-1 leading-tight">{{ contactLabels.address }}</h4>
                 <p class="text-white/90">{{ currentLang === 'ar' ? contact.address_ar : contact.address_en }}</p>
               </div>
             </div>
-            <div class="grid grid-cols-[3rem_1fr] gap-4 items-start">
-              <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0 mt-0.5">
+            <div
+              class="flex w-full items-center gap-2"
+              :class="currentLang === 'ar' ? 'flex-row-reverse' : 'flex-row'"
+            >
+              <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
                 <svg class="w-6 h-6 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <div class="text-start min-w-0">
+              <div class="min-w-0 flex-1" :class="currentLang === 'ar' ? 'text-right' : 'text-left'">
                 <h4 class="font-bold text-white mb-1 leading-tight">{{ contactLabels.workingHours }}</h4>
                 <p class="text-white/90">{{ currentLang === 'ar' ? contact.working_hours_ar : contact.working_hours_en }}</p>
               </div>
             </div>
           </div>
 
-          <div class="flex gap-3 pt-10 justify-center">
+          <div
+            class="flex gap-3 pt-10 max-w-md"
+            :class="currentLang === 'ar' ? 'ml-auto justify-end' : 'mr-auto justify-start'"
+          >
           <a
             v-for="s in socialLinks"
             :key="s.platform"
