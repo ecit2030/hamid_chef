@@ -1,12 +1,18 @@
 <template>
   <section id="categories" class="py-16 lg:py-24 bg-gray-50">
     <div class="container mx-auto px-4 lg:px-8 flex flex-col items-center">
-      <div class="!text-center max-w-3xl w-full mb-12 lg:mb-16 mx-auto">
+      <div
+        class="max-w-3xl w-full mb-12 lg:mb-16 mx-auto"
+        :class="currentLang === 'ar' ? 'text-right' : '!text-center'"
+      >
         <h2 class="text-3xl lg:text-4xl font-extrabold text-[#051D3C] mb-4">{{ title }}</h2>
         <p class="text-lg text-gray-700">{{ description }}</p>
       </div>
 
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 w-full max-w-6xl mx-auto">
+      <div
+        class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 w-full max-w-6xl mx-auto"
+        :dir="currentLang === 'ar' ? 'rtl' : 'ltr'"
+      >
         <div
           v-for="(cat, i) in categories"
           :key="cat.id ?? i"
@@ -18,7 +24,10 @@
             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
           <div class="absolute inset-0 bg-gradient-to-t from-primary-900/80 to-transparent" />
-          <div class="absolute bottom-0 start-0 end-0 p-4 text-center">
+          <div
+            class="absolute bottom-0 start-0 end-0 p-4"
+            :class="currentLang === 'ar' ? 'text-right' : 'text-center'"
+          >
             <h3 class="font-bold text-white text-lg">{{ categoryDisplayName(cat) }}</h3>
           </div>
         </div>
