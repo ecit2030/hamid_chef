@@ -9,7 +9,7 @@
 
     <div
       class="container relative z-10 mx-auto px-4 lg:px-8 py-24 lg:py-32 flex flex-col w-full"
-      :class="currentLang === 'en' ? 'items-end text-right' : 'items-center text-center'"
+      :class="currentLang === 'en' ? 'items-start text-left' : 'items-center text-center'"
     >
       <div class="max-w-3xl w-full">
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
@@ -20,7 +20,7 @@
         </p>
         <div
           class="flex flex-wrap gap-4"
-          :class="currentLang === 'en' ? 'justify-end' : 'justify-center'"
+          :class="currentLang === 'en' ? 'justify-start' : 'justify-center'"
         >
           <a
             href="#top-chefs"
@@ -41,9 +41,9 @@
 
         <div
           class="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-16 pt-16 border-t border-white/20 w-full max-w-4xl"
-          :class="currentLang === 'en' ? 'ml-auto' : 'mx-auto text-center'"
+          :class="currentLang === 'en' ? 'mr-auto' : 'mx-auto text-center'"
         >
-          <div v-for="stat in stats" :key="stat.label_ar" :class="currentLang === 'en' ? 'text-right' : 'text-center'">
+          <div v-for="stat in stats" :key="stat.label_ar" :class="currentLang === 'en' ? 'text-left' : 'text-center'">
             <div class="text-2xl sm:text-3xl font-bold text-white">{{ stat.number }}</div>
             <div class="text-sm text-white/85 mt-1">{{ currentLang === 'ar' ? stat.label_ar : stat.label_en }}</div>
           </div>
