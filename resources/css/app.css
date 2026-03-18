@@ -78,6 +78,20 @@ body,
     direction: rtl;
 }
 
+/* Hero: title + description only – force right-aligned RTL (overrides other landing rules) */
+.landing-layout-ar .hero-heading-block,
+.hero-heading-block[dir="rtl"] {
+    text-align: right !important;
+    direction: rtl !important;
+}
+.landing-layout-ar .hero-heading-block h1,
+.landing-layout-ar .hero-heading-block p,
+.hero-heading-block[dir="rtl"] h1,
+.hero-heading-block[dir="rtl"] p {
+    text-align: right !important;
+    direction: rtl !important;
+}
+
 /* Logical positioning */
 .inline-start-0 {
     inset-inline-start: 0;
