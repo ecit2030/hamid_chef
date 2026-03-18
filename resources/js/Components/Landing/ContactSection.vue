@@ -119,20 +119,21 @@
               />
             </div>
 
-            <button
-              type="submit"
-              :disabled="formLoading"
-              class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold bg-[#CBE4F8] text-[#083064] hover:bg-[#A3D1F3] disabled:opacity-50 transition-colors"
-            >
-              <span v-if="formLoading">{{ contactLabels.sendMessageLoading }}</span>
-              <span v-else>{{ contactLabels.sendMessage }}</span>
-              <svg v-if="!formLoading" :class="currentLang === 'ar' ? 'w-5 h-5 rotate-180' : 'w-5 h-5'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </button>
-
-            <p v-if="formSuccess" class="mt-4 text-green-400 text-sm">{{ contactLabels.success }}</p>
-            <p v-if="formError" class="mt-4 text-red-400 text-sm">{{ formError }}</p>
+            <div class="flex flex-col items-center">
+              <button
+                type="submit"
+                :disabled="formLoading"
+                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold bg-[#CBE4F8] text-[#083064] hover:bg-[#A3D1F3] disabled:opacity-50 transition-colors"
+              >
+                <span v-if="formLoading">{{ contactLabels.sendMessageLoading }}</span>
+                <span v-else>{{ contactLabels.sendMessage }}</span>
+                <svg v-if="!formLoading" :class="currentLang === 'ar' ? 'w-5 h-5 rotate-180' : 'w-5 h-5'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </button>
+              <p v-if="formSuccess" class="mt-4 text-green-400 text-sm text-center">{{ contactLabels.success }}</p>
+              <p v-if="formError" class="mt-4 text-red-400 text-sm text-center">{{ formError }}</p>
+            </div>
           </form>
         </div>
       </div>
