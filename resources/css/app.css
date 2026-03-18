@@ -78,6 +78,24 @@ body,
     direction: rtl;
 }
 
+/* Section headers (title + description): logical RTL = right-aligned for Arabic */
+.landing-layout-ar .section-header,
+.section-header[dir="rtl"] {
+    text-align: right !important;
+    direction: rtl !important;
+}
+.landing-layout-ar .section-header h1,
+.landing-layout-ar .section-header h2,
+.landing-layout-ar .section-header h3,
+.landing-layout-ar .section-header p,
+.section-header[dir="rtl"] h1,
+.section-header[dir="rtl"] h2,
+.section-header[dir="rtl"] h3,
+.section-header[dir="rtl"] p {
+    text-align: right !important;
+    direction: rtl !important;
+}
+
 /* Hero: title + description only – force right-aligned RTL (overrides other landing rules) */
 .landing-layout-ar .hero-heading-block,
 .hero-heading-block[dir="rtl"] {
