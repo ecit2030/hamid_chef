@@ -1,7 +1,10 @@
 <template>
   <section id="partners" class="py-16 lg:py-24 bg-white">
     <div class="container mx-auto px-4 lg:px-8 flex flex-col items-center">
-      <div class="!text-center max-w-3xl w-full mb-12 lg:mb-16 mx-auto">
+      <div
+        class="max-w-3xl w-full mb-12 lg:mb-16 mx-auto"
+        :class="currentLang === 'ar' ? 'text-right' : '!text-center'"
+      >
         <span
           v-if="showPill"
           class="inline-block px-4 py-2 rounded-full bg-[#083064]/10 text-[#083064] font-semibold text-sm mb-4"
@@ -12,11 +15,16 @@
         <p class="text-lg text-gray-700">{{ description }}</p>
       </div>
 
-      <div v-if="partnersToShow.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 lg:gap-8 w-full max-w-7xl mx-auto">
+      <div
+        v-if="partnersToShow.length > 0"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 lg:gap-8 w-full max-w-7xl mx-auto"
+        :dir="currentLang === 'ar' ? 'rtl' : 'ltr'"
+      >
         <div
           v-for="(p, i) in partnersToShow"
           :key="partnerKey(p, i)"
-          class="group relative flex flex-col items-center text-center p-6 lg:p-7 rounded-2xl bg-white border border-[#E6EBF2] shadow-sm hover:shadow-md transition-shadow duration-300"
+          class="group relative flex flex-col p-6 lg:p-7 rounded-2xl bg-white border border-[#E6EBF2] shadow-sm hover:shadow-md transition-shadow duration-300"
+          :class="currentLang === 'ar' ? 'items-end text-right' : 'items-center text-center'"
         >
           <div class="flex items-center justify-center w-full h-24 rounded-xl bg-[#F7FAFF] border border-[#E6EBF2]">
             <img
@@ -42,7 +50,8 @@
           </h3>
           <p
             v-if="partnerDescription(p)"
-            class="mt-2 text-sm sm:text-base text-gray-600 leading-relaxed mx-auto"
+            class="mt-2 text-sm sm:text-base text-gray-600 leading-relaxed"
+            :class="currentLang === 'ar' ? '' : 'mx-auto'"
           >
             {{ partnerDescription(p) }}
           </p>
