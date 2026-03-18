@@ -12,12 +12,18 @@
       :class="currentLang === 'ar' ? 'items-end text-right' : currentLang === 'en' ? 'items-start text-left' : 'items-center text-center'"
     >
       <div class="max-w-3xl w-full">
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
-          {{ title }}
-        </h1>
-        <p class="text-xl text-white/90 mb-8 leading-relaxed">
-          {{ description }}
-        </p>
+        <div
+          class="hero-heading-block"
+          :class="currentLang === 'ar' ? 'text-right' : ''"
+          :dir="currentLang === 'ar' ? 'rtl' : 'ltr'"
+        >
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
+            {{ title }}
+          </h1>
+          <p class="text-xl text-white/90 mb-8 leading-relaxed">
+            {{ description }}
+          </p>
+        </div>
         <div
           class="flex flex-wrap gap-4"
           :class="currentLang === 'ar' ? 'justify-end' : currentLang === 'en' ? 'justify-start' : 'justify-center'"
