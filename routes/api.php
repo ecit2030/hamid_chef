@@ -52,6 +52,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Profile Management
     Route::get('profile', [App\Http\Controllers\Api\ProfileController::class, 'show']);
     Route::post('profile', [App\Http\Controllers\Api\ProfileController::class, 'update']);
+    Route::put('user/fb-token', [App\Http\Controllers\Api\FbTokenController::class, 'update']);
 
     Route::apiResource('addresses', App\Http\Controllers\Api\AddressController::class);
     Route::post('addresses/{address}/activate', [App\Http\Controllers\Api\AddressController::class, 'activate']);
